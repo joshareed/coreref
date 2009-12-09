@@ -77,5 +77,10 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
+mongo = {
+	host = 'localhost'
+	db = 'coreref'
+}
+
 
      
