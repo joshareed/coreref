@@ -11,9 +11,6 @@ class MongoService {
 		DBCollection.metaClass {
 			find << { LinkedHashMap query -> delegate.find(query as BasicDBObject) }
 			find << { LinkedHashMap query, LinkedHashMap filter -> delegate.find(query as BasicDBObject, filter as BasicDBObject) }
-			findByClass { String type -> delegate.find(['_class': type] as BasicDBObject) }
-			findByDepth { Number top, Number base -> delegate.find([top: ['$lte': base], base: ['$gte', top]] as BasicDBObject) }
-			findByClassAndDepth { String type, Number top, Number base -> delegate.find(['_class': type, top: ['$lte': base], base: ['$gte', top]] as BasicDBObject) }
 		}
 		DBCursor.metaClass {
 			sort << { LinkedHashMap keys -> delegate.sort(keys as BasicDBObject) }
@@ -21,6 +18,7 @@ class MongoService {
 	}
 
 	def getCollection(name) {
+		if (!name) { return null }
 		if (!mongo) {
 			// create our Mongo instance if needed
 			def host = ApplicationHolder.application.config?.mongo?.host ?: 'localhost'
