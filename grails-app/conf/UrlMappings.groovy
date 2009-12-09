@@ -1,6 +1,6 @@
 class UrlMappings {
 	static mappings = {
-		//"/services/data/flot/$collection/$series/$top/$base?"(controller: 'data', action: 'flot')
+		"/admin/$action/$collection/$opt?"(controller: 'admin')
 		"/services/track/$action/$collection/$top/$base?/$scale?"(controller: 'track')
 		"/"(view:"/index")
 		"500"(view:'/error')
