@@ -1,7 +1,9 @@
 class BootStrap {
 
-     def init = { servletContext ->
-     }
-     def destroy = {
-     }
+	def init = { servletContext ->
+		org.andrill.coretools.Platform.start()
+	}
+     
+	def destroy = {
+	}
 } 
