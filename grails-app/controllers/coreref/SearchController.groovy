@@ -8,8 +8,8 @@ class SearchController {
 	def type = {
 		def collection = mongoService.getCollection(params.collection)
 		if (collection) {
-			def query = QueryUtils.withDepths(params, ['_class': params.query])
-			def results = collection.find(query, QueryUtils.buildFilter(params)).collect() { it }
+			def query = QueryUtils.withDepths(params, ['class': params.query])
+			def results = collection.find(query, QueryUtils.buildFilter(params)).collect() { SearchUtils.clean(it) }
 			render "${results as JSON}"
 		}
 	}
@@ -23,7 +23,18 @@ class SearchController {
 			} else {
 				query['_keywords'] = ['$all': SearchUtils.tokenize(params.query, [])]
 			}
-			def results = collection.find(query, QueryUtils.buildFilter(params)).collect() { it }
+			def results = collection.find(query, QueryUtils.buildFilter(params)).collect() { SearchUtils.clean(it) }
+			render "${results as JSON}"
+		}
+	}
+
+	def data = {
+		def collection = mongoService.getCollection(params.collection)
+		if (collection) {
+			def filter = [top: true, base: true]
+			def query = QueryUtils.withDepths(params, ['class': 'Datum'])
+			params.query.split(',').each { query[it] = ['$exists': true]; filter[it] = true }
+			def results = collection.find(query, filter).collect() { SearchUtils.clean(it) }
 			render "${results as JSON}"
 		}
 	}
