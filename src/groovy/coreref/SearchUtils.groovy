@@ -9,4 +9,9 @@ class SearchUtils {
 		}
 		return tokens
 	}
+
+	static clean(doc) {
+		doc.keySet().findAll { it.startsWith('_') }.each { doc.remove(it) }
+		return doc
+	}
 }
