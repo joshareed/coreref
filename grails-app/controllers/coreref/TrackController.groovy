@@ -22,7 +22,7 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
 		// output our graphics
-		def graphics = renderScene(params, [_class: 'Image', type: 'split'], scene)
+		def graphics = renderScene(params, ['class': 'Image', type: 'split'], scene)
 		response.contentType = 'image/png'
 		graphics.write(response.outputStream, 'png')
 		graphics.dispose()
@@ -35,7 +35,7 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
 		// output our graphics
-		def graphics = renderScene(params, [_class: 'Image', type: 'whole'], scene)
+		def graphics = renderScene(params, ['class': 'Image', type: 'whole'], scene)
 		response.contentType = 'image/png'
 		graphics.write(response.outputStream, 'png')
 		graphics.dispose()
@@ -48,7 +48,7 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.LithologyTrack), null)
 
 		// output our graphics
-		def graphics = renderScene(params, [_class: 'Interval'], scene)
+		def graphics = renderScene(params, ['class': 'Interval'], scene)
 		response.contentType = 'image/png'
 		graphics.write(response.outputStream, 'png')
 		graphics.dispose()
@@ -61,7 +61,7 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.RulerTrack), null)
 
 		// output our graphics
-		def graphics = renderScene(params, [_class: 'Interval'], scene, Color.white)
+		def graphics = renderScene(params, ['class': 'Interval'], scene, Color.white)
 		response.contentType = 'image/png'
 		graphics.write(response.outputStream, 'png')
 		graphics.dispose()
@@ -90,7 +90,7 @@ class TrackController {
 		ModelManager models = Platform.getService(ModelManager.class)
 		collection.find(query).each { doc ->
 			def model
-			switch(doc['_class']) {
+			switch(doc['class']) {
 				case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc.url]); break
 				case 'Interval':	model = models.build("Interval", [top: doc.top, base: doc.base, lithology: "org.psicat.resources.lithologies:${doc.lithology}"]); break
 			}
