@@ -16,55 +16,63 @@ class TrackController {
 	def mongoService
 
 	def split = {
-		// build our scene
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
-		// output our graphics
 		def graphics = renderScene(params, ['class': 'Image', type: 'split'], scene)
-		response.contentType = 'image/png'
-		graphics.write(response.outputStream, 'png')
-		graphics.dispose()
+		if (graphics) {
+			response.contentType = 'image/png'
+			graphics.write(response.outputStream, 'png')
+			graphics.dispose()
+		} else {
+			response.sendError(404, "Invalid collection: '${params.collection}'")
+		}
 	}
 
 	def whole = {
-		// build our scene
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
-		// output our graphics
 		def graphics = renderScene(params, ['class': 'Image', type: 'whole'], scene)
-		response.contentType = 'image/png'
-		graphics.write(response.outputStream, 'png')
-		graphics.dispose()
+		if (graphics) {
+			response.contentType = 'image/png'
+			graphics.write(response.outputStream, 'png')
+			graphics.dispose()
+		} else {
+			response.sendError(404, "Invalid collection: '${params.collection}'")
+		}
 	}
 
 	def lith = {
-		// build our scene
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.LithologyTrack), null)
 
-		// output our graphics
 		def graphics = renderScene(params, ['class': 'Interval'], scene)
-		response.contentType = 'image/png'
-		graphics.write(response.outputStream, 'png')
-		graphics.dispose()
+		if (graphics) {
+			response.contentType = 'image/png'
+			graphics.write(response.outputStream, 'png')
+			graphics.dispose()
+		} else {
+			response.sendError(404, "Invalid collection: '${params.collection}'")
+		}
 	}
 
 	def ruler = {
-		// build our scene
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.RulerTrack), null)
 
-		// output our graphics
 		def graphics = renderScene(params, ['class': 'Interval'], scene, Color.white)
-		response.contentType = 'image/png'
-		graphics.write(response.outputStream, 'png')
-		graphics.dispose()
+		if (graphics) {
+			response.contentType = 'image/png'
+			graphics.write(response.outputStream, 'png')
+			graphics.dispose()
+		} else {
+			response.sendError(404, "Invalid collection: '${params.collection}'")
+		}
 	}
 
 	private def renderScene(params, query, scene, foreground = Color.black, background = Color.black) {
@@ -80,7 +88,7 @@ class TrackController {
 		// get the collection to query
 		def collection = mongoService.getCollection(params.collection)
 		if (!collection) {
-			return container
+			return null
 		}
 
 		// build the query

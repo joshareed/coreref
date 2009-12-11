@@ -4,9 +4,9 @@ class AdminController {
 	def mongoService
 
 	def updateIndex = {
-		long start = System.currentTimeMillis()
 		def collection = mongoService.getCollection(params.collection)
 		if (collection) {
+		long start = System.currentTimeMillis()
 			collection.find().each { doc ->
 				def tokens = []
 				['name', 'code', 'text'].each { field ->
@@ -18,7 +18,9 @@ class AdminController {
 					collection.update(doc, ['$set': ['_keywords': tokens]] as com.mongodb.BasicDBObject)
 				}
 			}
+			render "Text indexing of ${params.collection} took ${System.currentTimeMillis() - start} ms"
+		} else {
+			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
-		render "Text indexing of ${params.collection} took ${System.currentTimeMillis() - start} ms"
 	}
 }
