@@ -1,7 +1,7 @@
 class UrlMappings {
 	static mappings = {
 		"/admin/$collection/$action/$opt?"(controller: 'admin')
-		"/project/$collection/$action?"(controller: 'project')
+		"/projects/$collection/$action?"(controller: 'project')
 		"/services/track/$collection/$action/$top/$base?/$scale?"(controller: 'track')
 		"/services/search/$collection/$action/$query?/$top?/$base?"(controller: 'search')
 		"/"(view:"/index")
