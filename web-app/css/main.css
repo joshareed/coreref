@@ -25,14 +25,51 @@ html {
 	padding-top: 1em;
 	border-bottom: 1px solid #CDCDCD;
 }
+#header img, #footer img {
+	border: none;
+}
 #footer {
 	width: 100%;
 	padding-top: 1em;
 	border-top: 1px solid #CDCDCD;
+	clear: both;
+	height: 1px;
 }
 #content {
 	width: 100%;
-	padding: 15px;
+}
+#leftSidebar {
+	float: left;
+	width: 260px;
+	margin: 5px;
+}
+#leftSidebar ul {
+	margin-left: 15px;
+}
+#leftSidebar li {
+	list-style-type: square;
+	margin-left: 5px;
+	font-size: 120%;
+}
+#rightNote {
+	float: right;
+	width: 260px; 
+	border: 1px solid #CDCDCD;
+	background-color: #EEEEEE;
+	padding: 5px;
+	margin: 10px;
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px;
+}
+#rightNote td {
+	font-size: 90%;
+	padding-left: 5px;
+}
+#main {
+	border-left: 1px solid #CDCDCD;
+	padding-left: 15px;
+	margin: 5px 5px 5px 260px;
+	clear:top;
 }
 h1 {
 	font-size: 28px;
@@ -51,8 +88,6 @@ h3 {
 	font-size: 15px;
 	text-align: left;
 	font-weight: bold;
-	padding: 5px;
-	margin-top: 5px;
 }
 p {
 	color: black;
@@ -67,6 +102,9 @@ a:hover {
 	color: #cc0000;
 	text-decoration: underline;
 }
+li {
+	list-style: none;
+}
 .providedBy {
 	color: gray;
 	float: right;
@@ -79,8 +117,11 @@ a:hover {
 }
 #splash {
 	width: 80%;
-	margin: 0 auto;
+	margin: 1em auto;
 	padding: 2em;
 	font-size: 16pt; color: #666666; line-height: 1.5em;
 	text-align: center;
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px;
+	background-color: #EEEEEE;
 }
