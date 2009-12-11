@@ -5,6 +5,16 @@ import grails.converters.JSON
 class SearchController {
 	def mongoService
 
+	def all = {
+		def collection = mongoService.getCollection(params.collection)
+		if (collection) {
+			def results = collection.find([:], QueryUtils.buildFilter(params)).collect() { SearchUtils.clean(it) }
+			render "${results as JSON}"
+		} else {
+			response.sendError(404, "Invalid collection: '${params.collection}'")
+		}
+	}
+
 	def type = {
 		def collection = mongoService.getCollection(params.collection)
 		if (collection) {
