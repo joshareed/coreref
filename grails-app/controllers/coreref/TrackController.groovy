@@ -99,7 +99,7 @@ class TrackController {
 		collection.find(query).each { doc ->
 			def model
 			switch(doc['class']) {
-				case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc.url]); break
+				case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc['_local'] ?: doc.url]); break
 				case 'Interval':	model = models.build("Interval", [top: doc.top, base: doc.base, lithology: "org.psicat.resources.lithologies:${doc.lithology}"]); break
 			}
 			if (model) { container.add(model) }
@@ -120,8 +120,8 @@ class TrackController {
 			width = (int) scene.contentSize.width
 		}
 
-		RasterGraphics graphics = new RasterGraphics(width, height, true, background)
-		graphics.setLineColor(foreground)
+		RasterGraphics graphics = new RasterGraphics(width, height, true, Color.white)
+		graphics.setLineColor(Color.black)
 		if (horizontal) {
 			AffineTransform tx = AffineTransform.getRotateInstance(-Math.PI / 2)
 			tx.translate(-scene.contentSize.width, 0)
