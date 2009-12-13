@@ -26,7 +26,7 @@ class ProjectController {
 		if (collection) {
 			def project = collection.find(collection: params.collection).find { true }
 			if (project) {
-				return [project: project]
+				return [project: project, depth: params.depth ?: 0]
 			} else {
 				sendError(404, "Invalid collection: '${params.collection}'")
 			}

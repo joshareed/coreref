@@ -1,24 +1,55 @@
 .track {
 	margin: 5px;
-	padding: 3px;
 	border: 3px solid #CC0000;
 	-moz-border-radius: 10px; 
 	-webkit-border-radius: 10px;
-	overflow: hidden;
 	height: 50px;
 }
-
-.track .tiles {
-	position: relative;
+.overlay {
+	background: url('../images/overlay.png') repeat-x top left;
+	z-index: 10;
+}
+table {
+	width: 100%;
+	clear: both;
 }
 
-.track img {
-	position: absolute;
-	overflow: hidden;
+.left {
+	vertical-align: middle;
+	text-align: left;
+	width: 40px;
 }
+
+.center {
+	vertical-align: middle;
+}
+
+.right {
+	vertical-align: middle;
+	text-align: right;
+	width: 40px;
+}
+
+#moveRight, #moveLeft {
+	font-size: 36pt;
+}
+
+#moveRight:hover, #moveLeft:hover {
+	font-size: 48pt;
+	text-decoration: none;
+}
+
+.tools {
+	float: right;
+	margin: 15px;
+	font-size: 120%;
+}
+
 #jumpField {
+	width: 60px;
 	border: 1px solid #CDCDCD;
 }
 #jumpButton {
-	padding: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
