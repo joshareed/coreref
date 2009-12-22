@@ -1,19 +1,31 @@
 <html>
 	<head>
-		<title>${project.name} | CoreRef</title>
+		<title>${project.name} - Overview | CoreRef</title>
 		<meta name="layout" content="main" />
 	</head>
 	<body>
 		<div id="leftSidebar">
 			<h3>Links</h3>
 			<ul>
-				<g:if test="${project?.homepage}">
-					<li><a href="${project?.homepage}">Project Homepage</a></li>
-				</g:if>
+				<li class="active">
+					<g:link controller="project" action="overview" params="[collection: project.collection]">Overview</g:link>
+				</li>
 				<li>
 					<g:link controller="project" action="viewer" params="[collection: project.collection]">Core Viewer</g:link>
 				</li>
-				<li>Downloads</li>
+<!--
+				<li>
+					<g:link controller="project" action="timeline" params="[collection: project.collection]">Timeline</g:link>
+				</li>
+				<li>
+					<g:link controller="project" action="downloads" params="[collection: project.collection]">Downloads</g:link>
+				</li>
+-->
+				<g:if test="${project?.homepage}">
+					<li>
+						<a href="${project?.homepage}">Project Homepage</a>
+					</li>
+				</g:if>
 			</ul>
 		</div>
 		<div id="main">

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>${project.name} | CoreRef</title>
+		<title>${project.name} - Core Viewer | CoreRef</title>
 		<meta name="layout" content="viewer" />
 		<g:javascript library="jquery.min" />
 		<g:javascript library="jquery.event.drag.min" />
@@ -62,8 +62,8 @@
 		<div class="tools">
 			Jump to: <input type="text" id="jumpField"/> <button id="jumpButton">Go</button>
 		</div>
-		<h1>
-			${project.name}
+		<h1 style="margin: 15px">
+			<g:link controller="project" action="overview" params="[collection: project.collection]">${project.name}</g:link>
 		</h1>
 		<table>
 			<tr>

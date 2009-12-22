@@ -125,3 +125,6 @@ li {
 	-webkit-border-radius: 10px;
 	background-color: #EEEEEE;
 }
+.active {
+	font-weight: bold;
+}
