@@ -14,17 +14,17 @@ import org.andrill.coretools.geology.ui.*
 class TrackController {
 	private static final int DEFAULT_SCALE = 2000
 	def mongoService
+	def cacheDir
 
 	def split = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
-		def graphics = renderScene(params, ['class': 'Image', type: 'split'], scene)
-		if (graphics) {
-			response.contentType = 'image/png'
-			graphics.write(response.outputStream, 'png')
-			graphics.dispose()
+		def track = renderScene(params, ['class': 'Image', type: 'split'], scene, Color.black, Color.black)
+		if (track) {
+			addHeaders(response, 'image/png')
+			track.withInputStream { response.outputStream << it }
 		} else {
 			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
@@ -35,11 +35,10 @@ class TrackController {
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
-		def graphics = renderScene(params, ['class': 'Image', type: 'whole'], scene)
-		if (graphics) {
-			response.contentType = 'image/png'
-			graphics.write(response.outputStream, 'png')
-			graphics.dispose()
+		def track = renderScene(params, ['class': 'Image', type: 'whole'], scene, Color.black, Color.black)
+		if (track) {
+			addHeaders(response, 'image/png')
+			track.withInputStream { response.outputStream << it }
 		} else {
 			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
@@ -50,11 +49,10 @@ class TrackController {
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.LithologyTrack), null)
 
-		def graphics = renderScene(params, ['class': 'Interval'], scene)
-		if (graphics) {
-			response.contentType = 'image/png'
-			graphics.write(response.outputStream, 'png')
-			graphics.dispose()
+		def track = renderScene(params, ['class': 'Interval'], scene)
+		if (track) {
+			addHeaders(response, 'image/png')
+			track.withInputStream { response.outputStream << it }
 		} else {
 			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
@@ -65,22 +63,43 @@ class TrackController {
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.RulerTrack), null)
 
-		def graphics = renderScene(params, ['class': 'Interval'], scene, Color.white)
-		if (graphics) {
-			response.contentType = 'image/png'
-			graphics.write(response.outputStream, 'png')
-			graphics.dispose()
+		def track = renderScene(params, ['class': 'Interval'], scene)
+		if (track) {
+			addHeaders(response, 'image/png')
+			track.withInputStream { response.outputStream << it }
 		} else {
 			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
 	}
 
-	private def renderScene(params, query, scene, foreground = Color.black, background = Color.black) {
+	private def addHeaders(response, contentType) {
+		response.contentType = 'image/png'
+		def nowPlusHour = new Date().time + 3600000
+		response.addHeader("Last-Modified", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date()))
+		response.addHeader("Expires", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date(nowPlusHour)))
+		response.addHeader("Cache-Control", "max-age=3600000, must-revalidate")
+	}
+
+	private def renderScene(params, query, scene, foreground = Color.black, background = Color.white) {
 		// get our depth range
 		def top = params.top as double
 		def base = params.base ? params.base as double : top + 1
 		def scale = params.scale ? params.scale as int: DEFAULT_SCALE
 		boolean horizontal = true
+
+		// check the local cache
+		if (!cacheDir) {
+			cacheDir = File.createTempFile("cache", "").parentFile
+		}
+		def cached = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.png")
+		if (cached.exists()) {
+			if (new Date().time - cached.lastModified() > 24*60*60*1000) {
+				// if older than a day, re-generate
+				cached.delete()
+			} else {
+				return cached
+			}
+		}
 
 		// get the container
 		def container = new DefaultContainer()
@@ -120,14 +139,16 @@ class TrackController {
 			width = (int) scene.contentSize.width
 		}
 
-		RasterGraphics graphics = new RasterGraphics(width, height, true, Color.white)
-		graphics.setLineColor(Color.black)
+		RasterGraphics graphics = new RasterGraphics(width, height, true, background)
+		graphics.setLineColor(foreground)
 		if (horizontal) {
 			AffineTransform tx = AffineTransform.getRotateInstance(-Math.PI / 2)
 			tx.translate(-scene.contentSize.width, 0)
 			graphics.pushTransform(tx)
 		}
 		scene.renderContents(graphics, new Rectangle2D.Double(0, top * scale, scene.contentSize.width, (base - top) * scale))
-		return graphics
+		graphics.write(cached)
+		graphics.dispose()
+		return cached
 	}
 }
