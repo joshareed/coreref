@@ -71,7 +71,7 @@ coreref.CoreViewer = function(selector, config) {
 						} else {
 							track.addClass('paused');
 						}
-					}).append('<div class="overlay" style="position: relative; height: ' + height + 'px"></div>');
+					}).append('<div style="position: relative; height: ' + height + 'px; background: url(\'' + config.root + '/services/resources/overlay/' + height + '\') repeat-x top left; z-index: 10"></div>');
 				}
 				$$.update();
 			}).attr('src', url).appendTo($('body')).css({display: 'none'});
