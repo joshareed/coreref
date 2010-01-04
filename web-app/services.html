@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CoreRef Service Descriptions</title><style type="text/css">
+                    body {
+                        font-family: sans-serif;
+                        font-size: 0.85em;
+                        margin: 2em 8em;
+                    }
+                    .methods {
+                        background-color: #eef;
+                        padding: 1em;
+                    }
+                    h1 {
+                        font-size: 2.5em;
+                    }
+                    h2 {
+                        border-bottom: 1px solid black;
+                        margin-top: 1em;
+                        margin-bottom: 0.5em;
+                        font-size: 2em;
+                    }
+                    h3 {
+                        color: orange;
+                        font-size: 1.75em;
+                        margin-top: 1.25em;
+                        margin-bottom: 0em;
+                    }
+                    h4 {
+                        margin: 0em;
+                        padding: 0em;
+                        border-bottom: 2px solid white;
+                    }
+                    h6 {
+                        font-size: 1.1em;
+                        color: #99a;
+                        margin: 0.5em 0em 0.25em 0em;
+                    }
+                    dd {
+                        margin-left: 1em;
+                    }
+                    tt {
+                        font-size: 1.2em;
+                    }
+                    table {
+                        margin-bottom: 0.5em;
+                    }
+                    th {
+                        text-align: left;
+                        font-weight: normal;
+                        color: black;
+                        border-bottom: 1px solid black;
+                        padding: 3px 6px;
+                    }
+                    td {
+                        padding: 3px 6px;
+                        vertical-align: top;
+                        background-color: f6f6ff;
+                        font-size: 0.85em;
+                    }
+                    td p {
+                        margin: 0px;
+                    }
+                    ul {
+                        padding-left: 1.75em;
+                    }
+                    p + ul, p + ol, p + dl {
+                        margin-top: 0em;
+                    }
+                    .optional {
+                        font-weight: normal;
+                        opacity: 0.75;
+                    }</style></head><body><h1>CoreRef Service Descriptions</h1><p>CoreRef Service Descriptions</p><ul><li><a href="#resources">Resources</a><ul><li><a href="#id35805102">http://coreref.org/services/track/{collection}/{type}/{top}/{base}/{scale}</a></li></ul></li><li><a href="#representations">Representations</a><ul><li><a href="#id35805292">image/png<abbr title="{http://wadl.dev.java.net/2009/02} "></abbr></a></li></ul></li></ul><h2 id="resources">Resources</h2><div class="resource"><h3 id="id35805102">/services/track/{collection}/{type}/{top}/{base}/{scale}</h3><p>
+				This service renders tracks of imagery and data as PNG images.
+			</p><h6>resource-wide template parameters</h6><table><tr><th>parameter</th><th>value</th><th>description</th></tr><tr><td><p><strong>collection</strong></p></td><td><p><em><a href="http://www.w3.org/TR/xmlschema-2/#string">string</a></em><small> (required)</small></p><p><em>One of:</em></p><ul><li><tt>and1-1b</tt></li><li><tt>iodp-0807c</tt></li></ul></td><td></td></tr><tr><td><p><strong>type</strong></p></td><td><p><em><a href="http://www.w3.org/TR/xmlschema-2/#string">string</a></em><small> (required)</small></p><p><em>One of:</em></p><ul><li><tt>split</tt></li><li><tt>whole</tt></li><li><tt>lith</tt></li><li><tt>ruler</tt></li></ul></td><td><dl><dt><tt>split</tt></dt><dd><p>Split core image track</p></dd><dt><tt>whole</tt></dt><dd><p>Whole core image track</p></dd><dt><tt>lith</tt></dt><dd><p>Lithology track</p></dd><dt><tt>ruler</tt></dt><dd><p>Ruler track</p></dd></dl></td></tr><tr><td><p><strong>top</strong></p></td><td><p><em><a href="http://www.w3.org/TR/xmlschema-2/#double">double</a></em><small> (required)</small></p></td><td><p>The top depth in collection-specific depth units, usually meters (below sea floor).  Example: 100.25</p></td></tr><tr><td><p><strong>base</strong></p></td><td><p><em><a href="http://www.w3.org/TR/xmlschema-2/#double">double</a></em></p><p>Default: <tt>top + 1.0</tt></p></td><td><p>The base depth in collection-specific depth units, usually meters (below sea floor).  It is assumed that this value will be greater than that for top.  Example: 101.25</p></td></tr><tr><td><p><strong>scale</strong></p></td><td><p><em><a href="http://www.w3.org/TR/xmlschema-2/#int">int</a></em></p><p>Default: <tt>2000</tt></p></td><td><p>The scale in pixels per depth unit to render the track at. Example: 2000</p></td></tr></table><h6>Methods</h6><div class="methods"><div class="method"><h4 id="id35805279">GET</h4><p><em>available response representations:</em></p><ul><li><a href="#id35805292">image/png<abbr title="{http://wadl.dev.java.net/2009/02} "></abbr></a></li></ul></div></div></div><h2 id="representations">Representations</h2><h3 id="id35805292">image/png<abbr title="{http://wadl.dev.java.net/2009/02} "></abbr></h3></body></html>

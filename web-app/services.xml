@@ -1,0 +1,47 @@
+<?xml version="1.0"?> 
+<wadl:application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://wadl.dev.java.net/2009/02 wadl.xsd"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wadl="http://wadl.dev.java.net/2009/02">
+
+    <wadl:doc title="CoreRef Service Descriptions">CoreRef Service Descriptions</wadl:doc>
+
+    <wadl:resources base="http://coreref.org">
+        <wadl:resource path="services/track/{collection}/{type}/{top}/{base}/{scale}">
+			<wadl:doc>
+				This service renders tracks of imagery and data as PNG images.
+			</wadl:doc>
+			<wadl:param name="collection" type="xsd:string" style="template" required="true">
+                <wadl:option value="and1-1b"/>
+				<wadl:option value="iodp-0807c"/>
+            </wadl:param>
+            <wadl:param name="type" type="xsd:string" style="template" required="true">
+                <wadl:option value="split">
+					<wadl:doc>Split core image track</wadl:doc>
+				</wadl:option>
+                <wadl:option value="whole">
+					<wadl:doc>Whole core image track</wadl:doc>
+				</wadl:option>
+                <wadl:option value="lith">
+					<wadl:doc>Lithology track</wadl:doc>
+				</wadl:option>
+                <wadl:option value="ruler">
+					<wadl:doc>Ruler track</wadl:doc>
+				</wadl:option>
+            </wadl:param>
+            <wadl:param name="top" style="template" type="xsd:double" required="true">
+                <wadl:doc>The top depth in collection-specific depth units, usually meters (below sea floor).  Example: 100.25</wadl:doc>
+            </wadl:param>
+			<wadl:param name="base" style="template" type="xsd:double" required="false" default="top + 1.0">
+                <wadl:doc>The base depth in collection-specific depth units, usually meters (below sea floor).  It is assumed that this value will be greater than that for top.  Example: 101.25</wadl:doc>
+            </wadl:param>
+			<wadl:param name="scale" style="template" type="xsd:int" required="false" default="2000">
+				<wadl:doc>The scale in pixels per depth unit to render the track at. Example: 2000</wadl:doc>
+            </wadl:param>
+            <wadl:method name="GET">
+				<wadl:response>
+	                <wadl:representation mediaType="image/png"/>
+	            </wadl:response>
+            </wadl:method>
+        </wadl:resource>
+    </wadl:resources>
+</wadl:application>
