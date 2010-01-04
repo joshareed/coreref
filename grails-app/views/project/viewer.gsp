@@ -24,34 +24,34 @@
 		%>
 			$(function() {
 				var config = {
-					top: ${min}, base: ${max}, scale: 2000, root: '${createLink(controller:"/")}',
+					top: ${min}, base: ${max}, scale: 2000, root: "${createLinkTo(dir:'/')}",
 					tracks: {
 						whole: {
 							path: function(opt) {
-								return "${createLink(controller:'/')}/services/track/${project.collection}/whole/" + opt.top + "/" + opt.base + "/" + opt.scale;
+								return "${createLinkTo(dir:'/')}services/track/${project.collection}/whole/" + opt.top + "/" + opt.base + "/" + opt.scale;
 							}
 						},
 						split: {
 							path: function(opt) {
-								return "${createLink(controller:'/')}/services/track/${project.collection}/split/" + opt.top + "/" + opt.base + "/" + opt.scale;
+								return "${createLinkTo(dir:'/')}services/track/${project.collection}/split/" + opt.top + "/" + opt.base + "/" + opt.scale;
 							}
 						},
 						lith: {
 							path: function(opt) {
-								return "${createLink(controller:'/')}/services/track/${project.collection}/lith/" + opt.top + "/" + opt.base + "/" + opt.scale;
+								return "${createLinkTo(dir:'/')}services/track/${project.collection}/lith/" + opt.top + "/" + opt.base + "/" + opt.scale;
 							}
 						},
 						ruler: {
 							path: function(opt) {
-								return "${createLink(controller:'/')}/services/track/${project.collection}/ruler/" + opt.top + "/" + opt.base + "/" + opt.scale;
+								return "${createLinkTo(dir:'/')}services/track/${project.collection}/ruler/" + opt.top + "/" + opt.base + "/" + opt.scale;
 							}
 						}
 					},
 					path: function(opt) {
-						return "${createLink(controller:'/')}/projects/${project.collection}/viewer/" + opt.top;
+						return "${createLinkTo(dir:'/')}projects/${project.collection}/viewer/" + opt.top;
 					},
 					descriptions: function(opt) {
-						return "${createLink(controller:'/')}/services/search/${project.collection}/type/Description/" + opt.top + "/" + opt.base;
+						return "${createLinkTo(dir:'/')}services/search/${project.collection}/type/Description/" + opt.top + "/" + opt.base;
 					}
 				};
 				new coreref.CoreViewer(".track", config);

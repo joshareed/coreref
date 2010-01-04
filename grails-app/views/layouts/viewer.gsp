@@ -13,7 +13,7 @@
 			</div>
 			<div id="footer">
 				<div class="providedBy">hosting and services provided by <a href="http://andrill.org">ANDRILL</a></div>
-				<a href="${createLink(controller:'/')}">
+				<a href="${createLinkTo(dir:'/')}">
 					<img id="logo" height="25" src="${resource(dir:'images',file:'logo.png')}" alt="CoreRef Logo" />
 				</a>
 			</div>

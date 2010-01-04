@@ -8,7 +8,7 @@
     <body>
 		<div id="container">
 			<div id="header">
-				<a href="${createLink(controller:'/')}">
+				<a href="${createLinkTo(dir:'/')}">
 					<img id="logo" src="${resource(dir:'images',file:'logo.png')}" alt="CoreRef Logo" />
 				</a>
 			</div>
