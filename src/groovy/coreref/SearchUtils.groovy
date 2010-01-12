@@ -5,7 +5,7 @@ class SearchUtils {
 
 	static List tokenize(text, tokens) {
 		text.toLowerCase().replaceAll("\\p{Punct}"," ").replaceAll("\\p{Space}+", " ").split(" ").each { word ->
-			if (word.length() > 2 && !(word in STOP_WORDS)) { tokens << word }
+			if (word.length() > 2 && !(word in STOP_WORDS) && !(word in tokens)) { tokens << word }
 		}
 		return tokens
 	}
