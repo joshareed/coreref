@@ -26,8 +26,8 @@ class SearchController {
 			} else {
 				query['_keywords'] = ['$all': SearchUtils.tokenize(q, [])]
 			}
-			def results = collection.find(query, QueryUtils.buildFilter(params)).collect() { SearchUtils.clean(it) }
-			render "${results as JSON}"
+			def results = collection.find(query, QueryUtils.buildFilter(params)).sort([top: 1]).collect() { SearchUtils.clean(it) }
+			render results as JSON
 		} else {
 			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
@@ -39,8 +39,14 @@ class SearchController {
 			def filter = [top: true, base: true]
 			def query = QueryUtils.withDepths(params, ['class': 'Datum'])
 			(params.query ?: '').split(',').each { query[it] = ['$exists': true]; filter[it] = true }
-			def results = collection.find(query, filter).collect() { SearchUtils.clean(it) }
-			render "${results as JSON}"
+			def results = [:]
+			collection.find(query, filter).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
+				doc.keySet().findAll{ it != 'top' && it != 'base' && it[0] != '_' }.each { k -> 
+					if (!results[k]) results[k] = [label: k[0].toUpperCase() + k[1..-1], data: []]
+					results[k].data << [doc.top, doc[k]]
+				}
+			}
+			render results as JSON
 		} else {
 			response.sendError(404, "Invalid collection: '${params.collection}'")
 		}
