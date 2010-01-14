@@ -30,11 +30,11 @@ table {
 	width: 40px;
 }
 
-#moveRight, #moveLeft {
+#panRight, #panLeft {
 	font-size: 36pt;
 }
 
-#moveRight:hover, #moveLeft:hover {
+#panRight:hover, #panLeft:hover {
 	font-size: 48pt;
 	text-decoration: none;
 }

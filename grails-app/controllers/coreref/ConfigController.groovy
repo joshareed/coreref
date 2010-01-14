@@ -12,22 +12,7 @@ class ConfigController {
 			if (config) {
 				// cleanup config
 				config.keySet().findAll { it.startsWith('_') }.each { config.remove(it) }
-
-				// set parameters
-				config.top = params.top as BigDecimal
-				config.base = params.base ? params.base as BigDecimal : config.top + 1
-				config.scale = 2000
 				config.root = createLinkTo(dir: '/')[0..-2]
-
-				// populate templates
-				if (config?.url) { config.url = functionize(config.url, config) }
-				if (config?.descriptions?.url) { config.descriptions.url = functionize(config.descriptions.url, config) }
-				config?.tracks?.each { k, v ->
-					if (v.url) { v.url = functionize(v.url, config) }
-				}
-
-				// clean up
-				config.remove('out')
 
 				// render it
 				if (params.callback) {
@@ -41,9 +26,5 @@ class ConfigController {
 		} else {
 			sendError(500, "'_configs' collection not defined")
 		}
-	}
-
-	private functionize(path, params) {
-		return new groovy.text.SimpleTemplateEngine().createTemplate(path).make(params).toString()
 	}
 }
