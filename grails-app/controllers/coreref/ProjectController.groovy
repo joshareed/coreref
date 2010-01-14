@@ -3,6 +3,15 @@ package coreref
 class ProjectController {
 	def mongoService
 
+	private firstimg(project) {
+		def collection = mongoService.getCollection(project)
+		if (collection) {
+			return collection.find('class': 'Image').find { true }?.top ?: 0
+		} else {
+			return 0
+		}
+	}
+
 	def index = { redirect(action: overview, params: params) }
 
 	def overview = {
@@ -10,7 +19,7 @@ class ProjectController {
 		if (collection) {
 			def project = collection.find(project: params.collection).find { true }
 			if (project) {
-				return [project: project]
+				return [project: project, depth: params.depth ?: firstimg(params.collection) ]
 			} else {
 				sendError(404, "Invalid project: '${params.collection}'")
 			}
@@ -24,7 +33,7 @@ class ProjectController {
 		if (collection) {
 			def project = collection.find(project: params.collection).find { true }
 			if (project) {
-				return [project: project, depth: params.depth ?: 0]
+				return [project: project, depth: params.depth ?: firstimg(params.collection)]
 			} else {
 				sendError(404, "Invalid project: '${params.collection}'")
 			}
@@ -38,7 +47,7 @@ class ProjectController {
 		if (collection) {
 			def project = collection.find(project: params.collection).find { true }
 			if (project) {
-				return [project: project, depth: params.depth ?: 0]
+				return [project: project, depth: params.depth ?: firstimg(params.collection)]
 			} else {
 				sendError(404, "Invalid project: '${params.collection}'")
 			}
@@ -52,7 +61,7 @@ class ProjectController {
 		if (collection) {
 			def project = collection.find(project: params.collection).find { true }
 			if (project) {
-				return [project: project, depth: params.depth ?: 0]
+				return [project: project, depth: params.depth ?: firstimg(params.collection)]
 			} else {
 				sendError(404, "Invalid project: '${params.collection}'")
 			}
