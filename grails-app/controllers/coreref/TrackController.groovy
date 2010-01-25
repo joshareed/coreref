@@ -22,12 +22,8 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
 		def track = renderScene(params, ['class': 'Image', type: 'split'], scene, Color.black, Color.black)
-		if (track) {
-			addHeaders(response, 'image/png')
-			track.withInputStream { response.outputStream << it }
-		} else {
-			response.sendError(404, "Invalid collection: '${params.collection}'")
-		}
+		addHeaders(response, 'image/png')
+		track.withInputStream { response.outputStream << it }
 	}
 
 	def whole = {
@@ -36,12 +32,8 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 
 		def track = renderScene(params, ['class': 'Image', type: 'whole'], scene, Color.black, Color.black)
-		if (track) {
-			addHeaders(response, 'image/png')
-			track.withInputStream { response.outputStream << it }
-		} else {
-			response.sendError(404, "Invalid collection: '${params.collection}'")
-		}
+		addHeaders(response, 'image/png')
+		track.withInputStream { response.outputStream << it }
 	}
 
 	def lith = {
@@ -50,12 +42,8 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.LithologyTrack), null)
 
 		def track = renderScene(params, ['class': 'Interval'], scene)
-		if (track) {
-			addHeaders(response, 'image/png')
-			track.withInputStream { response.outputStream << it }
-		} else {
-			response.sendError(404, "Invalid collection: '${params.collection}'")
-		}
+		addHeaders(response, 'image/png')
+		track.withInputStream { response.outputStream << it }
 	}
 
 	def ruler = {
@@ -64,12 +52,8 @@ class TrackController {
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.RulerTrack), null)
 
 		def track = renderScene(params, ['class': 'Interval'], scene)
-		if (track) {
-			addHeaders(response, 'image/png')
-			track.withInputStream { response.outputStream << it }
-		} else {
-			response.sendError(404, "Invalid collection: '${params.collection}'")
-		}
+		addHeaders(response, 'image/png')
+		track.withInputStream { response.outputStream << it }
 	}
 
 	private def addHeaders(response, contentType) {
@@ -105,17 +89,14 @@ class TrackController {
 		def container = new DefaultContainer()
 
 		// get the collection to query
-		def collection = mongoService.getCollection(params.collection)
-		if (!collection) {
-			return null
-		}
+		def collection = mongoService[params.project]
 
 		// build the query
 		query.putAll(top: ['$lte': base], base: ['$gte': top])
 
 		// get our results and convert them into models
 		ModelManager models = Platform.getService(ModelManager.class)
-		collection.find(query).each { doc ->
+		collection.findAll(query).each { doc ->
 			def model
 			switch(doc['class']) {
 				case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc['_local'] ?: doc.url]); break
