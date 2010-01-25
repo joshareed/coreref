@@ -6,25 +6,21 @@ class ConfigController {
 	def mongoService
 
 	def viewer = {
-		def collection = mongoService.getCollection('_configs')
-		if (collection) {
-			def config = collection.find(project: params.collection).find { true }
-			if (config) {
-				// cleanup config
-				config.keySet().findAll { it.startsWith('_') }.each { config.remove(it) }
-				config.root = createLinkTo(dir: '/')[0..-2]
+		// get our configuration
+		def config = mongoService['_configs']?.findById(params.project)
+		if (config) {
+			// cleanup config
+			config.keySet().findAll { it.startsWith('_') }.each { config.remove(it) }
+			config.root = createLinkTo(dir: '/')[0..-2]
 
-				// render it
-				if (params.callback) {
-					render(contentType: 'application/json', text: "${params.callback}(${config as JSON})")
-				} else {
-					render(contentType: 'application/json', text: (config as JSON))
-				}
+			// render it
+			if (params.callback) {
+				render(contentType: 'application/json', text: "${params.callback}(${config as JSON})")
 			} else {
-				sendError(404, "Invalid project: '${params.collection}'")
+				render(contentType: 'application/json', text: (config as JSON))
 			}
 		} else {
-			sendError(500, "'_configs' collection not defined")
+			sendError(500, "Invalid configuration: '${params.project}'")
 		}
 	}
 }
