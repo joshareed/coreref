@@ -8,19 +8,11 @@
 			<h3>Links</h3>
 			<ul>
 				<li class="active">
-					<g:link controller="project" action="overview" params="[collection: project.project]">Overview</g:link>
+					<g:link controller="project" action="overview" params="[project: project.id]">Overview</g:link>
 				</li>
 				<li>
-					<g:link controller="project" action="viewer" params="[collection: project.project, depth: 5 * Math.round(depth / 5)]">Core Viewer</g:link>
+					<g:link controller="project" action="viewer" params="[project: project.id, depth: 5 * Math.round(depth / 5)]">Core Viewer</g:link>
 				</li>
-<!--
-				<li>
-					<g:link controller="project" action="timeline" params="[collection: project.project]">Timeline</g:link>
-				</li>
-				<li>
-					<g:link controller="project" action="downloads" params="[collection: project.project]">Downloads</g:link>
-				</li>
--->
 				<g:if test="${project?.homepage}">
 					<li>
 						<a href="${project?.homepage}">Project Homepage</a>

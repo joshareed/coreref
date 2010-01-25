@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<h1 style="margin: 15px">
-			<g:link controller="project" action="overview" params="[collection: project.collection]">${project.name}</g:link>
+			<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>
 		</h1>
 	</body>
 </html>

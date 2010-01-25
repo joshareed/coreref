@@ -21,16 +21,16 @@
 					</li>
 				</g:if>
 				<li>
-					<g:link controller="project" action="overview" params="[collection: project.collection]">Overview</g:link>
+					<g:link controller="project" action="overview" params="[collection: project.id]">Overview</g:link>
 				</li>
 				<li>
-					<g:link controller="project" action="viewer" params="[collection: project.collection]">Core Viewer</g:link>
+					<g:link controller="project" action="viewer" params="[collection: project.id]">Core Viewer</g:link>
 				</li>
 				<li>
-					<g:link controller="project" action="timeline" params="[collection: project.collection]">Timeline</g:link>
+					<g:link controller="project" action="timeline" params="[collection: project.id]">Timeline</g:link>
 				</li>
 				<li class="active">
-					<g:link controller="project" action="downloads" params="[collection: project.collection]">Downloads</g:link>
+					<g:link controller="project" action="downloads" params="[collection: project.id]">Downloads</g:link>
 				</li>
 			</ul>
 		</div>
@@ -48,7 +48,7 @@
 				<li><input type="checkbox"> Whole Round</li>
 			</ul>
 			</div>
-			
+
 			<div class="left">
 			<h3>Data</h3>
 			<ul class="downloads">
@@ -67,7 +67,7 @@
 				<li><input type="checkbox"> Summary Logs</li>
 			</ul>
 			</div>
-			
+
 			<div style="clear: both">
 			<button style="padding-left: 5px; padding-right: 5px;">Download</button>
 			</div>

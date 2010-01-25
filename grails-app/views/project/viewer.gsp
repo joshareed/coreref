@@ -29,14 +29,14 @@
 				});
 			});
 		</script>
-		<script type="text/javascript" src="${createLinkTo(dir:'services')}/${project.project}/config/viewer?callback=viewer.configure"></script>
+		<script type="text/javascript" src="${createLinkTo(dir:'services')}/${project.id}/config/viewer?callback=viewer.configure"></script>
 	</head>
 	<body>
 		<div class="tools">
 			Jump to: <input type="text" id="jumpField"/> <button id="jumpButton">Go</button>
 		</div>
 		<h1 style="margin: 15px">
-			<g:link controller="project" action="overview" params="[collection: project.project]">${project.name}</g:link>
+			<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>
 		</h1>
 		<table>
 			<tr>
