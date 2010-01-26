@@ -143,7 +143,7 @@ coreref.CoreViewer = function(selector) {
 			if (window.location.hash != null && window.location.hash != '') {
 				var val = -scale(parseFloat(window.location.hash.substring(1)));
 				if (val != NaN) {
-					offset = val;
+					offset = Math.min(val, max);
 					$$.redraw();
 				}
 			}
