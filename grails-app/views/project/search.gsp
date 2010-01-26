@@ -57,7 +57,7 @@
 			<form action="search" method="get">
 				<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search">
 			</form>
-			<g:if test="${results}">
+			<g:if test="${results != null}">
 				<div id="results">
 					<div id="total">
 						<strong>${results.size()}</strong> result${results.size() != 1 ? 's' : ''} for <strong>${q}</strong>
