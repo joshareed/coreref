@@ -43,7 +43,6 @@ coreref.CoreViewer = function(selector) {
 			if (config.base == null) { config.base = config.top + 5; }
 
 			$('.track').each(function(i) {
-				console.log(this);
 				var track = $(this);
 				var tc = config.tracks[this.id];
 				if (tc != null) {
@@ -104,12 +103,12 @@ coreref.CoreViewer = function(selector) {
 				style: 'light',
 				api: {
 					onPositionUpdate: function() {
-						var depth = round(top() - phys(offset) + phys(this.getPosition().left - this.elements.target.position().left));
+						var depth = round(top() - phys(offset) + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
 						this.updateContent(depth + 'm', false);
 						if (tooltips != null) {
 							for (var i in tooltips) {
 								var t = tooltips[i];
-								if (t.top <= depth && t.base >= depth) {
+								if (t.top <= depth && t.base > depth) {
 									this.updateContent("<b>" + t.top + " - " + t.base + "m</b><br/>" + t.text, false);
 								}
 							}
