@@ -25,7 +25,7 @@ class SearchController {
 		def query = ['class': 'Datum']
 		(params.query ?: '').split(',').each { query[it] = ['$exists': true]; filter[it] = true }
 		def results = [:]
-		mongoService[params.project].find(query, filter).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
+		mongoService[params.project].findAll(query, filter).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
 			doc.keySet().findAll{ it != 'top' && it != 'base' && it[0] != '_' }.each { k ->
 				if (!results[k]) results[k] = [label: k[0].toUpperCase() + k[1..-1], data: []]
 				results[k].data << [doc.top, doc[k]]
