@@ -141,9 +141,9 @@ coreref.CoreViewer = function(selector) {
 
 			// handle hash on load
 			if (window.location.hash != null && window.location.hash != '') {
-				var val = -scale(parseFloat(window.location.hash.substring(1)));
+				var val = parseFloat(window.location.hash.substring(1));
 				if (val != NaN) {
-					offset = Math.min(val, max);
+					offset = -scale(Math.min(val, -phys(max)));
 					$$.redraw();
 				}
 			}
