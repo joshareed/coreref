@@ -20,24 +20,33 @@ class ProjectController {
 
 	def search = {
 		def project = getProject(params.project)
+		def results
 
-		def query = [:]
-		def q = params.q.replaceAll(' or ', '|').replaceAll(' and ', ' ') ?: ''
-		if (q.contains('|')) {
-			query['_keywords'] = ['$in': SearchUtils.tokenize(q, [])]
-		} else {
-			query['_keywords'] = ['$all': SearchUtils.tokenize(q, [])]
-		}
+		if (params.q) {
+			// clean up the user's query
+			def q = params.q ?: ''
+			q.replaceAll(' or ', '|').replaceAll(' and ', ' ')
 
-		def results = mongoService[params.project].findAll(query).sort(top: 1).collect { doc ->
-			def r = [:]
-			r.top = doc.top as BigDecimal
-			if (doc.top != doc.base) r.base = doc.base as BigDecimal
-			r.title = doc.type ?: doc['class']
-			r.text = doc.text ?: doc?.code?.replaceAll(',', ' ')
-			def depth = 5 * Math.floor(r.top / 5) as BigDecimal
-			r.link = createLink(controller:'project', action: 'viewer', params: [depth: depth, project: project.id]) + "#${(r.top - depth)}"
-			r
+			// build a query map for mongo
+			def tokens = SearchUtils.tokenize(q, [])
+			def query = [:]
+			if (q.contains('|')) {
+				query['_keywords'] = ['$in': tokens]
+			} else {
+				query['_keywords'] = ['$all': tokens]
+			}
+
+			// convert the results into documents for display
+			results = mongoService[params.project].findAll(query).sort(top: 1).collect { doc ->
+				def r = [:]
+				r.top = doc.top as BigDecimal
+				if (doc.top != doc.base) r.base = doc.base as BigDecimal
+				r.title = doc.type ?: doc['class']
+				def depth = 5 * Math.floor(r.top / 5) as BigDecimal
+				r.link = createLink(controller:'project', action: 'viewer', params: [depth: depth, project: project.id]) + "#${(r.top - depth)}"
+				r.text = doc.text ?: doc?.code?.replaceAll(',', ' ')
+				r
+			}
 		}
 
 		return [ project: project, q: params.q , results: results]

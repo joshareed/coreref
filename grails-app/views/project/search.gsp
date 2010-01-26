@@ -14,6 +14,7 @@
 				border-top: 1px solid #9A9A9A;
 			}
 			#total {
+				font-size: 120%;
 				color: #CC0000;
 				background-color: #EFEFEF;
 				padding: 0.25em;
@@ -69,11 +70,11 @@
 						<div class="text">${it.text}</div>
 					</div>
 					</g:each>
+					<g:if test="${results.size() == 0}">
+						No results found for <strong>${q}</strong>
+					</g:if>
 				</div>
 			</g:if>
-			<g:else>
-				No results found for <strong>${q}</strong>
-			</g:else>
 		</div>
 	</body>
 </html>
