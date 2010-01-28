@@ -1,5 +1,5 @@
 // setup the coreref namespace
-if (coreref == null || typeOf(coreref) != 'object') { var coreref = new Object(); }
+if (coreref === null || typeOf(coreref) != 'object') { coreref = {}; }
 
 // create our CoreViewer object
 coreref.CoreViewer = function(selector) {
@@ -14,16 +14,20 @@ coreref.CoreViewer = function(selector) {
 	var rotation = 0;
 	var maxOffset;
 	var width;
-	var heights = new Object();
+	var heights = {};
 
 	// internal convenience methods
-	function round(val) { return Math.round(100 * val) / 100 }
-	function hash()		{ return round(phys(-offset)) }
-	function scale(val) { return $$.config.scale * val }
-	function phys(val)	{ return val / $$.config.scale }
+	function round(val) { return Math.round(100 * val) / 100; }
+	function hash()		{ return round(phys(-offset)); }
+	function scale(val) { return $$.config.scale * val; }
+	function phys(val)	{ return val / $$.config.scale; }
 	function bind(template, data) {
 		var bound = template;
-		for (p in data) { bound = bound.replace(new RegExp('{' + p + '}', 'g'), data[p]) }
+		for (var p in data) {
+			if (data.hasOwnProperty(p)) {
+				bound = bound.replace(new RegExp('{' + p + '}', 'g'), data[p]); 
+			}
+		}
 		return bound;
 	}
 
@@ -36,7 +40,7 @@ coreref.CoreViewer = function(selector) {
 				base: $$.config.top + phys(-offset) + phys(width)
 			}
 		};
-	}
+	};
 
 	// public methods
 	$$.configure = function(config) {
@@ -45,16 +49,16 @@ coreref.CoreViewer = function(selector) {
 			$$.config = config;
 
 			// set reasonable defaults
-			if (config.scale == null) { config.scale = 2000; }
-			if (config.top == null) {
+			if (config.scale === null) { config.scale = 2000; }
+			if (config.top === null) {
 				config.top = parseFloat(location.href.substring(location.href.lastIndexOf('/') + 1).replace(location.hash, ''));
 			}
-			if (config.base == null) { config.base = config.top + 5; }
+			if (config.base === null) { config.base = config.top + 5; }
 
 			$('.track').each(function(i) {
 				var track = $(this);
 				var tc = config.tracks[this.id];
-				if (tc != null) {
+				if (tc !== null) {
 					// save our width and max offset
 					width = track.width();
 					maxOffset = scale(config.top - config.base) + track.width();
@@ -106,8 +110,30 @@ coreref.CoreViewer = function(selector) {
 							}
 							$$.redraw();
 						}).attr('src', url).appendTo($('body')).css({display: 'none'});
+
+						// add our tooltips
+						track.qtip({
+							position: { target: 'mouse' },
+							style: 'light',
+							api: {
+								onPositionUpdate: function() {
+									var depth = round($$.bounds().visible.top + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
+									this.updateContent(depth + 'm', false);
+									if (tooltips !== null) {
+										for (var i in tooltips) {
+											if (tooltips.hasOwnProperty(i)) {	
+												var t = tooltips[i];
+												if (t.top <= depth && t.base > depth) {
+													this.updateContent("<b>" + t.top + " - " + t.base + "m</b><br/>" + t.text, false);
+												}
+											}
+										}
+									}
+								}
+							}
+						});
 					} else if (tc.type == 'plot') { // build a plot track
-						if (tc.url != null) {
+						if (tc.url !== null) {
 							$.ajax({
 								dataType: 'json',
 								url: bind(tc.url, config),
@@ -120,15 +146,21 @@ coreref.CoreViewer = function(selector) {
 									for (var s in data) {
 										if (series.length < 2) {
 											series.push(data[s]);
-											data[s]['yaxis'] = series.length;
+											data[s].yaxis = series.length;
 										}
 									}
 
 									// build the plot
 									var plot = $.plot(track, series, {
+										series: {
+											lines: { show: true},
+											points: { show: true }
+										},
 										yaxis: { labelWidth: 30 },
 										y2axis: { labelWidth: 30 },
 										grid: {
+											hoverable: true,
+											clickable: true,
 											borderWidth: 3,
 											borderColor: '#CC0000'
 										}
@@ -146,7 +178,9 @@ coreref.CoreViewer = function(selector) {
 						}
 					}
 				}
-			}).qtip({
+			});
+			/*
+			.qtip({
 				position: { target: 'mouse' },
 				style: 'light',
 				api: {
@@ -164,9 +198,10 @@ coreref.CoreViewer = function(selector) {
 					}
 				}
 			});
+			*/
 
 			// load our tooltips
-			if (config.descriptions != null && config.descriptions.url != null) {
+			if (config.descriptions !== null && config.descriptions.url !== null) {
 				$.ajax({
 					dataType: 'json',
 					url: bind(config.descriptions.url, config),
@@ -187,19 +222,19 @@ coreref.CoreViewer = function(selector) {
 			}, 50);
 
 			// handle hash on load
-			if (window.location.hash != null && window.location.hash != '') {
+			if (window.location.hash !== null && window.location.hash != '') {
 				var val = parseFloat(window.location.hash.substring(1));
-				if (val != NaN) {
+				if (!isNaN(val)) {
 					offset = -scale(Math.min(val, -phys(maxOffset)));
 					$$.redraw();
 				}
 			}
 		});
-	}
+	};
 
 	$$.pan = function(value) {
 		var bounds = $$.bounds();
-		if (offset == 0 && bounds.top > 0 && value < 0) {
+		if (offset === 0 && bounds.top > 0 && value < 0) {
 			window.location = bind($$.config.url, {
 				top: Math.max(0, bounds.top - (bounds.base - bounds.top)),
 				base: bounds.top,
@@ -219,17 +254,17 @@ coreref.CoreViewer = function(selector) {
 			offset = Math.max(maxOffset, Math.min(0, offset - scale(value)));
 			$$.redraw();
 		}
-	}
+	};
 
 	$$.lookAt = function(value) {
 
-	}
+	};
 
 	$$.redraw = function() {
 		// update our track offsets
 		$(selector).each(function(j) {
 			var tc = $$.config.tracks[this.id];
-			if (tc != null) {
+			if (tc !== null) {
 				if (tc.type == 'image') {
 					if ($(this).hasClass('animated')) {
 						$(this).css({ backgroundPosition: offset + 'px ' + Math.round(heights[this.id] * rotation * Math.PI) + 'px' });
@@ -239,7 +274,7 @@ coreref.CoreViewer = function(selector) {
 				} else if (tc.type == 'plot') {
 					var bounds = $$.bounds();
 					var plot = tc.plot;
-					if (plot != null) {
+					if (plot !== null) {
 						plot.getAxes().xaxis.datamin = bounds.visible.top;
 						plot.getAxes().xaxis.datamax = bounds.visible.base;
 						plot.setupGrid();
@@ -248,5 +283,5 @@ coreref.CoreViewer = function(selector) {
 				}
 			}
 		});
-	}
-}
+	};
+};
