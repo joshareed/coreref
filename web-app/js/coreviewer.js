@@ -8,11 +8,12 @@ coreref.CoreViewer = function(selector) {
 	var config;
 	var tooltips;
 
-	// state
+	// state variables
 	var drag = 0;
 	var offset = 0;
 	var rotation = 0;
-	var max;
+	var maxOffset;
+	var width;
 	var heights = new Object();
 
 	// internal convenience methods
@@ -20,13 +21,21 @@ coreref.CoreViewer = function(selector) {
 	function hash()		{ return round(phys(-offset)) }
 	function scale(val) { return $$.config.scale * val }
 	function phys(val)	{ return val / $$.config.scale }
-	function top()		{ return $$.config.top }
-	function base()		{ return $$.config.base }
-	function width()	{ return $$.config.base - $$.config.top }
 	function bind(template, data) {
 		var bound = template;
 		for (p in data) { bound = bound.replace(new RegExp('{' + p + '}', 'g'), data[p]) }
 		return bound;
+	}
+
+	$$.bounds = function() {
+		return {
+			top: $$.config.top,
+			base: $$.config.base,
+			visible: {
+				top: $$.config.top + phys(-offset),
+				base: $$.config.top + phys(-offset) + phys(width)
+			}
+		};
 	}
 
 	// public methods
@@ -46,8 +55,9 @@ coreref.CoreViewer = function(selector) {
 				var track = $(this);
 				var tc = config.tracks[this.id];
 				if (tc != null) {
-					// save our max offset
-					max = -scale(width()) + track.width();
+					// save our width and max offset
+					width = track.width();
+					maxOffset = scale(config.top - config.base) + track.width();
 					if (tc.type == 'image') { // build an image track
 						// add our spinner
 						var spinner = $(bind('<img src="{root}/images/spinner.gif"></img>', { root: config.root })).css({
@@ -75,12 +85,11 @@ coreref.CoreViewer = function(selector) {
 							}).bind('dragstart', function(event) {
 								drag = event;
 							}).bind('drag', function(event) {
-								offset = Math.min(0, Math.max(max, offset + (event.offsetX - drag.offsetX)));
 								if (track.hasClass('animated') && track.hasClass('paused')) {
 									rotation = (rotation + ((event.offsetY - drag.offsetY) / 100)) % 1;
 								}
+								$$.pan(phys(drag.offsetX - event.offsetX));
 								drag = event;
-								$$.redraw();
 							}).addClass('ready');
 
 							if (track.hasClass('animated')) {
@@ -124,6 +133,14 @@ coreref.CoreViewer = function(selector) {
 											borderColor: '#CC0000'
 										}
 									});
+									tc.plot = plot;
+
+									// set up our visible bounds
+									var bounds = $$.bounds();
+									plot.getAxes().xaxis.datamin = bounds.visible.top;
+									plot.getAxes().xaxis.datamax = bounds.visible.base;
+									plot.setupGrid();
+									plot.draw();
 								}
 							});
 						}
@@ -134,7 +151,7 @@ coreref.CoreViewer = function(selector) {
 				style: 'light',
 				api: {
 					onPositionUpdate: function() {
-						var depth = round(top() - phys(offset) + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
+						var depth = round($$.bounds().visible.top + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
 						this.updateContent(depth + 'm', false);
 						if (tooltips != null) {
 							for (var i in tooltips) {
@@ -173,7 +190,7 @@ coreref.CoreViewer = function(selector) {
 			if (window.location.hash != null && window.location.hash != '') {
 				var val = parseFloat(window.location.hash.substring(1));
 				if (val != NaN) {
-					offset = -scale(Math.min(val, -phys(max)));
+					offset = -scale(Math.min(val, -phys(maxOffset)));
 					$$.redraw();
 				}
 			}
@@ -181,39 +198,55 @@ coreref.CoreViewer = function(selector) {
 	}
 
 	$$.pan = function(value) {
-		if (offset == 0 && top() > 0 && value < 0) {
+		var bounds = $$.bounds();
+		if (offset == 0 && bounds.top > 0 && value < 0) {
 			window.location = bind($$.config.url, {
-				top: Math.max(0, top() - width()), base: top(), scale: scale(1), root: $$.config.root, project: $$.config.project
-			}) + '#' + (-phys(max));
-		} else if (offset == max && value > 0) {
+				top: Math.max(0, bounds.top - (bounds.base - bounds.top)),
+				base: bounds.top,
+				scale: scale(1),
+				root: $$.config.root,
+				project: $$.config.project
+			}) + '#' + (-phys(maxOffset));
+		} else if (offset == maxOffset && value > 0) {
 			window.location = bind($$.config.url, {
-				top: base(), base: base() + width(), scale: scale(1), root: $$.config.root, project: $$.config.project
+				top: bounds.base,
+				base: bounds.base + (bounds.base - bounds.top),
+				scale: scale(1),
+				root: $$.config.root,
+				project: $$.config.project
 			});
 		} else {
-			offset = Math.max(max, Math.min(0, offset - scale(value)));
+			offset = Math.max(maxOffset, Math.min(0, offset - scale(value)));
 			$$.redraw();
 		}
 	}
 
 	$$.lookAt = function(value) {
-		/*
-		window.location = config.path({
-			top: depth, base: depth + (width()), scale: config.scale
-		});
-		*/
+
 	}
 
 	$$.redraw = function() {
 		// update our track offsets
 		$(selector).each(function(j) {
-			if ($(this).hasClass('animated')) {
-				$(this).css({ backgroundPosition: offset + 'px ' + Math.round(heights[this.id] * rotation * Math.PI) + 'px' });
-			} else {
-				$(this).css({ backgroundPosition: offset + 'px 0px' });
+			var tc = $$.config.tracks[this.id];
+			if (tc != null) {
+				if (tc.type == 'image') {
+					if ($(this).hasClass('animated')) {
+						$(this).css({ backgroundPosition: offset + 'px ' + Math.round(heights[this.id] * rotation * Math.PI) + 'px' });
+					} else {
+						$(this).css({ backgroundPosition: offset + 'px 0px' });
+					}
+				} else if (tc.type == 'plot') {
+					var bounds = $$.bounds();
+					var plot = tc.plot;
+					if (plot != null) {
+						plot.getAxes().xaxis.datamin = bounds.visible.top;
+						plot.getAxes().xaxis.datamax = bounds.visible.base;
+						plot.setupGrid();
+						plot.draw();
+					}
+				}
 			}
 		});
-
-		// update the location hash to add the offset
-		window.location.hash = hash();
 	}
 }
