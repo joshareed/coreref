@@ -5,6 +5,8 @@
 		<g:javascript library="jquery.min" />
 		<g:javascript library="jquery.event.drag.min" />
 		<g:javascript library="jquery.qtip-1.0.0-rc3.min" />
+		<g:javascript library="jquery.flot.min" />
+		<!--[if IE]><g:javascript library="excanvas.min" /><![endif]-->
 		<g:javascript library="coreviewer" />
 		<script type="text/javascript">
 			var viewer = new coreref.CoreViewer('.track');
@@ -38,7 +40,7 @@
 		<h1 style="margin: 15px">
 			<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>
 		</h1>
-		<table>
+		<table id="viewer">
 			<tr>
 				<td class="left">
 					<a id="panLeft" href="#">&laquo;</a>
@@ -48,6 +50,7 @@
 					<div class="track" id="split"></div>
 					<div class="track" id="ruler"></div>
 					<div class="track" id="lith"></div>
+					<div class="track" id="data"></div>
 				</td>
 				<td class="right">
 					<a id="panRight" href="#">&raquo;</a>

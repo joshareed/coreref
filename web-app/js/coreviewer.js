@@ -48,55 +48,86 @@ coreref.CoreViewer = function(selector) {
 				if (tc != null) {
 					// save our max offset
 					max = -scale(width()) + track.width();
+					if (tc.type == 'image') { // build an image track
+						// add our spinner
+						var spinner = $(bind('<img src="{root}/images/spinner.gif"></img>', { root: config.root })).css({
+							position: 'absolute'
+						}).appendTo(track);
 
-					// add our spinner
-					var spinner = $(bind('<img src="{root}/images/spinner.gif"></img>', { root: config.root })).css({
-						position: 'absolute'
-					}).appendTo(track);
+						// figure out our url
+						var url = bind(tc.url, config);
+						var img = new Image();
+						$(img).load(function() {
+							// hide our spinner
+							spinner.hide();
 
-					// figure out our url
-					var url = bind(tc.url, config);
-					var img = new Image();
-					$(img).load(function() {
-						// hide our spinner
-						spinner.hide();
-
-						// calculate our heights
-						var height = $(img).height();
-						if (track.hasClass('animated')) {
-							height = height / Math.PI;
-						}
-						heights[track.attr('id')] = height;
-
-						// setup our track
-						track.css({
-							height: height + "px",
-							background: "url('" + url + "') no-repeat top left"
-						}).bind('dragstart', function(event) {
-							drag = event;
-						}).bind('drag', function(event) {
-							offset = Math.min(0, Math.max(max, offset + (event.offsetX - drag.offsetX)));
-							if (track.hasClass('animated') && track.hasClass('paused')) {
-								rotation = (rotation + ((event.offsetY - drag.offsetY) / 100)) % 1;
+							// calculate our heights
+							var height = $(img).height();
+							if (track.hasClass('animated')) {
+								height = height / Math.PI;
 							}
-							drag = event;
-							$$.redraw();
-						}).addClass('ready');
+							heights[track.attr('id')] = height;
 
-						if (track.hasClass('animated')) {
+							// setup our track
 							track.css({
-								backgroundRepeat: "repeat-y"
-							}).dblclick(function() {
-								if (track.hasClass('paused')) {
-									track.removeClass('paused');
-								} else {
-									track.addClass('paused');
+								height: height + "px",
+								background: "url('" + url + "') no-repeat top left"
+							}).bind('dragstart', function(event) {
+								drag = event;
+							}).bind('drag', function(event) {
+								offset = Math.min(0, Math.max(max, offset + (event.offsetX - drag.offsetX)));
+								if (track.hasClass('animated') && track.hasClass('paused')) {
+									rotation = (rotation + ((event.offsetY - drag.offsetY) / 100)) % 1;
 								}
-							}).append(bind('<div style="position: relative; height: {height}px; background: url(\'{root}/services/resources/overlay/{height}\') repeat-x top left; z-index: 10"></div>',
-								{ root: config.root, height: Math.round(height) }));
+								drag = event;
+								$$.redraw();
+							}).addClass('ready');
+
+							if (track.hasClass('animated')) {
+								track.css({
+									backgroundRepeat: "repeat-y"
+								}).dblclick(function() {
+									if (track.hasClass('paused')) {
+										track.removeClass('paused');
+									} else {
+										track.addClass('paused');
+									}
+								}).append(bind('<div style="position: relative; height: {height}px; background: url(\'{root}/services/resources/overlay/{height}\') repeat-x top left; z-index: 10"></div>',
+									{ root: config.root, height: Math.round(height) }));
+							}
+							$$.redraw();
+						}).attr('src', url).appendTo($('body')).css({display: 'none'});
+					} else if (tc.type == 'plot') { // build a plot track
+						if (tc.url != null) {
+							$.ajax({
+								dataType: 'json',
+								url: bind(tc.url, config),
+								success: function(data, status) {
+									// setup our track
+									track.css({ height: "200px", border: "none", marginLeft: "-35px", marginRight: "-35px" });
+
+									// build our data series
+									var series = [];
+									for (var s in data) {
+										if (series.length < 2) {
+											series.push(data[s]);
+											data[s]['yaxis'] = series.length;
+										}
+									}
+
+									// build the plot
+									var plot = $.plot(track, series, {
+										yaxis: { labelWidth: 30 },
+										y2axis: { labelWidth: 30 },
+										grid: {
+											borderWidth: 3,
+											borderColor: '#CC0000'
+										}
+									});
+								}
+							});
 						}
-						$$.redraw();
-					}).attr('src', url).appendTo($('body')).css({display: 'none'});
+					}
 				}
 			}).qtip({
 				position: { target: 'mouse' },

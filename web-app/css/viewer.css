@@ -1,15 +1,13 @@
 .track {
 	margin-top: 5px;
 	border: 3px solid #CC0000;
-	-moz-border-radius: 10px; 
-	-webkit-border-radius: 10px;
 	height: 50px;
 }
 .overlay {
 	background: url('../images/overlay.png') repeat-x top left;
 	z-index: 10;
 }
-table {
+#viewer {
 	width: 100%;
 	clear: both;
 }
