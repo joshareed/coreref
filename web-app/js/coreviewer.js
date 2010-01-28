@@ -205,7 +205,7 @@ coreref.CoreViewer = function(selector) {
 				base: bounds.top,
 				scale: scale(1),
 				root: $$.config.root,
-				project: $$.config.project
+				id: $$.config.id
 			}) + '#' + (-phys(maxOffset));
 		} else if (offset == maxOffset && value > 0) {
 			window.location = bind($$.config.url, {
@@ -213,7 +213,7 @@ coreref.CoreViewer = function(selector) {
 				base: bounds.base + (bounds.base - bounds.top),
 				scale: scale(1),
 				root: $$.config.root,
-				project: $$.config.project
+				id: $$.config.id
 			});
 		} else {
 			offset = Math.max(maxOffset, Math.min(0, offset - scale(value)));
