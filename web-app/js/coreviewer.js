@@ -1,5 +1,5 @@
 // setup the coreref namespace
-if (coreref === null || typeOf(coreref) != 'object') { coreref = {}; }
+if (coreref == null || typeOf(coreref) != 'object') { var coreref = {}; }
 
 // create our CoreViewer object
 coreref.CoreViewer = function(selector) {
@@ -49,16 +49,16 @@ coreref.CoreViewer = function(selector) {
 			$$.config = config;
 
 			// set reasonable defaults
-			if (config.scale === null) { config.scale = 2000; }
-			if (config.top === null) {
+			if (config.scale == null) { config.scale = 2000; }
+			if (config.top == null) {
 				config.top = parseFloat(location.href.substring(location.href.lastIndexOf('/') + 1).replace(location.hash, ''));
 			}
-			if (config.base === null) { config.base = config.top + 5; }
+			if (config.base == null) { config.base = config.top + 5; }
 
 			$('.track').each(function(i) {
 				var track = $(this);
 				var tc = config.tracks[this.id];
-				if (tc !== null) {
+				if (tc != null) {
 					// save our width and max offset
 					width = track.width();
 					maxOffset = scale(config.top - config.base) + track.width();
@@ -119,7 +119,7 @@ coreref.CoreViewer = function(selector) {
 								onPositionUpdate: function() {
 									var depth = round($$.bounds().visible.top + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
 									this.updateContent(depth + 'm', false);
-									if (tooltips !== null) {
+									if (tooltips != null) {
 										for (var i in tooltips) {
 											if (tooltips.hasOwnProperty(i)) {	
 												var t = tooltips[i];
@@ -133,7 +133,7 @@ coreref.CoreViewer = function(selector) {
 							}
 						});
 					} else if (tc.type == 'plot') { // build a plot track
-						if (tc.url !== null) {
+						if (tc.url != null) {
 							$.ajax({
 								dataType: 'json',
 								url: bind(tc.url, config),
@@ -201,7 +201,7 @@ coreref.CoreViewer = function(selector) {
 			*/
 
 			// load our tooltips
-			if (config.descriptions !== null && config.descriptions.url !== null) {
+			if (config.descriptions != null && config.descriptions.url != null) {
 				$.ajax({
 					dataType: 'json',
 					url: bind(config.descriptions.url, config),
@@ -222,7 +222,7 @@ coreref.CoreViewer = function(selector) {
 			}, 50);
 
 			// handle hash on load
-			if (window.location.hash !== null && window.location.hash != '') {
+			if (window.location.hash != null && window.location.hash != '') {
 				var val = parseFloat(window.location.hash.substring(1));
 				if (!isNaN(val)) {
 					offset = -scale(Math.min(val, -phys(maxOffset)));
@@ -234,7 +234,7 @@ coreref.CoreViewer = function(selector) {
 
 	$$.pan = function(value) {
 		var bounds = $$.bounds();
-		if (offset === 0 && bounds.top > 0 && value < 0) {
+		if (offset == 0 && bounds.top > 0 && value < 0) {
 			window.location = bind($$.config.url, {
 				top: Math.max(0, bounds.top - (bounds.base - bounds.top)),
 				base: bounds.top,
@@ -264,7 +264,7 @@ coreref.CoreViewer = function(selector) {
 		// update our track offsets
 		$(selector).each(function(j) {
 			var tc = $$.config.tracks[this.id];
-			if (tc !== null) {
+			if (tc != null) {
 				if (tc.type == 'image') {
 					if ($(this).hasClass('animated')) {
 						$(this).css({ backgroundPosition: offset + 'px ' + Math.round(heights[this.id] * rotation * Math.PI) + 'px' });
@@ -274,7 +274,7 @@ coreref.CoreViewer = function(selector) {
 				} else if (tc.type == 'plot') {
 					var bounds = $$.bounds();
 					var plot = tc.plot;
-					if (plot !== null) {
+					if (plot != null) {
 						plot.getAxes().xaxis.datamin = bounds.visible.top;
 						plot.getAxes().xaxis.datamax = bounds.visible.base;
 						plot.setupGrid();
