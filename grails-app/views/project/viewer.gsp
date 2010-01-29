@@ -35,7 +35,9 @@
 	</head>
 	<body>
 		<div class="tools">
-			Jump to: <input type="text" id="jumpField"/> <button id="jumpButton">Go</button>
+			<form action="${createLink(controller:'project', action:'search', params: [project: project.id])}" method="get" target="_blank">
+				<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search">
+			</form>
 		</div>
 		<h1 style="margin: 15px">
 			<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>
