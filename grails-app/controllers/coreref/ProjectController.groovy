@@ -3,7 +3,7 @@ package coreref
 class ProjectController {
 	def mongoService
 
-	private getMin(id) { return mongoService[id]?.findByClass('Image')?.top ?: 0 }
+	private getMin(id) { return 5 * Math.round((mongoService[id]?.findByClass('Image')?.top ?: 0) / 5) }
 	private getProject(id) { mongoService['_projects'].findById(id) }
 
 	def index = { redirect(action: overview, params: params) }
@@ -15,7 +15,7 @@ class ProjectController {
 
 	def viewer = {
 		def project = getProject(params.project)
-		return [ project: project ]
+		return [ project: project, depth: params.depth ?: getMin(params.project) ]
 	}
 
 	def search = {

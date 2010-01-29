@@ -11,7 +11,7 @@
 					<g:link controller="project" action="overview" params="[project: project.id]">Overview</g:link>
 				</li>
 				<li>
-					<g:link controller="project" action="viewer" params="[project: project.id, depth: 5 * Math.round(depth / 5)]">Core Viewer</g:link>
+					<g:link controller="project" action="viewer" params="[project: project.id, depth: depth]">Core Viewer</g:link>
 				</li>
 				<g:if test="${project?.homepage}">
 					<li>
