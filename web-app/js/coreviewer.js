@@ -25,7 +25,7 @@ coreref.CoreViewer = function(selector) {
 		var bound = template;
 		for (var p in data) {
 			if (data.hasOwnProperty(p)) {
-				bound = bound.replace(new RegExp('{' + p + '}', 'g'), data[p]); 
+				bound = bound.replace(new RegExp('{' + p + '}', 'g'), data[p]);
 			}
 		}
 		return bound;
@@ -121,7 +121,7 @@ coreref.CoreViewer = function(selector) {
 									this.updateContent(depth + 'm', false);
 									if (tooltips != null) {
 										for (var i in tooltips) {
-											if (tooltips.hasOwnProperty(i)) {	
+											if (tooltips.hasOwnProperty(i)) {
 												var t = tooltips[i];
 												if (t.top <= depth && t.base > depth) {
 													this.updateContent("<b>" + t.top + " - " + t.base + "m</b><br/>" + t.text, false);
@@ -179,26 +179,6 @@ coreref.CoreViewer = function(selector) {
 					}
 				}
 			});
-			/*
-			.qtip({
-				position: { target: 'mouse' },
-				style: 'light',
-				api: {
-					onPositionUpdate: function() {
-						var depth = round($$.bounds().visible.top + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
-						this.updateContent(depth + 'm', false);
-						if (tooltips != null) {
-							for (var i in tooltips) {
-								var t = tooltips[i];
-								if (t.top <= depth && t.base > depth) {
-									this.updateContent("<b>" + t.top + " - " + t.base + "m</b><br/>" + t.text, false);
-								}
-							}
-						}
-					}
-				}
-			});
-			*/
 
 			// load our tooltips
 			if (config.descriptions != null && config.descriptions.url != null) {
@@ -261,6 +241,9 @@ coreref.CoreViewer = function(selector) {
 	};
 
 	$$.redraw = function() {
+		// update our link tool
+		$('#linkTool a').attr('href', bind($$.config.url, $$.config) + '#' + round(phys(-offset)));
+
 		// update our track offsets
 		$(selector).each(function(j) {
 			var tc = $$.config.tracks[this.id];

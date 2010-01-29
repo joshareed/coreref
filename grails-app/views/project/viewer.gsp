@@ -34,10 +34,15 @@
 		<script type="text/javascript" src="${createLinkTo(dir:'services')}/${project.id}/config/viewer?callback=viewer.configure"></script>
 	</head>
 	<body>
-		<div class="tools">
+		<div id="tools">
 			<form action="${createLink(controller:'project', action:'search', params: [project: project.id])}" method="get" target="_blank">
 				<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search">
 			</form>
+			<span id="linkTool" class="tool">
+				<a href="${createLink(controller:'project', action:'viewer', params: [project: project.id, depth: depth])}">
+					<img id="logo" src="${resource(dir:'images',file:'link.png')}" alt="Link to this page" /> Link
+				</a>
+			</span>
 		</div>
 		<h1 style="margin: 15px">
 			<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>

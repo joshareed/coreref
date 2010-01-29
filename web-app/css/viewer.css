@@ -7,10 +7,6 @@
 	background: url('../images/overlay.png') repeat-x top left;
 	z-index: 10;
 }
-#viewer {
-	width: 100%;
-	clear: both;
-}
 .left {
 	vertical-align: middle;
 	text-align: left;
@@ -24,6 +20,10 @@
 	text-align: right;
 	width: 40px;
 }
+#viewer {
+	width: 100%;
+	clear: both;
+}
 #panRight, #panLeft {
 	font-size: 36pt;
 }
@@ -31,10 +31,24 @@
 	font-size: 48pt;
 	text-decoration: none;
 }
-.tools {
+#tools {
 	float: right;
 	margin: 15px;
 	font-size: 120%;
+}
+#tools form {
+	display: inline;
+	margin-right: 5px;
+}
+#tools img {
+	border: none;
+}
+.tool {
+	border-left: 1px solid #CC0000;
+	padding-left: 8px;
+	margin-right: 5px;
+	color: #CC0000;
+	text-decoration: underline;
 }
 #jumpField {
 	width: 60px;
