@@ -14,8 +14,13 @@ class ProjectController {
 	}
 
 	def viewer = {
-		def project = getProject(params.project)
-		return [ project: project, depth: params.depth ?: getMin(params.project) ]
+		if (params.depth == null) {
+			redirect(action: viewer, params: [ project: params.project, depth: getMin(params.project) ])
+			return
+		} else {
+			def project = getProject(params.project)
+			return [ project: project, depth: params.depth ?: getMin(params.project) ]
+		}
 	}
 
 	def search = {
