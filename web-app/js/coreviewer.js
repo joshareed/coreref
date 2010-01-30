@@ -62,6 +62,8 @@ coreref.CoreViewer = function(selector) {
 					// save our width and max offset
 					width = track.width();
 					maxOffset = scale(config.top - config.base) + track.width();
+
+					// build an image track
 					if (tc.type == 'image') { // build an image track
 						// add our spinner
 						var spinner = $(bind('<img src="{root}/images/spinner.gif"></img>', { root: config.root })).css({
@@ -237,7 +239,18 @@ coreref.CoreViewer = function(selector) {
 	};
 
 	$$.lookAt = function(value) {
-
+		var bounds = $$.bounds();
+		if (value >= bounds.visible.top && value <= bounds.visible.base) {	// in view
+			$$.pan(value - bounds.visible.top);
+		} else {
+			window.location = bind($$.config.url, {
+				top: value,
+				base: value + 3,
+				scale: scale(1),
+				root: $$.config.root,
+				id: $$.config.id
+			});
+		}
 	};
 
 	$$.redraw = function() {
