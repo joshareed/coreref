@@ -3,24 +3,35 @@ package coreref
 class ProjectController {
 	def mongoService
 
-	private getMin(id) { return 5 * Math.round((mongoService[id]?.findByClass('Image')?.top ?: 0) / 5) }
+	private getMin(id) { return 3 * Math.round((mongoService[id]?.findByClass('Image')?.top ?: 0) / 3) }
 	private getProject(id) { mongoService['_projects'].findById(id) }
 
 	def index = { redirect(action: overview, params: params) }
 
 	def overview = {
 		def project = getProject(params.project)
-		return [ project: project, depth: params.depth ?: getMin(params.project) ]
+		return [ project: project ]
 	}
 
 	def viewer = {
+		// handle no depth
 		if (params.depth == null) {
 			redirect(action: viewer, params: [ project: params.project, depth: getMin(params.project) ])
 			return
-		} else {
-			def project = getProject(params.project)
-			return [ project: project, depth: params.depth ?: getMin(params.project) ]
 		}
+
+		// check to see if depth is multiple of 3
+		def depth = params.depth as double
+		if (depth % 3 > 0) {
+			def base = 3 * Math.floor(depth / 3)
+			def offset = depth % 3
+			redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: base]) + "#${offset}")
+			return
+		}
+
+		// if we made it here, the depth is a multiple of 3 so just pass through
+		def project = getProject(params.project)
+		return [ project: project, depth: params.depth ]
 	}
 
 	def search = {
@@ -47,7 +58,7 @@ class ProjectController {
 				r.top = doc.top as BigDecimal
 				if (doc.top != doc.base) r.base = doc.base as BigDecimal
 				r.title = doc.type ?: doc['class']
-				def depth = 5 * Math.floor(r.top / 5) as BigDecimal
+				def depth = 3 * Math.floor(r.top / 3) as BigDecimal
 				r.link = createLink(controller:'project', action: 'viewer', params: [depth: depth, project: project.id]) + "#${(r.top - depth)}"
 				r.text = doc.text ?: doc?.code?.replaceAll(',', ' ')
 				r
