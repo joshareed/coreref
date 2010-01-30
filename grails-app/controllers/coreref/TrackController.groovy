@@ -77,8 +77,8 @@ class TrackController {
 		}
 		def cached = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.png")
 		if (cached.exists()) {
-			if (new Date().time - cached.lastModified() > 24*60*60*1000) {
-				// if older than a day, re-generate
+			if (new Date().time - cached.lastModified() > 7*24*60*60*1000) {
+				// if older than a week, re-generate
 				cached.delete()
 			} else {
 				return cached
