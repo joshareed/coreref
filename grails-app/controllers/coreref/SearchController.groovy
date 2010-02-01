@@ -23,8 +23,11 @@ class SearchController {
 	def data = {
 		def filter = QueryUtils.buildFilter(params, [top: true, base: true])
 		def query = QueryUtils.withDepths(params, ['class': 'Datum'])
-		(params.query ?: '').split(',').each { filter[it] = true }
 		def results = [:]
+		(params.query ?: '').split(',').each { series ->
+			filter[series] = true
+			results[series] = [label: series[0].toUpperCase() + series[1..-1], data: []]
+		}
 		mongoService[params.project].findAll(query, filter).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
 			doc.keySet().findAll{ it != 'top' && it != 'base' && it[0] != '_' }.each { k ->
 				if (!results[k]) results[k] = [label: k[0].toUpperCase() + k[1..-1], data: []]
