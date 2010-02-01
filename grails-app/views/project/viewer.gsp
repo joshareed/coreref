@@ -22,13 +22,6 @@
 					viewer.pan(-0.25);
 					return false;
 				});
-
-				$('#jumpButton').click(function() {
-					var depth = parseFloat($('#jumpField').val());
-					if (depth != NaN && depth != null) {
-						viewer.lookAt(depth);
-					}
-				});
 			});
 		</script>
 		<script type="text/javascript" src="${createLinkTo(dir:'services')}/${project.id}/config/viewer?callback=viewer.configure"></script>
