@@ -60,7 +60,7 @@ coreref.CoreViewer = function(selector) {
 			if (settings.size() > 0) {
 				$.each(config.tracks, function(key, val) {
 					// build the settings DOM
-					$('<div></div>').attr({ id: key + 'Settings', class: 'trackSettings'}).append(
+					$('<div></div>').attr({ id: key + 'Settings', 'class': 'trackSettings'}).append(
 						$('<input type="checkbox"></input>').attr({ id: 'id' + key, name: key }).click(changeTrackVisibility)
 					).append(
 						$('<label>' + key.charAt(0).toUpperCase() + key.substring(1) + '</label>').attr('for', 'id' + key)
@@ -70,18 +70,6 @@ coreref.CoreViewer = function(selector) {
 					var visible = $.cookie(key + '.visibility');
 					if (visible == null || visible == 'true' || visible == true) {
 						$('#id' + key).attr('checked', 'checked');
-					}
-				});
-			}
-			function changeTrackVisibility() {
-				$('.trackSettings input').each(function (i) {
-					var track = $(this).attr('name');
-					if ($(this).attr('checked') == true) {
-						$('#' + track).show();
-						$.cookie(track + '.visibility', true, { expires: 30 });
-					} else {
-						$('#' + track).hide();
-						$.cookie(track + '.visibility', false, { expires: 30 });
 					}
 				});
 			}
@@ -169,47 +157,31 @@ coreref.CoreViewer = function(selector) {
 						});
 					} else if (tc.type == 'plot') { // build a plot track
 						if (tc.url != null) {
-							$.ajax({
-								dataType: 'json',
-								url: bind(tc.url, config),
-								success: function(data, status) {
-									// setup our track
-									track.css({ height: "200px", border: "none", marginLeft: "-35px", marginRight: "-35px" });
+							// add our series controls
+							var trackSettings = $('#' + track.attr('id') + 'Settings');
+							if (trackSettings.size() > 0) {
+								$.each(tc.series, function(i, key) {
+									$('<div></div>').attr({ id: track.attr('id') + '_' + key, 'class': 'seriesSettings'}).append(
+										$('<input type="radio"></input>').attr({ id: key + '_' + track.attr('id') + '_y1', name: track.attr('id') + '_y1' }).click(function() { changeSeries(track.attr('id')); })
+									).append(
+										$('<input type="radio"></input>').attr({ id: key + '_' + track.attr('id') + '_y2', name: track.attr('id') + '_y2' }).click(function() { changeSeries(track.attr('id')); })
+									).append(
+										$('<label>' + key.charAt(0).toUpperCase() + key.substring(1) + '</label>')
+									).appendTo(trackSettings);
+								});
 
-									// build our data series
-									var series = [];
-									for (var s in data) {
-										if (series.length < 2) {
-											series.push(data[s]);
-											data[s].yaxis = series.length;
-										}
-									}
-
-									// build the plot
-									var plot = $.plot(track, series, {
-										series: {
-											lines: { show: true},
-											points: { show: true }
-										},
-										yaxis: { labelWidth: 30 },
-										y2axis: { labelWidth: 30 },
-										grid: {
-											hoverable: true,
-											clickable: true,
-											borderWidth: 3,
-											borderColor: '#CC0000'
-										}
-									});
-									tc.plot = plot;
-
-									// set up our visible bounds
-									var bounds = $$.bounds();
-									plot.getAxes().xaxis.datamin = bounds.visible.top;
-									plot.getAxes().xaxis.datamax = bounds.visible.base;
-									plot.setupGrid();
-									plot.draw();
+								// check some of them
+								var selected = $.cookie(track.attr('id') + '.series');
+								if (selected == null || selected == "") {
+									if (foo.length > 0) { $('#' + foo[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
+									if (foo.length > 1) { $('#' + foo[1] + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
+								} else {
+									var split = selected.split(',');
+									if (split.length > 0) { $('#' + split[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
+									if (split.length > 1) { $('#' + split[1] + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
 								}
-							});
+							}
+							changeSeries(track.attr('id'));
 						}
 					}
 				}
@@ -220,6 +192,83 @@ coreref.CoreViewer = function(selector) {
 					track.hide();
 				}
 			});
+
+			function changeTrackVisibility() {
+				$('.trackSettings input').each(function (i) {
+					var track = $(this).attr('name');
+					if ($(this).attr('checked') == true) {
+						$('#' + track).show();
+						$.cookie(track + '.visibility', true, { expires: 30 });
+					} else {
+						$('#' + track).hide();
+						$.cookie(track + '.visibility', false, { expires: 30 });
+					}
+				});
+			}
+
+			function changeSeries(track) {
+				var selected = [];
+				$('#' + track + 'Settings .seriesSettings input').each(function(i){
+					if ($(this).attr('checked')) {
+						var id = $(this).attr('id');
+						selected.push(id.substring(0, id.indexOf('_')));
+					}
+				});
+
+				// save the series
+				$.cookie(track + ".series", selected.join(','), { expires: 30 });
+
+				// load the data
+				var bounds = $$.bounds();
+				var tc = config.tracks[track];
+				$.ajax({
+					dataType: 'json',
+					url: bind(tc.url, {
+						top: bounds.top,
+						base: bounds.base,
+						series: selected.join(','),
+						root: config.root,
+						id: config.id
+					}),
+					success: function(data, status) {
+						// setup our track
+						$('#' + track).css({ height: "200px", border: "none", marginLeft: "-35px", marginRight: "-35px" });
+
+						// build our data series
+						var series = [];
+						for (var s in data) {
+							if (series.length < 2) {
+								series.push(data[s]);
+								data[s].yaxis = series.length;
+							}
+						}
+
+						// build the plot
+						var plot = $.plot($('#' + track), series, {
+							series: {
+								lines: { show: true},
+								points: { show: true }
+							},
+							yaxis: { labelWidth: 30 },
+							y2axis: { labelWidth: 30 },
+							grid: {
+								hoverable: true,
+								clickable: true,
+								borderWidth: 3,
+								borderColor: '#CC0000'
+							}
+						});
+						tc.plot = plot;
+
+						// set up our visible bounds
+						var bounds = $$.bounds();
+						plot.getAxes().xaxis.datamin = bounds.visible.top;
+						plot.getAxes().xaxis.datamax = bounds.visible.base;
+						plot.setupGrid();
+						plot.draw();
+					}
+				});
+			}
 
 			// load our tooltips
 			if (config.descriptions != null && config.descriptions.url != null) {

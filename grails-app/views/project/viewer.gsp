@@ -23,6 +23,26 @@
 					viewer.pan(-0.25);
 					return false;
 				});
+
+				$('#settingsTool').click(function(e) {
+					// position the settings panel
+					var p = $('#settingsTool').position();
+					var w = $('#settingsTool').width();
+					var settings = $('#coreviewerSettings');
+					settings.css({
+						top: p.top + 30,
+						left: p.left + w - settings.width()
+					});
+
+					// hide/show the panel
+					if (settings.is(':visible')) {
+						settings.hide();
+					} else {
+						settings.show();
+					}
+
+					return false;
+				});
 			});
 		</script>
 		<script type="text/javascript" src="${createLinkTo(dir:'services')}/${project.id}/config/viewer?callback=viewer.configure"></script>
@@ -36,6 +56,9 @@
 				<a href="${createLink(controller:'project', action:'viewer', params: [project: project.id, depth: depth])}">
 					<img id="logo" src="${resource(dir:'images',file:'link.png')}" alt="Link to this page" /> Link
 				</a>
+			</span>
+			<span id="settingsTool" class="tool">
+				<a href="#">Settings</a>
 			</span>
 		</div>
 		<h1 style="margin: 15px">

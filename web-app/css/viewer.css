@@ -56,9 +56,27 @@
 	margin-right: 1em;
 	padding: 0.25em;
 }
+#coreviewerSettings {
+	width: 200px;
+	border: 3px solid #CC0000;
+	padding: 0.5em;
+	position: absolute;
+	background: white;
+	opacity: 100%;
+	z-index: 100;
+	display: none;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
 .trackSettings {
 	margin: 0.25em;
 }
 .trackSettings label {
+	margin-left: 0.5em;
+}
+.seriesSettings {
+	margin-left: 1em;
+}
+.seriesSettings input, .seriesSettings label {
 	margin-left: 0.5em;
 }
