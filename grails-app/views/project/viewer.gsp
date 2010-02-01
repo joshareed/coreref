@@ -3,6 +3,7 @@
 		<title>${project.name} - Core Viewer | CoreRef</title>
 		<meta name="layout" content="viewer" />
 		<g:javascript library="jquery.min" />
+		<g:javascript library="jquery.cookie.min" />
 		<g:javascript library="jquery.event.drag.min" />
 		<g:javascript library="jquery.qtip-1.0.0-rc3.min" />
 		<g:javascript library="jquery.flot.min" />
@@ -57,5 +58,8 @@
 				</td>
 			</tr>
 		</table>
+		<div id="coreviewerSettings">
+			<p>Turn tracks on and off using the controls below:</p>
+		</div>
 	</body>
 </html>

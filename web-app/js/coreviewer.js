@@ -55,6 +55,38 @@ coreref.CoreViewer = function(selector) {
 			}
 			if (config.base == null) { config.base = config.top + 3; }
 
+			// build our settings DOM
+			var settings = $('#coreviewerSettings');
+			if (settings.size() > 0) {
+				$.each(config.tracks, function(key, val) {
+					// build the settings DOM
+					$('<div></div>').attr({ id: key + 'Settings', class: 'trackSettings'}).append(
+						$('<input type="checkbox"></input>').attr({ id: 'id' + key, name: key }).click(changeTrackVisibility)
+					).append(
+						$('<label>' + key.charAt(0).toUpperCase() + key.substring(1) + '</label>').attr('for', 'id' + key)
+					).appendTo(settings);
+
+					// set the checkbox
+					var visible = $.cookie(key + '.visibility');
+					if (visible == null || visible == 'true' || visible == true) {
+						$('#id' + key).attr('checked', 'checked');
+					}
+				});
+			}
+			function changeTrackVisibility() {
+				$('.trackSettings input').each(function (i) {
+					var track = $(this).attr('name');
+					if ($(this).attr('checked') == true) {
+						$('#' + track).show();
+						$.cookie(track + '.visibility', true, { expires: 30 });
+					} else {
+						$('#' + track).hide();
+						$.cookie(track + '.visibility', false, { expires: 30 });
+					}
+				});
+			}
+
+			// build the tracks
 			$('.track').each(function(i) {
 				var track = $(this);
 				var tc = config.tracks[this.id];
@@ -108,7 +140,8 @@ coreref.CoreViewer = function(selector) {
 										track.addClass('paused');
 									}
 								}).append(bind('<div style="position: relative; height: {height}px; background: url(\'{root}/services/resources/overlay/{height}\') repeat-x top left; z-index: 10"></div>',
-									{ root: config.root, height: Math.round(height) }));
+									{ root: config.root, height: Math.round(height) })
+								);
 							}
 							$$.redraw();
 						}).attr('src', url).appendTo($('body')).css({display: 'none'});
@@ -179,6 +212,12 @@ coreref.CoreViewer = function(selector) {
 							});
 						}
 					}
+				}
+
+				// set visibility
+				var visible = $.cookie(this.id + '.visibility');
+				if (visible != null && (visible == 'false' || visible == false)) {
+					track.hide();
 				}
 			});
 

@@ -50,17 +50,15 @@
 	color: #CC0000;
 	text-decoration: underline;
 }
-#jumpField {
-	width: 60px;
-	border: 1px solid #CDCDCD;
-}
-#jumpButton {
-	padding-left: 5px;
-	padding-right: 5px;
-}
 #q {
 	border: 1px solid #9A9A9A;
 	width: 250px;
 	margin-right: 1em;
 	padding: 0.25em;
+}
+.trackSettings {
+	margin: 0.25em;
+}
+.trackSettings label {
+	margin-left: 0.5em;
 }
