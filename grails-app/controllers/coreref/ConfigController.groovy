@@ -11,7 +11,7 @@ class ConfigController {
 		if (config) {
 			// cleanup config
 			config.keySet().findAll { it.startsWith('_') }.each { config.remove(it) }
-			config.root = createLinkTo(dir: '/')[0..-2]
+			config.root = createLinkTo(dir: '/')
 
 			// render it
 			if (params.callback) {
