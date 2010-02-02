@@ -33,23 +33,20 @@
 		<div id="leftSidebar">
 			<h3>Links</h3>
 			<ul>
-				<g:if test="${project?.homepage}">
-					<li>
-						<a href="${project?.homepage}">Project Homepage</a>
-					</li>
-				</g:if>
 				<li>
 					<g:link controller="project" action="overview" params="[project: project.id]">Overview</g:link>
 				</li>
 				<li>
 					<g:link controller="project" action="viewer" params="[project: project.id]">Core Viewer</g:link>
 				</li>
-				<li>
-					<g:link controller="project" action="timeline" params="[project: project.id]">Timeline</g:link>
+				<li class="active">
+					<g:link controller="project" action="search" params="[project: project.id]">Search</g:link>
 				</li>
-				<li>
-					<g:link controller="project" action="downloads" params="[project: project.id]">Downloads</g:link>
-				</li>
+				<g:if test="${project?.homepage}">
+					<li>
+						<a href="${project?.homepage}">Project Homepage</a>
+					</li>
+				</g:if>
 			</ul>
 		</div>
 		<div id="main">
