@@ -5,7 +5,7 @@ class ProjectFilters {
 		// check that the project is defined in the '_projects' collection
 		projectCheck(controller:'*', action:'*') {
 			before = {
-				if (params.controller == 'resources') return true
+				if (params.controller in ['resources', 'recent']) return true
 
 				// check for a '_projects' collection
 				def projects = mongoService['_projects']

@@ -6,6 +6,7 @@ class UrlMappings {
 		"/services/$project/search/$action/$query?/$top?/$base?"(controller: 'search')
 		"/services/$project/config/$action"(controller: 'config')
 		"/services/resources/$action/$opt?"(controller: 'resources')
+		"/services/recent/$action/$project?"(controller: 'recent')
 		"/"(view:"/index")
 		"500"(view:'/error')
 	}
