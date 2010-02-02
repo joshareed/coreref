@@ -28,6 +28,13 @@ html {
 #header img, #footer img {
 	border: none;
 }
+#tagline {
+	float: right;
+	font-style: italic;
+	font-size: 16pt;
+	color: #666666;
+	line-height: 1.5em;
+}
 #footer {
 	width: 100%;
 	padding-top: 1em;
@@ -53,12 +60,12 @@ html {
 }
 #rightNote {
 	float: right;
-	width: 260px; 
+	width: 260px;
 	border: 1px solid #CDCDCD;
 	background-color: #EEEEEE;
 	padding: 5px;
 	margin: 10px;
-	-moz-border-radius: 10px; 
+	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 }
 #rightNote td {
@@ -115,16 +122,36 @@ li {
 	font-weight: bold;
 	color: #cc0000;
 }
+#featured {
+	margin: 1em auto;
+	border: none;
+}
 #splash {
 	width: 80%;
 	margin: 1em auto;
 	padding: 2em;
-	font-size: 16pt; color: #666666; line-height: 1.5em;
+	font-size: 16pt;
+	color: #666666;
+	line-height: 1.5em;
 	text-align: center;
-	-moz-border-radius: 10px; 
+	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	background-color: #EEEEEE;
 }
+#q {
+	border: 1px solid #9A9A9A;
+	width: 250px;
+	margin-right: 1em;
+	padding: 0.25em;
+}
 .active {
 	font-weight: bold;
+}
+#recent {
+	margin-left: 15px;
+}
+#recent li {
+	list-style-type: square;
+	margin-left: 5px;
+	font-size: 120%;
 }
