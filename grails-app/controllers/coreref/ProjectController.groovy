@@ -44,9 +44,19 @@ class ProjectController {
 		def results
 
 		if (params.q) {
+			// insert into the '_searches' collection
+			mongoService['_searches'].insert([project: params.project, query: params.q])
+
 			// clean up the user's query
-			def q = params.q ?: ''
-			q.replaceAll(' or ', '|').replaceAll(' and ', ' ')
+			def q = (params.q ?: '').replaceAll(' or ', '|').replaceAll(' and ', ' ')
+
+			// if it is a number, redirect to that depth
+			if (q.isNumber()) {
+				def depth = q as double
+				def (base, offset) = getParts(depth)
+				redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
+				return
+			}
 
 			// build a query map for mongo
 			def tokens = SearchUtils.tokenize(q, [])
