@@ -173,8 +173,8 @@ coreref.CoreViewer = function(selector) {
 								// check some of them
 								var selected = $.cookie(track.attr('id') + '.series');
 								if (selected == null || selected == "") {
-									if (foo.length > 0) { $('#' + foo[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
-									if (foo.length > 1) { $('#' + foo[1] + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
+									if (tc.series.length > 0) { $('#' + tc.series[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
+									if (tc.series.length > 1) { $('#' + tc.series[1] + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
 								} else {
 									var split = selected.split(',');
 									if (split.length > 0) { $('#' + split[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
