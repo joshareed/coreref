@@ -2,6 +2,22 @@
 	<head>
 		<title>${project.name} - Overview | CoreRef</title>
 		<meta name="layout" content="main" />
+		<g:javascript library="jquery.min" />
+		<script type="text/javascript">
+		$.ajax({
+			dataType: 'json',
+			url: '${createLink(controller:"recent", action:"searches", params: [project: project.id])}',
+			success: function(data, status) {
+				$.each(data, function(i, val) {
+					if (i < 10) {
+						$('<li class="recentSearch"></li>').append(
+							$('<a></a>').attr('href', 'search?q=' + val.query).text("'" + val.query + "'")
+						).appendTo($('#recent'));
+					}
+				});
+			}
+		});
+		</script>
 	</head>
 	<body>
 		<div id="leftSidebar">
@@ -12,6 +28,9 @@
 				</li>
 				<li>
 					<g:link controller="project" action="viewer" params="[project: project.id]">Core Viewer</g:link>
+				</li>
+				<li>
+					<g:link controller="project" action="search" params="[project: project.id]">Search</g:link>
 				</li>
 				<g:if test="${project?.homepage}">
 					<li>
@@ -76,6 +95,16 @@
 			<g:if test="${project?.description}">
 				<p>${project?.description}</p>
 			</g:if>
+			<div style="margin: 2em">
+				<form action="${createLink(controller:'project', action:'search', params: [project: project.id])}" method="get" target="_blank">
+					<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search"> or
+					<span style="font-size: 125%">
+						<g:link controller="project" action="viewer" params="[project: project.id, depth: Math.random() * project.base]">Surprise Me</g:link>
+					</span>
+				</form>
+				<h3 style="margin-top: 1em">Recent Searches</h3>
+				<ul id="recent"></ul>
+			</div>
 		</div>
 	</body>
 </html>
