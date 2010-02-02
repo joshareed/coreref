@@ -12,6 +12,9 @@ class ConfigController {
 			// cleanup config
 			config.keySet().findAll { it.startsWith('_') }.each { config.remove(it) }
 			config.root = createLinkTo(dir: '/')
+			if (config.root.endsWith('/')) {
+				config.root = config.root.substring(0, config.root.length() - 1)
+			}
 
 			// render it
 			if (params.callback) {
