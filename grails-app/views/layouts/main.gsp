@@ -16,6 +16,7 @@
 	        	<g:layoutBody />			
 			</div>
 			<div id="footer">
+				<a href="mailto:info@coreref.org">Contact Us</a>
 				<div class="providedBy">hosting and services provided by <a href="http://andrill.org">ANDRILL</a></div>
 			</div>
 		</div>
