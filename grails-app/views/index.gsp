@@ -9,11 +9,9 @@
 			url: '${createLink(controller:"recent", action:"searches")}',
 			success: function(data, status) {
 				$.each(data, function(i, val) {
-					if (i < 10) {
-						$('<li class="recentSearch"></li>').append(
-							$('<a></a>').attr('href', 'projects/' + val.project + '/search?q=' + val.query).text("'" + val.query + "' in " + val.project)
-						).appendTo($('#recent'));
-					}
+					$('<li class="recentSearch"></li>').append(
+						$('<a></a>').attr('href', 'projects/' + val.project + '/search?q=' + val.query).text("'" + val.query + "' in " + val.project)
+					).appendTo($('#recent'));
 				});
 			}
 		});
