@@ -66,7 +66,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td><strong>Depth</strong></td>
+						<td><strong>Total Depth</strong></td>
 						<td>
 							<g:if test="${project.base}">
 								${project.base} m
