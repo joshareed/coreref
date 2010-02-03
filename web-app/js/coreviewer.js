@@ -137,7 +137,10 @@ coreref.CoreViewer = function(selector) {
 						// add our tooltips
 						track.qtip({
 							position: { target: 'mouse' },
-							style: 'light',
+							style: {
+								name: 'light',
+								width: 400
+							},
 							api: {
 								onPositionUpdate: function() {
 									var depth = round($$.bounds().visible.top + phys(this.getPosition().left - this.elements.target.position().left + 2) - 0.01);
