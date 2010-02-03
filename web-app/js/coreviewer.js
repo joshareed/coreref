@@ -53,7 +53,7 @@ coreref.CoreViewer = function(selector) {
 			if (config.top == null) {
 				config.top = parseFloat(location.href.substring(location.href.lastIndexOf('/') + 1).replace(location.hash, ''));
 			}
-			if (config.base == null) { config.base = config.top + 3; }
+			if (config.base == null) { config.base = config.top + 5; }
 
 			// build our settings DOM
 			var settings = $('#coreviewerSettings');

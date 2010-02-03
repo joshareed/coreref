@@ -8,7 +8,7 @@ class ProjectController {
 	private static final DecimalFormat DEC = new DecimalFormat('0.##')
 
 	private getMin(id) { mongoService[id]?.findByClass('Image')?.top ?: 0 }
-	private getParts(depth) { [ 3 * Math.floor(depth / 3), ((depth as double) % 3) as BigDecimal] }
+	private getParts(depth) { [ 5 * Math.floor(depth / 5), ((depth as double) % 5) as BigDecimal] }
 	private getProject(id) { mongoService['_projects'].findById(id) }
 
 	def index = { redirect(action: overview, params: params) }
@@ -26,15 +26,15 @@ class ProjectController {
 			return
 		}
 
-		// check to see if depth is multiple of 3
+		// check to see if depth is multiple of 5
 		def depth = params.depth as double
-		if (depth % 3 > 0) {
+		if (depth % 5 > 0) {
 			def (base, offset) = getParts(depth)
 			redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
 			return
 		}
 
-		// if we made it here, the depth is a multiple of 3 so just pass through
+		// if we made it here, the depth is a multiple of 5 so just pass through
 		def project = getProject(params.project)
 		return [ project: project, depth: params.depth ]
 	}
