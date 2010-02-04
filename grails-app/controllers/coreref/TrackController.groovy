@@ -10,82 +10,63 @@ import org.andrill.coretools.model.ModelManager
 import org.andrill.coretools.model.DefaultContainer
 import org.andrill.coretools.scene.DefaultScene
 import org.andrill.coretools.geology.ui.*
+import org.andrill.util.image.ImageMagick
 
 class TrackController {
 	private static final int DEFAULT_SCALE = 2000
+	private static boolean USE_IMAGE_MAGICK = true
 	def mongoService
-	def cacheDir
+	static def cacheDir
 
 	def split = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
-
-		def track = renderScene(params, ['class': 'Image', type: 'split'], scene, Color.black, Color.black)
-		addHeaders(response, 'image/png')
-		track.withInputStream { response.outputStream << it }
+		renderScene(scene, ['class': 'Image', type: 'split'], true, Color.black, Color.black)
 	}
 
 	def whole = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
-
-		def track = renderScene(params, ['class': 'Image', type: 'whole'], scene, Color.black, Color.black)
-		addHeaders(response, 'image/png')
-		track.withInputStream { response.outputStream << it }
+		renderScene(scene, ['class': 'Image', type: 'whole'], true, Color.black, Color.black)
 	}
 
 	def lith = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.LithologyTrack), null)
-
-		def track = renderScene(params, ['class': 'Interval'], scene)
-		addHeaders(response, 'image/png')
-		track.withInputStream { response.outputStream << it }
+		renderScene(scene, ['class': 'Interval'], false, Color.black, Color.white)
 	}
 
 	def ruler = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
 		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.RulerTrack), null)
-
-		def track = renderScene(params, ['class': 'Interval'], scene)
-		addHeaders(response, 'image/png')
-		track.withInputStream { response.outputStream << it }
+		renderScene(scene, ['class': 'Interval'], false, Color.black, Color.white)
 	}
 
-	private def addHeaders(response, contentType) {
-		response.contentType = 'image/png'
-		def nowPlusHour = new Date().time + 3600000
-		response.addHeader("Last-Modified", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date()))
-		response.addHeader("Expires", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date(nowPlusHour)))
-		response.addHeader("Cache-Control", "max-age=3600000, must-revalidate")
-	}
-
-	private def renderScene(params, query, scene, foreground = Color.black, background = Color.white) {
+	def renderScene = { scene, query, usejpeg, foreground, background ->
 		// get our depth range
 		def top = params.top as double
 		def base = params.base ? params.base as double : top + 1
 		def scale = params.scale ? params.scale as int: DEFAULT_SCALE
 		boolean horizontal = true
 
-		// check the local cache
-		if (!cacheDir) {
-			cacheDir = File.createTempFile("cache", "").parentFile
-		}
-		def cached = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.png")
-		if (cached.exists()) {
-			if (new Date().time - cached.lastModified() > 7*24*60*60*1000) {
-				// if older than a week, re-generate
-				cached.delete()
-			} else {
-				return cached
-			}
+		// make sure we have a cache directory
+		if (!cacheDir || !cacheDir.exists()) {
+			def temp = File.createTempFile("cache", "")
+			cacheDir = temp.parentFile
+			temp.delete()
 		}
 
-		// get the container
+		// try finding the cached file
+		def jpeg = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.jpeg")
+		def png = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.png")
+		if (jpeg.exists())	{ return writeFile(jpeg) }
+		if (png.exists())	{ return writeFile(png) }
+
+		// if we got here, then we need to render the scene
 		def container = new DefaultContainer()
 
 		// get the collection to query
@@ -128,8 +109,44 @@ class TrackController {
 			graphics.pushTransform(tx)
 		}
 		scene.renderContents(graphics, new Rectangle2D.Double(0, top * scale, scene.contentSize.width, (base - top) * scale))
-		graphics.write(cached)
+		graphics.write(png)
 		graphics.dispose()
-		return cached
+
+		if (usejpeg && USE_IMAGE_MAGICK) {
+			try {
+				// convert the png version to jpeg
+				long start = System.currentTimeMillis()
+				ImageMagick convert = new ImageMagick()
+				convert.run(png, jpeg)
+
+				// delete the png version and write out the jpeg
+				png.delete()
+				return writeFile(jpeg)
+			} catch (e) {
+				USE_IMAGE_MAGICK = false
+			}
+		}
+
+		return writeFile(png)
+	}
+
+	def writeFile = { file ->
+		// set up our content type
+		if (file.name.endsWith('.jpeg')) {
+			response.contentType = 'image/jpeg'
+		} else if (file.name.endsWith('.png')) {
+			response.contentType = 'image/png'
+		} else {
+			println "Unknown content type for ${file.name}"
+		}
+
+		// setup some headers
+		def nowPlusDay = new Date().time + 86400000
+		response.addHeader("Last-Modified", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date(file.lastModified())))
+		response.addHeader("Expires", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date(nowPlusDay)))
+		response.addHeader("Cache-Control", "max-age=86400000, must-revalidate")
+
+		// write the file
+		file.withInputStream { response.outputStream << it }
 	}
 }
