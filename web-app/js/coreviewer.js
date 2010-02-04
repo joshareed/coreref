@@ -132,6 +132,25 @@ coreref.CoreViewer = function(selector) {
 								);
 							}
 							$$.redraw();
+
+							// pre-cache next and prev images
+							var next = bind(tc.url, {
+								top: config.base,
+								base: config.base + 5,
+								scale: config.scale,
+								root: config.root,
+								id: config.id
+							});
+							$(new Image()).attr('src', next).appendTo($('body')).css({display: 'none'});
+
+							var prev = bind(tc.url, {
+								top: config.top - 5,
+								base: config.top,
+								scale: config.scale,
+								root: config.root,
+								id: config.id
+							});
+							$(new Image()).attr('src', prev).appendTo($('body')).css({display: 'none'})
 						}).attr('src', url).appendTo($('body')).css({display: 'none'});
 
 						// add our tooltips
@@ -302,33 +321,6 @@ coreref.CoreViewer = function(selector) {
 					$$.redraw();
 				}
 			}
-
-			// start the pre-caching for image tracks
-			var bounds = $$.bounds();
-			$(selector).each(function(j) {
-				var tc = $$.config.tracks[this.id];
-				if (tc != null) {
-					if (tc.type == 'image') {
-						var next = bind(tc.url, {
-							top: bounds.base,
-							base: bounds.base + 5,
-							scale: config.scale,
-							root: config.root,
-							id: config.id
-						});
-						$(new Image()).attr('src', next).appendTo($('body')).css({display: 'none'});
-
-						var prev = bind(tc.url, {
-							top: bounds.top - 5,
-							base: bounds.top,
-							scale: config.scale,
-							root: config.root,
-							id: config.id
-						});
-						$(new Image()).attr('src', prev).appendTo($('body')).css({display: 'none'})
-					}
-				}
-			});
 		});
 	};
 
