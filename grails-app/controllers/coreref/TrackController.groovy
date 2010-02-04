@@ -14,7 +14,6 @@ import org.andrill.util.image.ImageMagick
 
 class TrackController {
 	private static final int DEFAULT_SCALE = 2000
-	private static boolean USE_IMAGE_MAGICK = true
 	def mongoService
 	static def cacheDir
 
@@ -112,18 +111,16 @@ class TrackController {
 		graphics.write(png)
 		graphics.dispose()
 
-		if (usejpeg && USE_IMAGE_MAGICK) {
+		if (usejpeg) {
 			try {
 				// convert the png version to jpeg
-				long start = System.currentTimeMillis()
 				ImageMagick convert = new ImageMagick()
-				convert.run(png, jpeg)
-
-				// delete the png version and write out the jpeg
-				png.delete()
-				return writeFile(jpeg)
+				if (convert.run(png, jpeg)) {
+					png.delete()
+					return writeFile(jpeg)
+				}
 			} catch (e) {
-				USE_IMAGE_MAGICK = false
+				e.printStackTrace()
 			}
 		}
 
@@ -147,6 +144,10 @@ class TrackController {
 		response.addHeader("Cache-Control", "max-age=86400000, must-revalidate")
 
 		// write the file
-		file.withInputStream { response.outputStream << it }
+		try {
+			file.withInputStream { response.outputStream << it }
+		} catch (e) {
+			// ignore connection reset errors
+		}
 	}
 }
