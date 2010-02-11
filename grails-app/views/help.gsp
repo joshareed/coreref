@@ -7,10 +7,10 @@
 		<div id="leftSidebar">
 			<ul>
 				<li><a href="#no-3d-core">Why is the 3D whole core track missing in some areas?</a></li>
-				<li><a href="#image-no-lith">Why is there a core image but no lithology?</a></li>
-				<li><a href="#lith-no-image">Why is there lithology but no core image?</a></li>
 				<li><a href="#alignment">Why do the images not match up in some areas?</a></li>
 				<li><a href="#smaller-images">Why do the core images get smaller deeper in the hole?</a></li>
+				<li><a href="#image-no-lith">Why is there a core image but no lithology?</a></li>
+				<li><a href="#lith-no-image">Why is there lithology but no core image?</a></li>
 			</ul>
 		</div>
 		<div id="main">
@@ -25,28 +25,6 @@
 					In some sections, the core was too soft or broken to image safely.
 					<br/>
 					<img src="${resource(dir:'images/help',file:'no-3d-core.png')}" />
-				</p>
-				<a href="#top" class="topLink">&uarr; Top</a>
-			</div>
-			<div class="question">
-				<a name="image-no-lith"></a>
-				<h3>Why is there a core image but no lithology?</h3>
-				<p>
-					The core may have been sampled between the time the core was imaged and when it was described. This is common in the case of
-					time-sensitive samples such as interstitial water. The tooltips will usually contain more information.
-					<br/>
-					<img src="${resource(dir:'images/help',file:'image-no-lith.png')}" />
-				</p>
-				<a href="#top" class="topLink">&uarr; Top</a>
-			</div>
-			<div class="question">
-				<a name="lith-no-image"></a>
-				<h3>Why is there lithology but no image?</h3>
-				<p>
-					Core was recovered and described but could not be imaged. This may be because of drilling-related issues such as washed cores.
-					The tooltips will usually contain more information.
-					<br/>
-					<img src="${resource(dir:'images/help',file:'lith-no-image.png')}" />
 				</p>
 				<a href="#top" class="topLink">&uarr; Top</a>
 			</div>
@@ -76,6 +54,28 @@
 					<img src="${resource(dir:'images/help',file:'smaller-images-2.png')}" style="vertical-align: middle"/>
 					<img src="${resource(dir:'images/help',file:'smaller-images-3.png')}" style="vertical-align: middle"/>
 				</div>
+				<a href="#top" class="topLink">&uarr; Top</a>
+			</div>
+			<div class="question">
+				<a name="image-no-lith"></a>
+				<h3>Why is there a core image but no lithology?</h3>
+				<p>
+					The core may have been sampled between the time the core was imaged and when it was described. This is common in the case of
+					time-sensitive samples such as interstitial water. The tooltips will usually contain more information.
+					<br/>
+					<img src="${resource(dir:'images/help',file:'image-no-lith.png')}" />
+				</p>
+				<a href="#top" class="topLink">&uarr; Top</a>
+			</div>
+			<div class="question">
+				<a name="lith-no-image"></a>
+				<h3>Why is there lithology but no image?</h3>
+				<p>
+					Core was recovered and described but could not be imaged. This may be because of drilling-related issues such as washed cores.
+					The tooltips will usually contain more information.
+					<br/>
+					<img src="${resource(dir:'images/help',file:'lith-no-image.png')}" />
+				</p>
 				<a href="#top" class="topLink">&uarr; Top</a>
 			</div>
 		</div>
