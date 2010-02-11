@@ -8,6 +8,7 @@ class UrlMappings {
 		"/services/resources/$action/$opt?"(controller: 'resources')
 		"/services/recent/$action/$project?"(controller: 'recent')
 		"/"(view:"/index.gsp")
+		"/help"(view:"/help.gsp")
 		"500"(view:'/error')
 	}
 }

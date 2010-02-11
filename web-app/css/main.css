@@ -50,13 +50,12 @@ html {
 	width: 260px;
 	margin: 5px;
 }
-#leftSidebar ul {
+ul {
 	margin-left: 15px;
 }
-#leftSidebar li {
+li {
 	list-style-type: square;
 	margin-left: 5px;
-	font-size: 120%;
 }
 #rightNote {
 	float: right;
@@ -80,7 +79,7 @@ html {
 }
 h1 {
 	font-size: 28px;
-	color: #cc0000;
+	color: #C00;
 	font-family: Arial, Verdana, Helvetica, sans-serif;
 	font-weight: bold;
 }
@@ -91,7 +90,7 @@ h2 {
 	font-weight: bold;
 }
 h3 {
-	color: #cc0000;
+	color: #C00;
 	font-size: 15px;
 	text-align: left;
 	font-weight: bold;
@@ -102,15 +101,12 @@ p {
 	padding: 5px;
 }
 a {
-	color: #cc0000;
+	color: #C00;
 	text-decoration: none;
 }
 a:hover {
-	color: #cc0000;
+	color: #C00;
 	text-decoration: underline;
-}
-li {
-	list-style: none;
 }
 .providedBy {
 	color: gray;
@@ -120,7 +116,7 @@ li {
 }
 .logoText {
 	font-weight: bold;
-	color: #cc0000;
+	color: #C00;
 }
 #featured {
 	margin: 1em auto;
@@ -147,11 +143,12 @@ li {
 .active {
 	font-weight: bold;
 }
-#recent {
-	margin-left: 15px;
+.question {
+	border-bottom: 2px solid #C00;
+	padding: 0.5em;
+	margin-top: 2em;
 }
-#recent li {
-	list-style-type: square;
-	margin-left: 5px;
-	font-size: 120%;
+.topLink {
+	float: right;
+	margin-top: -15px;
 }
