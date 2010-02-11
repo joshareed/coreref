@@ -7,8 +7,10 @@ class UrlMappings {
 		"/services/$project/config/$action"(controller: 'config')
 		"/services/resources/$action/$opt?"(controller: 'resources')
 		"/services/recent/$action/$project?"(controller: 'recent')
-		"/"(view:"/index.gsp")
-		"/help"(view:"/help.gsp")
-		"500"(view:'/error')
+		"/services/feedback/$action"(controller: 'feedback')
+		"/"(view: '/index.gsp')
+		"/contact"(view: '/contact.gsp')
+		"/help"(view: '/help.gsp')
+		"500"(view: '/error.gsp')
 	}
 }
