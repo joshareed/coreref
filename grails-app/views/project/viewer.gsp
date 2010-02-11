@@ -54,7 +54,7 @@
 			</form>
 			<span id="linkTool" class="tool">
 				<a href="${createLink(controller:'project', action:'viewer', params: [project: project.id, depth: depth])}">
-					<img id="logo" src="${resource(dir:'images',file:'link.png')}" alt="Link to this page" /> Link
+					<img src="${resource(dir:'images',file:'link.png')}" alt="Link to this page" /> Link
 				</a>
 			</span>
 			<span id="settingsTool" class="tool">
@@ -67,7 +67,7 @@
 		<table id="viewer">
 			<tr>
 				<td class="left">
-					<a id="panLeft" href="#">&laquo;</a>
+					<a id="panLeft" href="javascript:void()">&laquo;</a>
 				</td>
 				<td class="center">
 					<div class="animated track" id="whole"></div>
@@ -77,7 +77,7 @@
 					<div class="track" id="data"></div>
 				</td>
 				<td class="right">
-					<a id="panRight" href="#">&raquo;</a>
+					<a id="panRight" href="javascript:void()">&raquo;</a>
 				</td>
 			</tr>
 		</table>
