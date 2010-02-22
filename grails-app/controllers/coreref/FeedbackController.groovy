@@ -2,6 +2,7 @@ package coreref
 
 class FeedbackController {
 	def mailService
+	def mongoService
 
 	def contact = {
 		sendMail {
@@ -16,6 +17,12 @@ Message: ${params.message}
 	}
 
 	def issue = {
-		// TODO
+		def doc = new LinkedHashMap(params)
+		doc.remove('action')
+		doc.remove('controller')
+		doc.pending = true
+		mongoService['_issues'].insert(doc)
+
+		render "Issue successfully submitted!"
 	}
 }
