@@ -39,6 +39,8 @@ class MongoService {
 		}
 	}
 
+	def idFor(str) { return new ObjectId(str) }
+
 	// allow accessing collections like properties.
 	def propertyMissing(name) {
 		def collection = getCollection(name)

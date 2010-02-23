@@ -44,6 +44,21 @@ class AdminController {
 		render "Updated data series index of ${params.project} in ${System.currentTimeMillis() - start}ms"
 	}
 
+	def issues = {
+		return [issues: mongoService['_issues'].findAll(pending: true, project: params.project)]
+	}
+
+	def closeIssue = {
+		def issues = mongoService['_issues']
+		def doc = issues.find('_id': mongoService.idFor(params.opt))
+		if (doc) {
+			issues.update(doc, ['$set': ['pending': false]])
+			render "Closed issue ${params.opt}"
+		} else {
+			render "No issue for ${params.opt}"
+		}
+	}
+
 	private static final SERIES_MAP = """
 		function() {
 			for (var k in this) {
