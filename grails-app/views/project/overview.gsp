@@ -95,10 +95,7 @@
 			</g:if>
 			<div style="margin: 2em">
 				<form action="${createLink(controller:'project', action:'search', params: [project: project.id])}" method="get" target="_blank">
-					<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search"> or
-					<span style="font-size: 125%">
-						<g:link controller="project" action="viewer" params="[project: project.id, depth: Math.random() * project.base]">Surprise Me</g:link>
-					</span>
+					<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search" />
 				</form>
 				<h3 style="margin-top: 1em">Recent Searches</h3>
 				<ul id="recent"></ul>
