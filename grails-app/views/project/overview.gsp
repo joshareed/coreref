@@ -43,13 +43,13 @@
 					<tr>
 						<td><strong>Date</strong></td>
 						<td>
-							<g:if test="${project.startdate && project.enddate}">
+							<g:if test="${project?.startdate && project?.enddate}">
 								${project.startdate} to ${project.enddate}
 							</g:if>
-							<g:if test="${project.startdate && !project.enddate}">
+							<g:if test="${project?.startdate && !project?.enddate}">
 								${project.startdate}
 							</g:if>
-							<g:if test="${!project.startdate && project.enddate}">
+							<g:if test="${!project?.startdate && project?.enddate}">
 								${project.enddate}
 							</g:if>
 						</td>
@@ -57,7 +57,7 @@
 					<tr>
 						<td><strong>Lat/Long</strong></td>
 						<td>
-							<g:if test="${project.latitude && project.longitude}">
+							<g:if test="${project?.latitude && project?.longitude}">
 								${project.latitude}&deg;, ${project.longitude}&deg;
 							</g:if>
 							<g:else>
@@ -68,7 +68,7 @@
 					<tr>
 						<td><strong>Total Depth</strong></td>
 						<td>
-							<g:if test="${project.base}">
+							<g:if test="${project?.base}">
 								${project.base} m
 							</g:if>
 							<g:else>
@@ -79,7 +79,7 @@
 					<tr>
 						<td><strong>Age</strong></td>
 						<td>
-							<g:if test="${project.age}">
+							<g:if test="${project?.age}">
 								${project.age}
 							</g:if>
 							<g:else>
