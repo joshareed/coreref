@@ -78,7 +78,9 @@ coreref.CoreViewer = function(selector) {
 			$('.track').each(function(i) {
 				var track = $(this);
 				var tc = config.tracks[this.id];
-				if (tc != null) {
+				if (tc == null) {
+					track.hide();
+				} else {
 					// save our width and max offset
 					width = track.width();
 					maxOffset = scale(config.top - config.base) + track.width();
