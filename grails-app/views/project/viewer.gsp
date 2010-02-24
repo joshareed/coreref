@@ -163,7 +163,7 @@
 				<td class="left">
 					<a id="panLeft" href="javascript:void()">&laquo;</a>
 				</td>
-				<td class="center">
+				<td class="center" style="padding-left: 35px; padding-right: 35px">
 					<div class="animated track" id="whole"></div>
 					<div class="track" id="split"></div>
 					<div class="track" id="ruler"></div>
