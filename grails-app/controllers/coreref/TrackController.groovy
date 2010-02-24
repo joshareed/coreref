@@ -60,8 +60,8 @@ class TrackController {
 		}
 
 		// try finding the cached file
-		def jpeg = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.jpeg")
-		def png = new File(cacheDir, "${params.action}-${top}-${base}-${scale}-${horizontal}.png")
+		def jpeg = new File(cacheDir, "${params.project}-${params.action}-${top}-${base}-${scale}-${horizontal}.jpeg")
+		def png = new File(cacheDir, "${params.project}-${params.action}-${top}-${base}-${scale}-${horizontal}.png")
 		if (jpeg.exists())	{ return writeFile(jpeg) }
 		if (png.exists())	{ return writeFile(png) }
 
