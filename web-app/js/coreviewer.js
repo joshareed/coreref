@@ -152,7 +152,7 @@ coreref.CoreViewer = function(selector) {
 								root: config.root,
 								id: config.id
 							});
-							$(new Image()).attr('src', prev).appendTo($('body')).css({display: 'none'})
+							$(new Image()).attr('src', prev).appendTo($('body')).css({display: 'none'});
 						}).attr('src', url).appendTo($('body')).css({display: 'none'});
 
 						// add our tooltips
@@ -278,7 +278,9 @@ coreref.CoreViewer = function(selector) {
 						var series = [];
 						for (var i = 0; i < selected.length; i++) {
 							for (var s in data[selected[i]]) {
-								series.push(data[selected[i]][s])
+								if (data[selected[i]].hasOwnProperty(s)) {
+									series.push(data[selected[i]][s]);
+								}
 							}
 
 							// set max/min
