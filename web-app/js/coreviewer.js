@@ -259,17 +259,7 @@ coreref.CoreViewer = function(selector) {
 						// setup our track
 						$('#' + track).css({ height: "200px", border: "none", marginLeft: "-35px", marginRight: "-35px" });
 
-						// build our data series
-						var series = [];
-						for (var s in data) {
-							if (series.length < 2) {
-								series.push(data[s]);
-								data[s].yaxis = series.length;
-							}
-						}
-
-						// build the plot
-						var plot = $.plot($('#' + track), series, {
+						var options = {
 							series: {
 								lines: { show: true},
 								points: { show: true }
@@ -282,7 +272,26 @@ coreref.CoreViewer = function(selector) {
 								borderWidth: 3,
 								borderColor: '#CC0000'
 							}
-						});
+						};
+
+						// build our data series
+						var series = [];
+						for (var i = 0; i < selected.length; i++) {
+							for (var s in data[selected[i]]) {
+								series.push(data[selected[i]][s])
+							}
+
+							// set max/min
+							if (config.stats != null && config.stats[selected[i]] != null) {
+								var stats = config.stats[selected[i]];
+								var yaxis = ((i == 0) ? options.yaxis : options.y2axis);
+								yaxis.max = Math.min(stats.max, stats.mean + 1.5 * stats.stddev);
+								yaxis.min = Math.max(stats.min, stats.mean - 1.5 * stats.stddev);
+							}
+						}
+
+						// build the plot
+						var plot = $.plot($('#' + track), series, options);
 						tc.plot = plot;
 
 						// set up our visible bounds
