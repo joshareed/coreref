@@ -185,24 +185,25 @@ coreref.CoreViewer = function(selector) {
 							var trackSettings = $('#' + track.attr('id') + 'Settings');
 							if (trackSettings.size() > 0) {
 								$.each(tc.series, function(i, key) {
-									$('<div></div>').attr({ id: track.attr('id') + '_' + key, 'class': 'seriesSettings'}).append(
-										$('<input type="radio"></input>').attr({ id: key + '_' + track.attr('id') + '_y1', name: track.attr('id') + '_y1' }).click(function() { changeSeries(track.attr('id')); })
+									var foo = key.replace(/\ /, '-');
+									$('<div></div>').attr({ id: track.attr('id') + '_' + foo, 'class': 'seriesSettings'}).append(
+										$('<input type="radio"></input>').attr({ id: foo + '_' + track.attr('id') + '_y1', name: track.attr('id') + '_y1' }).click(function() { changeSeries(track.attr('id')); })
 									).append(
-										$('<input type="radio"></input>').attr({ id: key + '_' + track.attr('id') + '_y2', name: track.attr('id') + '_y2' }).click(function() { changeSeries(track.attr('id')); })
+										$('<input type="radio"></input>').attr({ id: foo + '_' + track.attr('id') + '_y2', name: track.attr('id') + '_y2' }).click(function() { changeSeries(track.attr('id')); })
 									).append(
-										$('<label>' + key.charAt(0).toUpperCase() + key.substring(1) + '</label>')
+										$('<label>' + key + '</label>')
 									).appendTo(trackSettings);
 								});
 
 								// check some of them
 								var selected = $.cookie(track.attr('id') + '.series');
 								if (selected == null || selected == "") {
-									if (tc.series.length > 0) { $('#' + tc.series[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
-									if (tc.series.length > 1) { $('#' + tc.series[1] + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
+									if (tc.series.length > 0) { $('#' + tc.series[0].replace(/\ /, '-') + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
+									if (tc.series.length > 1) { $('#' + tc.series[1].replace(/\ /, '-') + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
 								} else {
 									var split = selected.split(',');
-									if (split.length > 0) { $('#' + split[0] + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
-									if (split.length > 1) { $('#' + split[1] + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
+									if (split.length > 0) { $('#' + split[0].replace(/\ /, '-') + '_' + track.attr('id') + '_y1').attr('checked', 'checked'); }
+									if (split.length > 1) { $('#' + split[1].replace(/\ /, '-') + '_' + track.attr('id') + '_y2').attr('checked', 'checked'); }
 								}
 							}
 							changeSeries(track.attr('id'));
@@ -235,7 +236,7 @@ coreref.CoreViewer = function(selector) {
 				$('#' + track + 'Settings .seriesSettings input').each(function(i){
 					if ($(this).attr('checked')) {
 						var id = $(this).attr('id');
-						selected.push(id.substring(0, id.indexOf('_')));
+						selected.push(id.substring(0, id.indexOf('_')).replace(/-/, ' '));
 					}
 				});
 
