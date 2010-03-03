@@ -22,16 +22,21 @@ class SearchController {
 
 	def data = {
 		def filter = QueryUtils.buildFilter(params, [top: true, base: true])
-		def query = QueryUtils.withDepths(params, ['class': 'Datum'])
+		def query = QueryUtils.withDepths(params, ['class': 'Datum', 'type': ['$in': []]])
+
 		def results = [:]
-		(params.query ?: '').split(',').each { series ->
-			filter[series] = true
-			results[series] = [label: series[0].toUpperCase() + series[1..-1], data: []]
+		def series = (params.query ?: '').split(',') as List
+		series.each {
+			query.type.'$in' << it
+			results[it] = [:]
 		}
-		mongoService[params.project].findAll(query, filter).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
-			doc.keySet().findAll{ it != 'top' && it != 'base' && it[0] != '_' }.each { k ->
-				if (!results[k]) results[k] = [label: k[0].toUpperCase() + k[1..-1], data: []]
-				results[k].data << [doc.top, doc[k] ?: null]
+
+		mongoService[params.project].findAll(query).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
+			doc.keySet().findAll{ !(it in ['top', 'base', 'class', 'type', '_id', '_ns'])}.each { k ->
+				if (!results[doc.type][k]) {
+					results[doc.type][k] = [label: k[0].toUpperCase() + k[1..-1], data: [], yaxis: series.indexOf(doc.type) + 1]
+				}
+				results[doc.type][k].data << [doc.top, doc[k] ?: null]
 			}
 		}
 		renderResults(results)
