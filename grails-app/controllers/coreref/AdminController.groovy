@@ -24,24 +24,46 @@ class AdminController {
 		long start = System.currentTimeMillis()
 		def collection = mongoService[params.project]
 
-		// use map/reduce to determine the max/min values for each series
-		def mapreduce = collection.mapReduce(SERIES_MAP, SERIES_REDUCE, null, ['class': 'Datum'] as com.mongodb.BasicDBObject)
-		def results = mapreduce.results().inject([:]) { map, doc ->
-			map[doc['_id']] = doc['value']
-			return map
+		// calculate count, total, and mean
+		def stats = [:]
+		collection.findAll('class': 'Datum').each { doc ->
+			if (!stats[doc.type]) stats[doc.type] = [max: Double.MIN_VALUE, min: Double.MAX_VALUE, count: 0, total: 0]
+			def local = stats[doc.type]
+			doc.findAll { !(it.key in ['_id', '_ns', 'class', 'type', 'top', 'base']) }.each { k,v ->
+				if (v) {
+					local.max = Math.max(local.max, v)
+					local.min = Math.min(local.min, v)
+					local.count++
+					local.total += v
+				}
+			}
+		}
+		stats.each { k,v -> v.mean = v.total / v.count }
+
+		// calculate standard deviation
+		collection.findAll('class': 'Datum').each { doc ->
+			def local = stats[doc.type]
+			if (local.devtot == null) local.devtot = 0
+			doc.findAll { !(it.key in ['_id', '_ns', 'class', 'type', 'top', 'base']) }.each { k,v ->
+				if (v) {
+					local.devtot += (v - local.mean) * (v - local.mean)
+				}
+			}
+		}
+		stats.each { k,v ->
+			v.stddev = Math.sqrt(v.devtot / (v.count - 1))
+			v.remove('total')
+			v.remove('devtot')
 		}
 
 		// update our config for the project
 		def config = mongoService['_configs']
 		def doc = config.find(['id': params.project])
 		if (doc) {
-			config.update(doc, ['$set': ['data': results]])
+			config.update(doc, ['$set': ['stats': stats]])
 		}
 
-		// clean up
-		mapreduce.drop()
-
-		render "Updated data series index of ${params.project} in ${System.currentTimeMillis() - start}ms"
+		render "Updated data series stats of ${params.project} in ${System.currentTimeMillis() - start}ms"
 	}
 
 	def issues = {
@@ -58,29 +80,4 @@ class AdminController {
 			render "No issue for ${params.opt}"
 		}
 	}
-
-	private static final SERIES_MAP = """
-		function() {
-			for (var k in this) {
-				if (k != '_id' && k != 'class' && k != 'type') {
-					emit(k, { max: this[k], min: this[k] });
-				}
-			}
-		}
-"""
-
-	private static final SERIES_REDUCE = """
-		function(key, values) {
-			var result = { max: -9999, min: 9999 };
-			for (var i = 0; i < values.length; i++ ) {
-				if (values[i].max > result.max && values[i].max != '') {
-					result.max = values[i].max;
-				}
-				if (values[i].min < result.min && values[i].min != '') {
-					result.min = values[i].min;
-				}
-			}
-			return result;
-		}
-"""
 }
