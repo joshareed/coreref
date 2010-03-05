@@ -287,8 +287,8 @@ coreref.CoreViewer = function(selector) {
 							if (config.stats != null && config.stats[selected[i]] != null) {
 								var stats = config.stats[selected[i]];
 								var yaxis = ((i == 0) ? options.yaxis : options.y2axis);
-								yaxis.max = Math.min(stats.max, stats.mean + 1.5 * stats.stddev);
-								yaxis.min = Math.max(stats.min, stats.mean - 1.5 * stats.stddev);
+								yaxis.max = stats.max;
+								yaxis.min = stats.min;
 							}
 						}
 
