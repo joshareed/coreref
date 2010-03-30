@@ -39,6 +39,12 @@ class SearchController {
 				results[doc.type][k].data << [doc.top, doc[k] ?: null]
 			}
 		}
+		
+		results.each { k, v ->
+			if (!v) {
+				v[k] = [label: k, data: []]
+			}
+		}
 		renderResults(results)
 	}
 
