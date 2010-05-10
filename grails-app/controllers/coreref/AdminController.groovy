@@ -1,7 +1,14 @@
 package coreref
 
-class AdminController {
-	def mongoService
+class AdminController extends SecureController {
+	def index = {
+		withProject { project ->
+			return [
+				project: project,
+				issues: mongoService['_issues'].findAll(pending: true, project: params.project)
+			]
+		}
+	}
 
 	def updateKeywords = {
 		long start = System.currentTimeMillis()
@@ -67,7 +74,7 @@ class AdminController {
 	}
 
 	def issues = {
-		return [issues: mongoService['_issues'].findAll(pending: true, project: params.project)]
+		return [issues: mongoService['_issues'].findAll(pending: true)]
 	}
 
 	def closeIssue = {
