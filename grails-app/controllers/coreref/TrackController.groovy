@@ -12,11 +12,17 @@ import org.andrill.coretools.scene.DefaultScene
 import org.andrill.coretools.geology.ui.*
 import org.andrill.util.image.ImageMagick
 
-class TrackController {
+/**
+ * A controller for rendering the various viewer tracks as images.
+ */
+class TrackController extends SecureController {
 	private static final int DEFAULT_SCALE = 2000
-	def mongoService
 	static def cacheDir
 
+	/**
+	 * Renders the split core image track.
+	 * Note: SECURE
+	 */
 	def split = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
@@ -24,6 +30,10 @@ class TrackController {
 		renderScene(scene, ['class': 'Image', type: 'split'], true, Color.black, Color.black)
 	}
 
+	/**
+	 * Renders the whole core image track.
+	 * Note: SECURE
+	 */
 	def whole = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
@@ -31,6 +41,10 @@ class TrackController {
 		renderScene(scene, ['class': 'Image', type: 'whole'], true, Color.black, Color.black)
 	}
 
+	/**
+	 * Renders the lithology track.
+	 * Note: SECURE
+	 */
 	def lith = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
@@ -38,6 +52,10 @@ class TrackController {
 		renderScene(scene, ['class': 'Interval'], false, Color.black, Color.white)
 	}
 
+	/**
+	 * Renders the ruler track.
+	 * Note: SECURE
+	 */
 	def ruler = {
 		def scene = new DefaultScene()
 		scene.setRenderHint('borders', 'false')
@@ -45,88 +63,92 @@ class TrackController {
 		renderScene(scene, ['class': 'Interval'], false, Color.black, Color.white)
 	}
 
+	// does the heavy lifting for rendering a scene
 	def renderScene = { scene, query, usejpeg, foreground, background ->
-		// get our depth range
-		def top = params.top as double
-		def base = params.base ? params.base as double : top + 1
-		def scale = params.scale ? params.scale as int: DEFAULT_SCALE
-		boolean horizontal = true
+		withProject { project ->
+			// get our depth range
+			def top = params.top as double
+			def base = params.base ? params.base as double : top + 1
+			def scale = params.scale ? params.scale as int: DEFAULT_SCALE
+			boolean horizontal = true
 
-		// make sure we have a cache directory
-		if (!cacheDir || !cacheDir.exists()) {
-			def temp = File.createTempFile("cache", "")
-			cacheDir = temp.parentFile
-			temp.delete()
-		}
-
-		// try finding the cached file
-		def jpeg = new File(cacheDir, "${params.project}-${params.action}-${top}-${base}-${scale}-${horizontal}.jpeg")
-		def png = new File(cacheDir, "${params.project}-${params.action}-${top}-${base}-${scale}-${horizontal}.png")
-		if (jpeg.exists())	{ return writeFile(jpeg) }
-		if (png.exists())	{ return writeFile(png) }
-
-		// if we got here, then we need to render the scene
-		def container = new DefaultContainer()
-
-		// get the collection to query
-		def collection = mongoService[params.project]
-
-		// build the query
-		query.putAll(top: ['$lte': base], base: ['$gte': top])
-
-		// get our results and convert them into models
-		ModelManager models = Platform.getService(ModelManager.class)
-		collection.findAll(query).each { doc ->
-			def model
-			switch(doc['class']) {
-				case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc['_local'] ?: doc.url]); break
-				case 'Interval':	model = models.build("Interval", [top: doc.top, base: doc.base, lithology: "org.psicat.resources.lithologies:${doc.lithology}"]); break
+			// make sure we have a cache directory
+			if (!cacheDir || !cacheDir.exists()) {
+				def temp = File.createTempFile("cache", "")
+				cacheDir = temp.parentFile
+				temp.delete()
 			}
-			if (model) { container.add(model) }
-		}
 
-		// build our scene
-		scene.models = container
-		scene.scalingFactor = scale
-		scene.validate()
+			// try finding the cached file
+			def jpeg = new File(cacheDir, "${params.project}-${params.action}-${top}-${base}-${scale}-${horizontal}.jpeg")
+			def png = new File(cacheDir, "${params.project}-${params.action}-${top}-${base}-${scale}-${horizontal}.png")
+			if (jpeg.exists())	{ return writeFile(jpeg) }
+			if (png.exists())	{ return writeFile(png) }
 
-		// render our scene
-		int width, height
-		if (horizontal) {
-			width = (int) ((base - top) * scale)
-			height = (int) scene.contentSize.width
-		} else {
-			height = (int) ((base - top) * scale)
-			width = (int) scene.contentSize.width
-		}
+			// if we got here, then we need to render the scene
+			def container = new DefaultContainer()
 
-		RasterGraphics graphics = new RasterGraphics(width, height, true, background)
-		graphics.setLineColor(foreground)
-		if (horizontal) {
-			AffineTransform tx = AffineTransform.getRotateInstance(-Math.PI / 2)
-			tx.translate(-scene.contentSize.width, 0)
-			graphics.pushTransform(tx)
-		}
-		scene.renderContents(graphics, new Rectangle2D.Double(0, top * scale, scene.contentSize.width, (base - top) * scale))
-		graphics.write(png)
-		graphics.dispose()
+			// get the collection to query
+			def collection = mongoService[params.project]
 
-		if (usejpeg) {
-			try {
-				// convert the png version to jpeg
-				ImageMagick convert = new ImageMagick()
-				if (convert.run(png, jpeg)) {
-					png.delete()
-					return writeFile(jpeg)
+			// build the query
+			query.putAll(top: ['$lte': base], base: ['$gte': top])
+
+			// get our results and convert them into models
+			ModelManager models = Platform.getService(ModelManager.class)
+			collection.findAll(query).each { doc ->
+				def model
+				switch(doc['class']) {
+					case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc['_local'] ?: doc.url]); break
+					case 'Interval':	model = models.build("Interval", [top: doc.top, base: doc.base, lithology: "org.psicat.resources.lithologies:${doc.lithology}"]); break
 				}
-			} catch (e) {
-				e.printStackTrace()
+				if (model) { container.add(model) }
 			}
-		}
 
-		return writeFile(png)
+			// build our scene
+			scene.models = container
+			scene.scalingFactor = scale
+			scene.validate()
+
+			// render our scene
+			int width, height
+			if (horizontal) {
+				width = (int) ((base - top) * scale)
+				height = (int) scene.contentSize.width
+			} else {
+				height = (int) ((base - top) * scale)
+				width = (int) scene.contentSize.width
+			}
+
+			RasterGraphics graphics = new RasterGraphics(width, height, true, background)
+			graphics.setLineColor(foreground)
+			if (horizontal) {
+				AffineTransform tx = AffineTransform.getRotateInstance(-Math.PI / 2)
+				tx.translate(-scene.contentSize.width, 0)
+				graphics.pushTransform(tx)
+			}
+			scene.renderContents(graphics, new Rectangle2D.Double(0, top * scale, scene.contentSize.width, (base - top) * scale))
+			graphics.write(png)
+			graphics.dispose()
+
+			if (usejpeg) {
+				try {
+					// convert the png version to jpeg
+					ImageMagick convert = new ImageMagick()
+					if (convert.run(png, jpeg)) {
+						png.delete()
+						return writeFile(jpeg)
+					}
+				} catch (e) {
+					e.printStackTrace()
+				}
+			}
+
+			return writeFile(png)
+		}
 	}
 
+	// caches the rendered image for later re-use
 	def writeFile = { file ->
 		// set up our content type
 		if (file.name.endsWith('.jpeg')) {
