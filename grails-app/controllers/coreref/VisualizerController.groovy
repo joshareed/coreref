@@ -2,6 +2,9 @@ package coreref
 
 import grails.converters.JSON
 
+/**
+ * Provides Visualizer integration.
+ */
 class VisualizerController extends SecureController {
 
 	/**
@@ -41,6 +44,10 @@ class VisualizerController extends SecureController {
 		}
 	}
 	
+	/**
+	 * Generates image metadata for a project as JSON.
+	 * Note: SECURE
+	 */
 	def images = {
 		withProject { project ->
 			def results = mongoService[project.id].findAll('class': 'Image', 'type': (params.opt ?: 'split')).collect { SearchUtils.clean(it) }
@@ -49,6 +56,10 @@ class VisualizerController extends SecureController {
 		}
 	}
 	
+	/**
+	 * Generates lithology metadata for a project as JSON.
+	 * Note: SECURE
+	 */
 	def lith = {
 		withProject { project ->
 			def results = mongoService[project.id].findAll('class': 'Interval').collect { SearchUtils.clean(it) }
@@ -57,6 +68,10 @@ class VisualizerController extends SecureController {
 		}
 	}
 	
+	/**
+	 * Generates numerical data tables for a project as CSV.
+	 * Note: SECURE
+	 */
 	def data = {
 		withProject { project ->
 			String col = params?.opt?.toLowerCase()
@@ -68,6 +83,4 @@ class VisualizerController extends SecureController {
 			render(contentType: 'text/csv', text: results.toString())
 		}
 	}
-	
-
 }
