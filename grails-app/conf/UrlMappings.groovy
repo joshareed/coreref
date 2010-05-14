@@ -21,6 +21,9 @@ class UrlMappings {
 		"/services/$project/corelyzer/$action"(controller: 'corelyzer')
 		"/services/$project/visualizer/$action?/$opt?"(controller: 'visualizer')
 		
+		// collections area
+		"/collection/$collection"(controller: 'collection', action: 'index')
+		
 		// viewer-related services
 		"/services/resources/$action/$opt?"(controller: 'resources')
 		"/services/recent/$action/$project?"(controller: 'recent')
