@@ -48,9 +48,6 @@
 		</div>
 		<div id="main">
 			<h1>${collection.name}</h1>
-			<p>
-				${collection.description}
-			</p>
 			<g:each in="${collection.projects}" var="program">
 				<a name="${program.key}"></a>
 				<g:each in="${program.value}" var="leg">

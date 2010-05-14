@@ -19,7 +19,24 @@
 	</head>
 	<body>
 		<div id="leftSidebar">
-			<h3>Recent Searches</h3>
+			<h3>Collections</h3>
+			<ul>
+				<li><g:link controller="collection" action="index" params="[collection: 'north-atlantic']">North Atlantic</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'equatorial-pacific']">Equatorial Pacific</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'paleoceanographic']">Paleoceanographic</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'highres-paleoceanographic']">High Res Paleoceanographic</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'new-jersey-margin']">New Jersey Margin</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'k-t-boundary']">K/T Boundary</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'coral-reef']">Coral Reef</g:link></li>
+			</ul>
+			<h3 style="margin-top: 0.5em">Programs</h3>
+			<ul>
+				<li><g:link controller="collection" action="index" params="[collection: 'andrill']">ANDRILL</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'icdp']">ICDP</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'odp']">ODP</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'all']">All</g:link></li>
+			</ul>
+			<h3 style="margin-top: 0.5em">Recent Searches</h3>
 			<ul id="recent"></ul>
 		</div>
 		<div id="main">
