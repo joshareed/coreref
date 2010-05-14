@@ -1,0 +1,11 @@
+{ "_id" : "all", "name" : "All", "description" : "This collection contains all projects at CoreRef.org", "query" : { } }
+{ "_id" : "andrill", "name" : "ANDRILL", "description" : "All ANDRILL expeditions", "query" : { "program" : "andrill" } }
+{ "_id" : "icdp", "name" : "ICDP Expeditions", "description" : "All ICDP expeditions", "query" : { "program" : "icdp" } }
+{ "_id" : "odp", "name" : "ODP Expeditions", "description" : "All ODP expeditions", "query" : { "program" : "odp" } }
+{ "_id" : "north-atlantic", "description" : "Northern North Atlantic Sites", "name" : "Northern North Atlantic Sites", "query" : { "leg" : { "_$_in" : [ 104, 105, 151, 162, 172 ] } } }
+{ "_id" : "equatorial-pacific", "description" : "Equatorial Pacific Sites", "name" : "Equatorial Pacific Sites", "query" : { "leg" : { "_$_in" : [ 130, 138, 199 ] } } }
+{ "_id" : "paleoceanographic", "description" : "Paleoceanographic Sites", "name" : "Paleoceanographic Sites", "query" : { "leg" : { "_$_in" : [ 108, 132, 145, 154, 167, 181, 202, 207, 208 ] } } }
+{ "_id" : "highres-paleoceanographic", "description" : "High Resolution Paleoceanographic Sites", "name" : "High Resolution Paleoceanographic Sites", "query" : { "leg" : { "_$_in" : [ 146, 160, 161, 169 ] } } }
+{ "_id" : "new-jersey-margin", "description" : "New Jersey Margin Sites", "name" : "New Jersey Margin Sites", "query" : { "leg" : { "_$_in" : [ 150, 174 ] } } }
+{ "_id" : "k-t-boundary", "description" : "K/T Boundary Sites", "name" : "K/T Boundary Sites", "query" : { "leg" : { "_$_in" : [ 165, 171, 198 ] } } }
+{ "_id" : "coral-reef", "description" : "Coral Reef Sites", "name" : "Coral Reef Sites", "query" : { "leg" : { "_$_in" : [ 133, 143, 144, 166, 194 ] } } }
