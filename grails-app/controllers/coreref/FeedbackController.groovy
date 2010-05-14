@@ -21,8 +21,11 @@ Message: ${params.message}
 		doc.remove('action')
 		doc.remove('controller')
 		doc.pending = true
-		mongoService['_issues'].insert(doc)
-
-		render "Issue successfully submitted!"
+		if (doc.project) {
+			mongoService['_issues'].insert(doc)
+			render "Issue successfully submitted!"
+		} else {
+			response.sendError(400, "Project required")
+		}
 	}
 }
