@@ -65,6 +65,10 @@
 							<a href="${createLink(controller:'project', action:'overview', params: [project: 'icdp5011-1b'])}">Hole B</a>
 							<img id="secure" src="${resource(dir:'images',file:'secure.png')}" alt="Requires a Password" />
 						</li>
+						<li>
+							<a href="${createLink(controller:'project', action:'overview', params: [project: 'icdp5011-1c'])}">Hole C</a>
+							<img id="secure" src="${resource(dir:'images',file:'secure.png')}" alt="Requires a Password" />
+						</li>
 					</ul>
 				</li>
 				<li>
