@@ -21,18 +21,18 @@ class VisualizerController extends SecureController {
 				Expedition(name: project.name, root: createLink(controller: 'visualizer', action: 'index', params: [project: project.id], absolute: true) - 'index') {
 					images.each { type ->
 						Feed(name: type[0].toUpperCase() + type[1..-1] + ' Core Images', parser: 'url', resource: 'CoreRef Image', url: "images/$type") {
-							entry(key: 'visualizer.track', type[0].toUpperCase() + type[1..-1] + ' Core Images')
+							entry(key: 'visualizer.track', type[0].toUpperCase() + type[1..-1] + ' Core Images - ' + project.id)
 						}
 					}
 					config.tracks.findAll { it.key == 'lith' }.each { 
 						Feed(name: 'Lithology', parser: 'url', resource: 'CoreRef Lithology', url: "lith") {
-							entry(key: 'visualizer.track', 'Lithology')
+							entry(key: 'visualizer.track', 'Lithology - ' + project.id)
 						}
 					}
 					config.tracks.find { it.value.type == 'plot' }?.each { plot ->
 						plot.value.series.each { s ->
 							Feed(name: s, parser: 'url', resource: 'Physical Property', url: "data/$s".replaceAll(' ', '%20')) {
-								entry(key: 'visualizer.track', s)
+								entry(key: 'visualizer.track', s + '-' + project.id)
 								entry(key: 'dataset.separator', ',')
 								entry(key: 'dataset.depth-column', 0)
 								entry(key: 'dataset.data-column', 1)
