@@ -15,7 +15,7 @@ class AdminController extends SecureController {
 		def collection = mongoService[params.project]
 		collection.find().each { doc ->
 			def tokens = []
-			['name', 'code', 'text'].each { field ->
+			['name', 'core', 'section', 'code', 'text'].each { field ->
 				if (doc.containsKey(field)) {
 					SearchUtils.tokenize(doc[field] as String, tokens)
 				}
