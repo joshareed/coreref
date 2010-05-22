@@ -40,6 +40,7 @@
 		<div id="main">
 			<div id="rightNote">
 				<table>
+					<g:if test="${project?.startdate || project?.enddate}">
 					<tr>
 						<td><strong>Date</strong></td>
 						<td>
@@ -54,44 +55,40 @@
 							</g:if>
 						</td>
 					</tr>
+					</g:if>
+					<g:if test="${project?.latitude && project?.longitude}">
 					<tr>
 						<td><strong>Lat/Long</strong></td>
-						<td>
-							<g:if test="${project?.latitude && project?.longitude}">
-								${project.latitude}&deg;, ${project.longitude}&deg;
-							</g:if>
-							<g:else>
-								<em>unspecified</em>
-							</g:else>
-						</td>
+						<td>${project.latitude}&deg;, ${project.longitude}&deg;</td>
 					</tr>
+					</g:if>
+					<g:if test="${project?.base}">
 					<tr>
 						<td><strong>Total Depth</strong></td>
-						<td>
-							<g:if test="${project?.base}">
-								${project.base} m
-							</g:if>
-							<g:else>
-								<em>unspecified</em>
-							</g:else>
-						</td>
+						<td>${project.base} m</td>
 					</tr>
+					</g:if>
+					<g:if test="${project?.age}">
 					<tr>
 						<td><strong>Age</strong></td>
-						<td>
-							<g:if test="${project?.age}">
-								${project.age}
-							</g:if>
-							<g:else>
-								<em>unspecified</em>
-							</g:else>
-						</td>
+						<td>${project.age}</td>
 					</tr>
+					</g:if>
 				</table>
 			</div>
 			<h1>${project.name}</h1>
 			<g:if test="${project?.description}">
 				<p>${project?.description}</p>
+			</g:if>
+			<g:if test="${related}">
+				<strong>Related:</strong>
+				<ul class="horiz">
+					<g:each in="${related}" var="project">
+					<li>
+						<g:link controller="project" action="overview" params="[project: project.id]">${project.site}${project.hole}</g:link>
+					</li>
+					</g:each>
+				</ul>
 			</g:if>
 			<div style="margin: 2em">
 				<form action="${createLink(controller:'project', action:'search', params: [project: project.id])}" method="get" target="_blank">
