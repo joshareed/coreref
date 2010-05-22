@@ -152,3 +152,20 @@ a:hover {
 	float: right;
 	margin-top: -15px;
 }
+ul.horiz {
+	margin: 0px;
+	padding: 0px;
+	display: inline;
+}
+ul.horiz li {
+	display: inline;
+	list-style-type: none;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 6px;
+	padding-right: 2px;
+	border-right: 1px solid black;
+}
+ul.horiz li:last-child {
+	border-right: none;
+}

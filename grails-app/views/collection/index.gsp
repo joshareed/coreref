@@ -4,23 +4,6 @@
 		<meta name="layout" content="main" />
 		<g:javascript library="jquery.min" />
 		<style type="text/css" media="screen">
-			ul.holes {
-				margin: 0px;
-				padding: 0px;
-				display: inline;
-			}
-			ul.holes li {
-				display: inline;
-				list-style-type: none;
-				margin-left: 0px;
-				margin-right: 0px;
-				padding-left: 6px;
-				padding-right: 2px;
-				border-right: 1px solid black;
-			}
-			ul.holes li:last-child {
-				border-right: none;
-			}
 			div.entry {
 				margin-top: 1em;
 				padding: 1em 1em 0.0em 1em;
@@ -59,7 +42,7 @@
 								${leg.value[0].description}
 							</p>
 							Holes:
-							<ul class="holes">
+							<ul class="horiz">
 								<g:each in="${leg.value}" var="project">
 								<li>
 									<g:link controller="project" action="overview" params="[project: project.id]">${project.site}${project.hole}</g:link>
