@@ -3,6 +3,8 @@ package coreref
 import java.text.DecimalFormat
 
 import grails.converters.JSON
+import org.apache.lucene.store.*
+import org.apache.lucene.search.spell.*
 
 /**
  * A controller for project-related actions.
@@ -59,6 +61,7 @@ class ProjectController extends SecureController {
 	def search = {
 		withProject { project -> 
 			def results
+			def didyoumean
 
 			if (params.q) {
 				// insert into the '_searches' collection
@@ -83,6 +86,15 @@ class ProjectController extends SecureController {
 				} else {
 					query['_keywords'] = ['$all': tokens]
 				}
+				
+				// build a did you mean query
+				SpellChecker sp = new SpellChecker(FSDirectory.open(new File(servletContext.getRealPath('/lucene/' + project.id))))
+				sp.accuracy = 0.75
+				def alternate = didYouMean(sp, tokens)
+				if (alternate && alternate != tokens) {
+					didyoumean = alternate.join(' ')
+				}
+				sp.close()
 
 				// convert the results into documents for display
 				results = mongoService[params.project].findAll(query).sort(top: 1).collect { doc ->
@@ -97,8 +109,22 @@ class ProjectController extends SecureController {
 				}
 			}
 
-			return [ project: project, q: params.q , results: results]	
+			return [ project: project, q: params.q , results: results, didyoumean: didyoumean]	
 		}
+	}
+	
+	private List didYouMean(SpellChecker sp, List query) {
+		sp.accuracy = 0.75
+		def didyoumean = []
+		query.each { word ->
+			if (sp.exist(word)) {
+				didyoumean << word
+			} else {
+				def suggest = sp.suggestSimilar(word, 5)
+				didyoumean << (suggest ? suggest[0] : word)
+			}
+		}
+		return didyoumean
 	}
 	
 	def list = {

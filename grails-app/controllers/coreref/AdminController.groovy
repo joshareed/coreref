@@ -1,5 +1,8 @@
 package coreref
 
+import org.apache.lucene.store.*
+import org.apache.lucene.search.spell.*
+
 class AdminController extends SecureController {
 	def index = {
 		withProject { project ->
@@ -11,20 +14,30 @@ class AdminController extends SecureController {
 	}
 
 	def updateKeywords = {
-		long start = System.currentTimeMillis()
-		def collection = mongoService[params.project]
-		collection.find().each { doc ->
-			def tokens = []
-			['name', 'core', 'section', 'code', 'text'].each { field ->
-				if (doc.containsKey(field)) {
-					SearchUtils.tokenize(doc[field] as String, tokens)
+		withProject { project ->
+			long start = System.currentTimeMillis()
+			def dictionary = [] as Set
+			def collection = mongoService[project.id]
+			collection.find().each { doc ->
+				def tokens = []
+				['name', 'core', 'section', 'code', 'text'].each { field ->
+					if (doc.containsKey(field)) {
+						SearchUtils.tokenize(doc[field] as String, tokens)
+					}
+				}
+				if (tokens) {
+					collection.update(doc, ['$set': ['_keywords': tokens]])
+					dictionary.addAll(tokens)
 				}
 			}
-			if (tokens) {
-				collection.update(doc, ['$set': ['_keywords': tokens]])
+			if (dictionary) {
+				SpellChecker sp = new SpellChecker(FSDirectory.open(new File(servletContext.getRealPath('/lucene/' + project.id))))
+				sp.clearIndex()
+				sp.indexDictionary([ getWordsIterator: { -> return dictionary.iterator() } ] as Dictionary)
+				sp.close()
 			}
+			render "Updated keyword index of ${params.project} in ${System.currentTimeMillis() - start} ms"	
 		}
-		render "Updated keyword index of ${params.project} in ${System.currentTimeMillis() - start} ms"
 	}
 
 	def updateSeries = {

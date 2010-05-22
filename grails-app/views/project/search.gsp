@@ -54,6 +54,9 @@
 			<form action="search" method="get">
 				<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search">
 			</form>
+			<g:if test="${didyoumean != null}">
+				Did you mean: <em><g:link controller="project" action="search" params="[project: project.id, q: didyoumean]">${didyoumean}</g:link></em>?
+			</g:if>
 			<g:if test="${results != null}">
 				<div id="results">
 					<div id="total">
