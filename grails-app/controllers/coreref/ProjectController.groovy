@@ -64,18 +64,19 @@ class ProjectController extends SecureController {
 			def didyoumean
 
 			if (params.q) {
-				// insert into the '_searches' collection
-				mongoService['_searches'].insert([project: params.project, query: params.q])
-
 				// clean up the user's query
 				def q = (params.q ?: '').replaceAll(' or ', '|').replaceAll(' and ', ' ')
 
 				// if it is a number, redirect to that depth
-				if (q.isNumber()) {
-					def depth = q as double
-					def (base, offset) = getParts(depth)
-					redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
-					return
+				if (q.isNumber() || q.endsWith('m') || q.endsWith('mbsf') || q.endsWith('mblf')) {
+					def clean = q.replace('mbsf', '').replace('mblf', '').replace('m', '').trim()
+					if (clean.isNumber()) {
+						mongoService['_searches'].insert([project: params.project, query: params.q])
+						def depth = clean as double
+						def (base, offset) = getParts(depth)
+						redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
+						return	
+					}
 				}
 
 				// build a query map for mongo
@@ -107,8 +108,10 @@ class ProjectController extends SecureController {
 					r.text = doc.text ?: doc?.code?.replaceAll(',', ' ')
 					r
 				}
+				if (results) { // only insert searches that returned results
+					mongoService['_searches'].insert([project: params.project, query: params.q])
+				}
 			}
-
 			return [ project: project, q: params.q , results: results, didyoumean: didyoumean]	
 		}
 	}
