@@ -102,7 +102,7 @@ class ProjectController extends SecureController {
 					def r = [:]
 					r.top = doc.top as BigDecimal
 					if (doc.top != doc.base) r.base = doc.base as BigDecimal
-					r.title = doc.type ?: doc['class']
+					r.title = doc.name ?: doc['class']
 					def (base, offset) = getParts(r.top)
 					r.link = createLink(controller:'project', action: 'viewer', params: [depth: DEC.format(base), project: project.id]) + "#${DEC.format(offset)}"
 					r.text = doc.text ?: doc?.code?.replaceAll(',', ' ')
