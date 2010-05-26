@@ -99,7 +99,8 @@ class ProjectController extends SecureController {
 				sp.accuracy = 0.75
 				def alternate = didYouMean(sp, tokens)
 				if (alternate && alternate != tokens) {
-					didyoumean = alternate.join(' ')
+					didyoumean = params.q
+					tokens.eachWithIndex { t, i -> didyoumean = didyoumean.replaceAll(t, alternate[i]) }
 				}
 				sp.close()
 
