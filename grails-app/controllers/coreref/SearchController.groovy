@@ -25,7 +25,7 @@ class SearchController extends SecureController {
 	def text = {
 		withProject {
 			def query = [:]
-			def q = params.query ?: ''
+			def q = (params.query ?: '').replaceAll(' or ', '|').replaceAll(' and ', ' ')
 			if (q.contains('|')) {
 				query['_keywords'] = ['$in': SearchUtils.tokenize(q, [])]
 			} else {
@@ -72,11 +72,47 @@ class SearchController extends SecureController {
 
 	// renders the results as JSON or JSONP
 	def renderResults = { results ->
-		if (params.callback) {
-			render(contentType: 'application/json', text: "${params.callback}(${results as JSON})")
-		} else {
-			render(contentType: 'application/json', text: (results as JSON))
+		withFormat {
+			js {
+				if (params.callback) {
+					render(contentType: 'application/json', text: "${params.callback}(${results as JSON})")
+				} else {
+					render(contentType: 'application/json', text: (results as JSON))
+				}
+			}
+			csv {
+				render(contentType: 'text/csv', text: asCSV(results))
+			}
 		}
+	}
+	
+	private def asCSV(results) {
+		// get our set of fields
+		def fields = ['top', 'base', 'class'] as LinkedHashSet
+		results.each { doc -> doc.each { k,v -> fields << k } }
+		
+		// generate the CSV
+		def buffer = new StringBuilder()
+		fields.eachWithIndex { f, i ->
+			buffer.append('"' + f + '"')
+			if (i < fields.size() - 1)  buffer.append(',')
+		}
+		buffer.append("\n")
+		results.each { doc ->
+			fields.eachWithIndex { key, i ->
+				def value = doc[key]
+				if (value) {
+					if (value instanceof Number) {
+						buffer.append(value)
+					} else {
+						buffer.append('"' + value.replaceAll('"', '""') + '"')
+					}
+				}
+				if (i < fields.size() - 1)  buffer.append(',')
+			}
+			buffer.append("\n")
+		}
+		buffer
 	}
 
 	// performs a query and renders the results

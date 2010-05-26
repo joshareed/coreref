@@ -61,6 +61,7 @@
 				<div id="results">
 					<div id="total">
 						<strong>${results.size()}</strong> result${results.size() != 1 ? 's' : ''} for <strong>${q}</strong>
+						| <a href="${createLink(controller: 'search', action: 'text', params: [project:project.id, query: q])}.csv">Download</a>
 					</div>
 					<g:each in="${results}">
 					<div class="item">
