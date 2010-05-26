@@ -39,6 +39,22 @@ class AdminController extends SecureController {
 			render "Updated keyword index of ${params.project} in ${System.currentTimeMillis() - start} ms"	
 		}
 	}
+	
+	def updateCoverage = {
+		withProject { project ->
+			def ranges = []
+			def r
+			mongoService[project.id].findAll('class': (params.opt ?: 'Image')).sort(top: 1).each { i ->
+				if (!r || Math.floor(i.top) > r[1]) {
+					r = [Math.floor(i.top), Math.ceil(i.base)]
+					ranges << r
+				} else {
+					r[1] = Math.max(r[1], Math.ceil(i.base))
+				}
+			}
+			render ranges
+		}
+	}
 
 	def updateSeries = {
 		long start = System.currentTimeMillis()
