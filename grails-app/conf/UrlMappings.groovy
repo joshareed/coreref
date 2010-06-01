@@ -15,6 +15,7 @@ class UrlMappings {
 		
 		// project-related services
 		"/services/projects"(controller: 'project', action: 'list')
+		"/services/projects/$project?"(controller: 'project', action: 'list')
 		"/services/$project/track/$action/$top/$base?/$scale?"(controller: 'track')
 		"/services/$project/search/$action/$query?/$top?/$base?"(controller: 'search')
 		"/services/$project/config/$action"(controller: 'config')

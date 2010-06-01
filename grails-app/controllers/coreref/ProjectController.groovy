@@ -138,7 +138,11 @@ class ProjectController extends SecureController {
 	}
 	
 	def list = {
-		def results = mongoService['_projects'].findAll([:]).collect { SearchUtils.clean(it) }
+		def query = [:]
+		if (params.project) {
+			query.id = params.project
+		}
+		def results = mongoService['_projects'].findAll(query).collect { SearchUtils.clean(it) }
 		if (params.callback) {
 			render(contentType: 'application/json', text: "${params.callback}(${results as JSON})")
 		} else {
