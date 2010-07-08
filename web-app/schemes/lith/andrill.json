@@ -1,0 +1,811 @@
+{
+   "name":"AND1 Lithologies",
+   "type":"lithology",
+   "items":{
+      "gravel,1":{
+         "name":"Gravel 1",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/601.png"
+      },
+      "gravel,1,volcanic":{
+         "name":"Gravel 1, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/601v.png"
+      },
+      "conglomerate,1":{
+         "name":"Conglomerate 1",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/601.png"
+      },
+      "conglomerate,1,volcanic":{
+         "name":"Conglomerate 1, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/601v.png"
+      },
+      "gravel,2":{
+         "name":"Gravel 2",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/602.png"
+      },
+      "conglomerate,2":{
+         "name":"Conglomerate 2",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/602.png"
+      },
+      "crossbedded,conglomerate":{
+         "name":"Conglomerate, crossbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/603.png"
+      },
+      "crossbedded,gravel":{
+         "name":"Gravel, crossbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/603.png"
+      },
+      "till,diamicton":{
+         "name":"Till or diamicton",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/604.png"
+      },
+      "till,diamicton,volcanic":{
+         "name":"Till or diamicton, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/604v.png"
+      },
+      "breccia,1":{
+         "name":"Breccia 1",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/605.png"
+      },
+      "breccia,1,volcanic":{
+         "name":"Breccia 1, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/605v.png"
+      },
+      "breccia,2":{
+         "name":"Breccia 2",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/606.png"
+      },
+      "massive,sand,sandstone":{
+         "name":"Sand or Sandstone, massive",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/607.png"
+      },
+      "massive,sand,sandstone,volcanic":{
+         "name":"Sand or Sandstone, massive, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/607v.png"
+      },
+      "bedded,sand,sandstone":{
+         "name":"Sand or Sandstone, bedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/608.png"
+      },
+      "bedded,sand,sandstone,volcanic":{
+         "name":"Sand or Sandstone, bedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/608v.png"
+      },
+      "crossbedded,sand,sandstone":{
+         "name":"Sand or Sandstone, crossbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/609.png"
+      },
+      "crossbedded,sand,sandstone, volcanic":{
+         "name":"Sand or Sandstone, crossbedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/609v.png"
+      },
+      "crossbedded,sand,sandstone,2":{
+         "name":"Sand or Sandstone 2, crossbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/610.png"
+      },
+      "crossbedded,sand,sandstone,volcanic,2":{
+         "name":"Sand or Sandstone 2, crossbedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/610v.png"
+      },
+      "ripple-bedded,sand,sandstone":{
+         "name":"Sand or Sandstone, ripple-bedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/611.png"
+      },
+      "ripple-bedded,sand,sandstone,volcanic":{
+         "name":"Sand or Sandstone, ripple-bedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/611v.png"
+      },
+      "argillaceous,shaly,sandstone":{
+         "name":"Sandstone, argillaceous or shaley",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/612.png"
+      },
+      "argillaceous,shaly,sandstone,volcanic":{
+         "name":"Sandstone, argillaceous or shaley, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/612v.png"
+      },
+      "calcareous,sandstone":{
+         "name":"Sandstone, calcareous",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/613.png"
+      },
+      "calcareous,sandstone,volcanic":{
+         "name":"Sandstone, calcareous, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/613v.png"
+      },
+      "dolomitic,sandstone":{
+         "name":"Sandstone, dolomitic",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/614.png"
+      },
+      "dolomitic,sandstone,volcanic":{
+         "name":"Sandstone, dolomitic, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/614v.png"
+      },
+      "loess":{
+         "name":"Loess",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/615.png"
+      },
+      "silt,siltstone,silty,shale":{
+         "name":"Silt, Siltstone, or Silty Shale",
+         "color":"rgb(169,169,169)",
+         "pattern":"patterns/616.png"
+      },
+      "silt,siltstone,silty,shale,volcanic":{
+         "name":"Silt, Siltstone, or Silty Shale, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/616v.png"
+      },
+      "calcareous,siltstone":{
+         "name":"Siltstone, calcareous",
+         "color":"rgb(169,169,200)",
+         "pattern":"patterns/617.png"
+      },
+      "calcareous,siltstone,volcanic":{
+         "name":"Siltstone, calcareous, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/617v.png"
+      },
+      "dolomitic,siltstone":{
+         "name":"Dolomitic Siltstone",
+         "color":"rgb(169,169,200)",
+         "pattern":"patterns/618.png"
+      },
+      "dolomitic,siltstone,volcanic":{
+         "name":"Dolomitic Siltstone, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/618v.png"
+      },
+      "sandy,silty,shale":{
+         "name":"Shale, sandy or silty",
+         "color":"rgb(105,105,105)",
+         "pattern":"patterns/619.png"
+      },
+      "sandy,silty,shale,volcanic":{
+         "name":"Shale, sandy or silty, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/619v.png"
+      },
+      "clay":{
+         "name":"Clay",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/620.png"
+      },
+      "shale":{
+         "name":"Shale",
+         "color":"rgb(105,105,105)",
+         "pattern":"patterns/620.png"
+      },
+      "shale,volcanic":{
+         "name":"Shale, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/620v.png"
+      },
+      "biosiliceous,mud":{
+         "name":"Biosiliceous Mud",
+         "color":"rgb(102,153,102)",
+         "pattern":"patterns/621.png"
+      },
+      "biosiliceous,mud":{
+         "name":"Mud, biosiliceous",
+         "color":"rgb(102,153,102)",
+         "pattern":"patterns/621.png"
+      },
+      "dolomitic,shale":{
+         "name":"Shale, dolomitic",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/622.png"
+      },
+      "dolomitic,shale,volcanic":{
+         "name":"Shale, dolomitic, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/622v.png"
+      },
+      "calcareous,mud":{
+         "name":"Mud, calcareous",
+         "color":"rgb(102,153,102)",
+         "pattern":"patterns/623.png"
+      },
+      "calcareous,mud":{
+         "name":"Calcareous mud",
+         "color":"rgb(102,153,102)",
+         "pattern":"patterns/623.png"
+      },
+      "carbonaceous,shale":{
+         "name":"Shale, carbonaceous",
+         "color":"rgb(50,50,50)",
+         "pattern":"patterns/624.png"
+      },
+      "carbonaceous,shale,volcanic":{
+         "name":"Shale, carbonaceous, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/624v.png"
+      },
+      "oil,shale":{
+         "name":"Oil Shale",
+         "color":"rgb(50,50,50)",
+         "pattern":"patterns/625.png"
+      },
+      "oil,shale":{
+         "name":"Shale, oil",
+         "color":"rgb(50,50,50)",
+         "pattern":"patterns/625.png"
+      },
+      "chalk":{
+         "name":"Chalk",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/626.png"
+      },
+      "limestone":{
+         "name":"Limestone",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/627.png"
+      },
+      "clastic,limestone":{
+         "name":"Limestone, clastic",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/628.png"
+      },
+      "fossiliferous,clastic,limestone":{
+         "name":"Limestone, Fossiliferous Clastic ",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/629.png"
+      },
+      "nodular,irregularly,bedded,limestone":{
+         "name":"Limestone, nodular or irregularly bedded ",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/630.png"
+      },
+      "limestone,irregular,burrow,fillings,of,saccharoidal,dolomite":{
+         "name":"Limestone, Irregular (burrow) Fillings of Saccharoidal Dolomite",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/631.png"
+      },
+      "crossbedded,limestone":{
+         "name":"Limestone, crossbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/632.png"
+      },
+      "cherty,crossbedded,limestone":{
+         "name":"Limestone, Cherty Crossbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/633.png"
+      },
+      "cherty,sandy,crossbedded,clastic,limestone":{
+         "name":"Limestone, cherty and sandy crossbedded clastic",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/634.png"
+      },
+      "oolitic,limestone":{
+         "name":"Limestone, oolitic",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/635.png"
+      },
+      "sandy,limestone":{
+         "name":"Limestone, sandy",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/636.png"
+      },
+      "silty,limestone":{
+         "name":"Limestone, silty",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/637.png"
+      },
+      "argillaceous,shaly,limestone":{
+         "name":"Limestone, argillaceous or shaly",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/638.png"
+      },
+      "cherty,limestone,1":{
+         "name":"Limestone 1, cherty",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/639.png"
+      },
+      "cherty,limestone,2":{
+         "name":"Limestone 2, cherty",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/640.png"
+      },
+      "dolomitic,limestone,limy,dolomite":{
+         "name":"Limestone, dolomitic, or Dolomite, limy",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/641.png"
+      },
+      "dolomitic,limestone,limy,dolomite":{
+         "name":"Dolomite, limy, or Limestone, dolomitic",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/641.png"
+      },
+      "dolomite":{
+         "name":"Dolomite",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/642.png"
+      },
+      "crossbedded,dolomite":{
+         "name":"Dolomite, crossbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/643.png"
+      },
+      "oolitic,dolomite":{
+         "name":"Dolomite, oolitic",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/644.png"
+      },
+      "sandy,dolomite":{
+         "name":"Dolomite, sandy",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/645.png"
+      },
+      "silty,dolomite":{
+         "name":"Dolomite, silty",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/646.png"
+      },
+      "argillaceous,shaly,dolomite":{
+         "name":"Dolomite, argillaceous or shaley",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/647.png"
+      },
+      "cherty,dolomite":{
+         "name":"Dolomite, cherty",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/648.png"
+      },
+      "biosiliceous,ooze":{
+         "name":"Biosiliceous Ooze",
+         "color":"rgb(255,255,102)",
+         "pattern":"patterns/649.png"
+      },
+      "biosiliceous,ooze":{
+         "name":"Ooze, biosiliceous",
+         "color":"rgb(204,255,153)",
+         "pattern":"patterns/649.png"
+      },
+      "bedded,chert,2":{
+         "name":"Chert 2, bedded",
+         "color":"rgb(204,255,153)",
+         "pattern":"patterns/650.png"
+      },
+      "fossiliferous,bedded,chert":{
+         "name":"Chert, fossiliferous bedded",
+         "color":"rgb(204,255,153)",
+         "pattern":"patterns/651.png"
+      },
+      "fossiliferous,rock":{
+         "name":"Fossiliferous Rock",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/652.png"
+      },
+      "diatomaceous,rock":{
+         "name":"Diatomaceous Rock",
+         "color":"rgb(255,255,102)",
+         "pattern":"patterns/653.png"
+      },
+      "diatomaceous,ooze":{
+         "name":"Diatomaceous Ooze",
+         "color":"rgb(255,255,102)",
+         "pattern":"patterns/653.png"
+      },
+      "diatomaceous,ooze":{
+         "name":"Ooze, diatomaceous",
+         "color":"rgb(255,255,102)",
+         "pattern":"patterns/653.png"
+      },
+      "sandstone,subgraywacke":{
+         "name":"Sandstone, subgraywacke",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/654.png"
+      },
+      "sandstone,subgraywacke,volcanic":{
+         "name":"Sandstone, subgraywacke, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/654v.png"
+      },
+      "sandstone,crossbedded,subgraywacke":{
+         "name":"Sandstone,crossbedded subgraywacke",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/655.png"
+      },
+      "sandstone,crossbedded,subgraywacke,volcanic":{
+         "name":"Sandstone,crossbedded subgraywacke, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/655v.png"
+      },
+      "sandstone,ripple-bedded,subgraywacke":{
+         "name":"Sandstone, ripple-bedded subgraywacke",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/656.png"
+      },
+      "sandstone,ripple-bedded,subgraywacke,volcanic":{
+         "name":"Sandstone, ripple-bedded subgraywacke, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/656v.png"
+      },
+      "peat":{
+         "name":"Peat",
+         "color":"rgb(255,255,255)",
+         "pattern":"patterns/657.png"
+      },
+      "coal":{
+         "name":"Coal",
+         "color":"rgb(255,255,255)",
+         "pattern":"patterns/658.png"
+      },
+      "bony,coal,impure,coal":{
+         "name":"Coal, bony or impure",
+         "color":"rgb(255,255,255)",
+         "pattern":"patterns/659.png"
+      },
+      "underclay":{
+         "name":"Underclay",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/660.png"
+      },
+      "flint,clay":{
+         "name":"Flint Clay",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/661.png"
+      },
+      "bentonite":{
+         "name":"Bentonite",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/662.png"
+      },
+      "glauconite":{
+         "name":"Glauconite",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/663.png"
+      },
+      "limonite":{
+         "name":"Limonite",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/664.png"
+      },
+      "siderite":{
+         "name":"Siderite",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/665.png"
+      },
+      "phosphatic,rock":{
+         "name":"Phosphatic Rock",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/666.png"
+      },
+      "gypsum":{
+         "name":"Gypsum",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/667.png"
+      },
+      "salt":{
+         "name":"Salt",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/668.png"
+      },
+      "interbedded,sandstone,siltstone":{
+         "name":"Siltstone and Sandstone, interbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/669.png"
+      },
+      "interbedded,sandstone,siltstone,volcanic":{
+         "name":"Siltstone and Sandstone, interbedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/669v.png"
+      },
+      "interbedded,sandstone,siltstone":{
+         "name":"Sandstone and Siltstone, interbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/669.png"
+      },
+      "interbedded,sandstone,shale":{
+         "name":"Sandstone and Shale, interbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/670.png"
+      },
+      "interbedded,sandstone,shale":{
+         "name":"Shale and Sandstone, interbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/670.png"
+      },
+      "interbedded,sandstone,shale,volcanic":{
+         "name":"Shale and Sandstone, interbedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/670v.png"
+      },
+      "interbedded,ripple-bedded,sandstone,shale":{
+         "name":"Shale and Ripple-bedded Sandstone, interbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/671.png"
+      },
+      "interbedded,ripple-bedded,sandstone,shale":{
+         "name":"Ripple-bedded Sandstone and Shale, interbedded",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/671.png"
+      },
+      "interbedded,ripple-bedded,sandstone,shale,volcanic":{
+         "name":"Ripple-bedded Sandstone and Shale, interbedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/671v.png"
+      },
+      "interbedded,ripple-bedded,sandstone,shale,volcanic":{
+         "name":"Shale and Ripple-bedded Sandstone, interbedded, volcanic",
+         "color":"rgb(243,132,0)",
+         "pattern":"patterns/671v.png"
+      },
+      "interbedded,shale,silty,limestone,shale,dominant":{
+         "name":"Silty Limestone and Shale, interbedded (shale dominant)",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/672.png"
+      },
+      "interbedded,shale,silty,limestone,shale,dominant":{
+         "name":"Shale and Silty Limestone, interbedded (shale dominant)",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/672.png"
+      },
+      "interbedded,shale,limestone,shale,dominant,1":{
+         "name":"Limestone and Shale, interbedded (shale dominant) 1",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/673.png"
+      },
+      "interbedded,shale,limestone,shale,dominant,1":{
+         "name":"Shale and Limestone, interbedded (shale dominant) 1",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/673.png"
+      },
+      "interbedded,shale,limestone,shale,dominant,2":{
+         "name":"Shale and Limestone, interbedded (shale dominant) 2",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/674.png"
+      },
+      "interbedded,shale,limestone,shale,dominant,2":{
+         "name":"Limestone and Shale, interbedded (shale dominant) 2",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/674.png"
+      },
+      "interbedded,calcareous,shale,limestone,shale,dominant":{
+         "name":"Calcareous Shale and Limestone, interbedded (shale dominant)",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/675.png"
+      },
+      "interbedded,calcareous,shale,limestone,shale,dominant":{
+         "name":"Limestone and Calcareous Shale, interbedded (shale dominant)",
+         "color":"rgb(105,105,160)",
+         "pattern":"patterns/675.png"
+      },
+      "interbedded,silty,limestone,shale":{
+         "name":"Silty Limestone and Shale, interbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/676.png"
+      },
+      "interbedded,silty,limestone,shale":{
+         "name":"Shale and Silty Limestone, interbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/676.png"
+      },
+      "interbedded,limestone,shale,1":{
+         "name":"Shale and Limestone, interbedded 1",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/677.png"
+      },
+      "interbedded,limestone,shale,1":{
+         "name":"Limestone and Shale, interbedded 1",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/677.png"
+      },
+      "interbedded,limestone,shale,2":{
+         "name":"Limestone and Shale, interbedded 2",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/678.png"
+      },
+      "interbedded,limestone,shale,2":{
+         "name":"Shale and Limestone, interbedded 2",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/678.png"
+      },
+      "interbedded,limestone,shale,limestone,dominant":{
+         "name":"Limestone and Shale, interbedded (limestone dominant)",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/679.png"
+      },
+      "interbedded,limestone,shale,limestone,dominant":{
+         "name":"Shale and Limestone, interbedded (limestone dominant)",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/679.png"
+      },
+      "interbedded,limestone,calcareous,shale":{
+         "name":"Limestone and Calcareous Shale, interbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/680.png"
+      },
+      "interbedded,limestone,calcareous,shale":{
+         "name":"Calcareous Shale and Limestone, interbedded",
+         "color":"rgb(102,204,255)",
+         "pattern":"patterns/680.png"
+      },
+      "metamorphism":{
+         "name":"Metamorphism",
+         "color":"rgb(160,32,240)",
+         "pattern":"patterns/701.png"
+      },
+      "quartzite":{
+         "name":"Quartzite",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/702.png"
+      },
+      "slate":{
+         "name":"Slate",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/703.png"
+      },
+      "schistose,gneissoid,granite":{
+         "name":"Granite, schistose or gneissoid",
+         "color":"rgb(255,0,0)",
+         "pattern":"patterns/704.png"
+      },
+      "schist":{
+         "name":"Schist",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/705.png"
+      },
+      "mixed":{
+         "name":"Mixed",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/706.png"
+      },
+      "schist,gneiss":{
+         "name":"Schist and Gneiss",
+         "color":"rgb(153,204,102)",
+         "pattern":"patterns/707.png"
+      },
+      "gneiss":{
+         "name":"Gneiss",
+         "color":"rgb(255,196,0)",
+         "pattern":"patterns/708.png"
+      },
+      "contorted,gneiss":{
+         "name":"Gneiss, contorted",
+         "color":"rgb(255,196,0)",
+         "pattern":"patterns/709.png"
+      },
+      "soapstone,talc,serpentinite":{
+         "name":"Soapstone, Talc and Serpentinite",
+         "color":"rgb(160,32,240)",
+         "pattern":"patterns/710.png"
+      },
+      "tuffaceous,rock":{
+         "name":"Tuffaceous Rock",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/711.png"
+      },
+      "crystal,tuff":{
+         "name":"Tuff, crystal",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/712.png"
+      },
+      "devitrified,tuff":{
+         "name":"Tuff, devitrified",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/713.png"
+      },
+      "volcanic,breccia,tuff":{
+         "name":"Volcanic Breccia and Tuff",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/714.png"
+      },
+      "volcanic,breccia,agglomerate":{
+         "name":"Volcanic Breccia and Agglomerate",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/715.png"
+      },
+      "zeolitic,rock":{
+         "name":"Zeolitic Rock",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/716.png"
+      },
+      "basaltic,flows":{
+         "name":"Basaltic Flows",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/717.png"
+      },
+      "granite,2":{
+         "name":"Granite 2",
+         "color":"rgb(255,0,0)",
+         "pattern":"patterns/719.png"
+      },
+      "banded,igneous,rock":{
+         "name":"Banded Igneous Rock",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/720.png"
+      },
+      "igneous,rock,1":{
+         "name":"Igneous Rock 1",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/721.png"
+      },
+      "igneous,rock,2":{
+         "name":"Igneous Rock 2",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/722.png"
+      },
+      "igneous,rock,3":{
+         "name":"Igneous Rock 3",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/723.png"
+      },
+      "igneous,rock,4":{
+         "name":"Igneous Rock 4",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/724.png"
+      },
+      "igneous,rock,5":{
+         "name":"Igneous Rock 5",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/725.png"
+      },
+      "igneous,rock,6":{
+         "name":"Igneous Rock 6",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/726.png"
+      },
+      "igneous,rock,7":{
+         "name":"Igneous Rock 7",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/727.png"
+      },
+      "igneous,rock,8":{
+         "name":"Igneous Rock 8",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/728.png"
+      },
+      "porphyritic,rock,1":{
+         "name":"Porphyritic Rock 1",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/729.png"
+      },
+      "porphyritic,rock,2":{
+         "name":"Porphyritic Rock 2",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/730.png"
+      },
+      "vitrophyre":{
+         "name":"Vitrophyre",
+         "color":"rgb(255,192,203)",
+         "pattern":"patterns/731.png"
+      },
+      "quartz":{
+         "name":"Quartz",
+         "color":"rgb(160,82,45)",
+         "pattern":"patterns/732.png"
+      },
+      "ore":{
+         "name":"Ore",
+         "color":"rgb(255,255,255)",
+         "pattern":"patterns/733.png"
+      }
+   }
+}

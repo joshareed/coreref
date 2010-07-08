@@ -60,6 +60,33 @@ class ProjectController extends SecureController {
 	}
 
 	/**
+	 * Show the HTML5 canvas viewer page for the requested project.
+	 *
+	 * Note: SECURE
+	 */
+	def viewer2 = {
+		withProject { project ->
+			// handle no depth
+			if (params.depth == null) {
+				def (base, offset) = getParts(getMin(params.project))
+				redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
+				return
+			}
+
+			// check to see if depth is multiple of 5
+			def depth = params.depth as double
+			if (depth % 5 > 0) {
+				def (base, offset) = getParts(depth)
+				redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
+				return
+			}
+
+			// if we made it here, the depth is a multiple of 5 so just pass through
+			return [ project: project, depth: params.depth ]
+		}
+	}
+
+	/**
 	 * Perform a keyword search within the requested project.
 	 *
 	 * Note: SECURE

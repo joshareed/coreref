@@ -5,14 +5,14 @@ class UrlMappings {
 		"/contact"(view: '/contact.gsp')
 		"/help"(view: '/help.gsp')
 		"500"(view: '/error.gsp')
-		
+
 		// admin area
 		"/admin/issues"(controller: 'admin', action: 'issues')
 		"/admin/$project/$action?/$opt?"(controller: 'admin')
-		
+
 		// projects area
 		"/projects/$project/$action?/$depth?"(controller: 'project')
-		
+
 		// project-related services
 		"/services/projects"(controller: 'project', action: 'list')
 		"/services/projects/$project?"(controller: 'project', action: 'list')
@@ -21,10 +21,10 @@ class UrlMappings {
 		"/services/$project/config/$action"(controller: 'config')
 		"/services/$project/corelyzer/$action"(controller: 'corelyzer')
 		"/services/$project/visualizer/$action?/$opt?"(controller: 'visualizer')
-		
+
 		// collections area
 		"/collection/$collection"(controller: 'collection', action: 'index')
-		
+
 		// viewer-related services
 		"/services/resources/$action/$opt?"(controller: 'resources')
 		"/services/recent/$action/$project?"(controller: 'recent')
