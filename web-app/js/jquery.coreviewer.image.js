@@ -50,7 +50,7 @@
 			for (var i = 0; i < images.length; i++) {
 				var image = images[i];
 				if (image.top <= (base + width) && image.base >= (top - width)) {
-					var url = baseURL + image.url;
+					var url = (baseURL + image.url).replace('/r0/', '/r2/');
 					if (cache[url] && cache[url].image.width > 0) {
 						drawImage(cache[url], scale);
 					} else {

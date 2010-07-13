@@ -41,14 +41,20 @@
 						return false;
 					});
 
-					$('.zoom input').click(function() {
-						viewer.setZoom($(this).attr('value') * 2000);
+					$('.jump input').keyup(function(e) {
+						if (e.keyCode == '13') {
+							e.preventDefault();
+							var depth = $('#jumpField').val();
+							if (!isNaN(depth - 0)) {
+								viewer.lookAt(-depth * viewer.getScale(), viewer.height() / 2);
+							}
+						}
 					});
 
-					$('.jump button').click(function() {
-						var depth = $('#jumpField').val();
-						viewer.lookAt(-depth * viewer.getScale(), viewer.height() / 2);
-					});
+					var depth = ${params.depth};
+					if (depth) {
+						viewer.pan(-depth * viewer.getScale(), 0);
+					}
 				});
 			</script>
 			<style type="text/css" media="screen">
@@ -90,27 +96,31 @@
 				}
 				.jump {
 					display: inline;
+					margin-right: 5px;
+				}
+				.jump input {
+					border: 1px solid #9A9A9A;
 				}
 			</style>
 		</head>
 		<body>
+			<div id="tools">
+				<div class="jump">
+					Jump to: <input type="text" id="jumpField"/>
+				</div>
+				<span class="tool">
+					<g:link controller="project" action="viewer" params="[project: project.id, depth: params.depth]">Standard Viewer</g:link>
+				</span>
+				<span class="tool">
+					<a href="${createLinkTo(dir:'help')}" target="_blank">Help</a>
+				</span>
+			</div>
+			<h1 style="margin: 15px">
+				<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>
+			</h1>
 			<div class="controls">
 				<div class="center-column">
-					<div class="zoom">
-						-
-						<input type="radio" name="zoom" value="1" id="zoom1" checked="checked"/>
-						<input type="radio" name="zoom" value="2" id="zoom2"/>
-						<input type="radio" name="zoom" value="3" id="zoom3"/>
-						<input type="radio" name="zoom" value="4" id="zoom4"/>
-						<input type="radio" name="zoom" value="5" id="zoom5"/>
-						+
-					</div>
-					<span style="margin: 10px">|</span>
-					<div class="jump">
-						Jump to:
-						<input type="text" id="jumpField"/>
-						<button>Go</button>
-					</div>
+					&nbsp;
 				</div>
 				<div class="left-column">
 					<a href="javascript:void(0);" class="panLeft">&laquo;</a>
@@ -119,7 +129,7 @@
 					<a href="javascript:void(0);" class="panRight">&raquo;</a>
 				</div>
 			</div>
-			<div id="viewer" style="height: 400px; border: 1px solid black; clear: both">
+			<div id="viewer" style="height: 600px; border: 3px solid #CC0000; clear: both">
 				Your browser does not support the core viewer. Sorry.
 			</div>
 		</body>

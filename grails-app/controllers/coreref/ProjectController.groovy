@@ -64,20 +64,12 @@ class ProjectController extends SecureController {
 	 *
 	 * Note: SECURE
 	 */
-	def viewer2 = {
+	def experimental = {
 		withProject { project ->
 			// handle no depth
 			if (params.depth == null) {
-				def (base, offset) = getParts(getMin(params.project))
-				redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
-				return
-			}
-
-			// check to see if depth is multiple of 5
-			def depth = params.depth as double
-			if (depth % 5 > 0) {
-				def (base, offset) = getParts(depth)
-				redirect(url: createLink(controller: 'project', action: 'viewer', params: [project: params.project, depth: DEC.format(base)]) + "#${DEC.format(offset)}")
+				def depth = getMin(params.project)
+				redirect(url: createLink(controller: 'project', action: 'experimental', params: [project: params.project, depth: depth]))
 				return
 			}
 
