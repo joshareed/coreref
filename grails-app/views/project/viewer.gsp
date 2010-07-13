@@ -119,6 +119,9 @@
 			<span class="tool">
 				<a href="${createLinkTo(dir:'help')}" target="_blank">Help</a>
 			</span>
+			<span class="tool">
+				<g:link controller="project" action="experimental" params="[project: project.id, depth: params.depth]">*</g:link>
+			</span>
 		</div>
 		<h1 style="margin: 15px">
 			<g:link controller="project" action="overview" params="[project: project.id]">${project.name}</g:link>
