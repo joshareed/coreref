@@ -50,7 +50,6 @@
 						</li>
 						<li>
 							<a href="${createLink(controller:'project', action:'overview', params: [project: 'and2-2a'])}">Southern McMurdo Sound (SMS)</a>
-							<img id="secure" src="${resource(dir:'images',file:'secure.png')}" alt="Requires a Password" />
 						</li>
 					</ul>
 				</li>
