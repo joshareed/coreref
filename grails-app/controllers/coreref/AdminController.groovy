@@ -74,7 +74,7 @@ class AdminController extends SecureController {
 		withProject { project ->
 			// query our images and figure out our depth range
 			def images = mongoService[project.id].findAll('class': 'Image').sort(top: 1).collect { it }
-			def base = Math.ceil(images.last().base / 10) * 10 as int
+			int base = (int) (Math.ceil(images.last().base / 10) * 10)
 			
 			// build our models
 			def container = new DefaultContainer()
@@ -93,12 +93,12 @@ class AdminController extends SecureController {
 			scene.validate()
 			
 			// our overview image
-			def overview = new BufferedImage((int) (15 * (base / 10)), (int) 500, BufferedImage.TYPE_INT_ARGB)
+			def overview = new BufferedImage((int) (15 * Math.floor(base / 10)), (int) 500, BufferedImage.TYPE_INT_ARGB)
 			
 			// render each meter
 			for (int i = 0; i < base; i++) {
-				int row = i % 10
-				int col = i / 10
+				int row = (int) Math.floor(i % 10)
+				int col = (int) Math.floor(i / 10)
 				RasterGraphics graphics = new RasterGraphics((int) scene.contentSize.width, 1000, true, Color.blue)
 				scene.renderContents(graphics, new Rectangle2D.Double(0, i * 1000, scene.contentSize.width, 1000))
 				def image = graphics.image
@@ -115,8 +115,8 @@ class AdminController extends SecureController {
 			}
 			
 			// write out
-			response.contentType = 'image/png'
-			ImageIO.write(overview, 'png', response.outputStream)
+			response.contentType = 'image/jpeg'
+			ImageIO.write(overview, 'jpeg', response.outputStream)
 			response.outputStream.close()
 		}
 	}
