@@ -117,6 +117,7 @@ class AdminController extends SecureController {
 			// write out
 			response.contentType = 'image/png'
 			ImageIO.write(overview, 'png', response.outputStream)
+			response.outputStream.close()
 		}
 	}
 

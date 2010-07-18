@@ -73,6 +73,11 @@ abstract class SecureController {
 			}
 		}
 
-		return closure(project)
+		try {
+			return closure(project)
+		} catch (e) {
+			e.printStackTrace()
+			throw e
+		} 
 	}
 }
