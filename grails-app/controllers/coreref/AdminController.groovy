@@ -73,7 +73,7 @@ class AdminController extends SecureController {
 	def updateHoleView = {
 		withProject { project ->
 			// query our images and figure out our depth range
-			def images = mongoService[project.id].findAll('class': 'Image').sort(top: 1).collect { it }
+			def images = mongoService[project.id].findAll('class': 'Image', 'type': 'split').sort(top: 1).collect { it }
 			int base = (int) (Math.ceil(images.last().base / 10) * 10)
 			
 			// build our models
