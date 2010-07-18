@@ -113,14 +113,40 @@ class AdminController extends SecureController {
 				graphics.dispose()
 			}
 			
-			// write out
+			// write 
+			def tmp = File.createTempFile("overviewtmp", ".png")
 			try {
-				response.contentType = 'image/png'
-				ImageIO.write(overview, 'png', response.outputStream)
-				response.outputStream.close()
+				ImageIO.write(overview, 'png', tmp)
 			} catch (e) {
+				println "************"
 				e.printStackTrace()
 			}
+			writeFile(tmp)
+		}
+	}
+	
+	// caches the rendered image for later re-use
+	def writeFile = { file ->
+		// set up our content type
+		if (file.name.endsWith('.jpeg')) {
+			response.contentType = 'image/jpeg'
+		} else if (file.name.endsWith('.png')) {
+			response.contentType = 'image/png'
+		} else {
+			println "Unknown content type for ${file.name}"
+		}
+
+		// setup some headers
+		def nowPlusDay = new Date().time + 86400000
+		response.addHeader("Last-Modified", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date(file.lastModified())))
+		response.addHeader("Expires", String.format('%ta, %<te %<tb %<tY %<tH:%<tM:%<tS %<tZ', new Date(nowPlusDay)))
+		response.addHeader("Cache-Control", "max-age=86400000, must-revalidate")
+
+		// write the file
+		try {
+			file.withInputStream { response.outputStream << it }
+		} catch (e) {
+			// ignore connection reset errors
 		}
 	}
 
