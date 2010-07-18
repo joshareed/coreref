@@ -1,7 +1,21 @@
 package coreref
 
+import java.awt.Color
+import java.awt.geom.AffineTransform
+import java.awt.geom.Rectangle2D
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
 import org.apache.lucene.store.*
 import org.apache.lucene.search.spell.*
+
+import org.andrill.coretools.Platform
+import org.andrill.coretools.graphics.RasterGraphics
+import org.andrill.coretools.model.ModelManager
+import org.andrill.coretools.model.DefaultContainer
+import org.andrill.coretools.scene.DefaultScene
+import org.andrill.coretools.geology.ui.*
+import org.andrill.util.image.ImageMagick
 
 class AdminController extends SecureController {
 	def index = {
@@ -53,6 +67,56 @@ class AdminController extends SecureController {
 				}
 			}
 			render ranges
+		}
+	}
+	
+	def updateHoleView = {
+		withProject { project ->
+			// query our images and figure out our depth range
+			def images = mongoService[project.id].findAll('class': 'Image').sort(top: 1).collect { it }
+			def base = Math.ceil(images.last().base / 10) * 10 as int
+			
+			// build our models
+			def container = new DefaultContainer()
+			ModelManager models = Platform.getService(ModelManager.class)
+			images.each { doc ->
+				def model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc.url.replace('r0', 'r2')]);
+				if (model) { container.add(model) }
+			}
+			
+			// build our scene
+			def scene = new DefaultScene()
+			scene.setRenderHint('borders', 'false')
+			scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
+			scene.models = container
+			scene.scalingFactor = 1000
+			scene.validate()
+			
+			// our overview image
+			def overview = new BufferedImage((int) (15 * (base / 10)), (int) 500, BufferedImage.TYPE_INT_ARGB)
+			
+			// render each meter
+			for (int i = 0; i < base; i++) {
+				int row = i % 10
+				int col = i / 10
+				RasterGraphics graphics = new RasterGraphics((int) scene.contentSize.width, 1000, true, Color.blue)
+				scene.renderContents(graphics, new Rectangle2D.Double(0, i * 1000, scene.contentSize.width, 1000))
+				def image = graphics.image
+				int w = image.width / 2
+				for (int p = 0; p < 50; p++) {
+					int px = image.getRGB(w, p*20)
+					for (int j = 0; j < 13; j++) {
+						overview.setRGB(col * 15 + j, (row * 50) + p, px)
+					}
+					overview.setRGB(col * 15 + 13, (row * 50) + p, (int) (col % 5 == 4 ? 0xFF00FF00 : 0xFFFFFF00))
+					overview.setRGB(col * 15 + 14, (row * 50) + p, (int) (col % 5 == 4 ? 0xFF00FF00 : 0xFFFFFF00))
+				}
+				graphics.dispose()
+			}
+			
+			// write out
+			response.contentType = 'image/png'
+			ImageIO.write(overview, 'png', response.outputStream)
 		}
 	}
 
