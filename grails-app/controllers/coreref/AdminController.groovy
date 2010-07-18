@@ -105,19 +105,22 @@ class AdminController extends SecureController {
 				int w = image.width / 2
 				for (int p = 0; p < 50; p++) {
 					int px = image.getRGB(w, p*20)
-					for (int j = 0; j < 13; j++) {
+					for (int j = 0; j < 14; j++) {
 						overview.setRGB(col * 15 + j, (row * 50) + p, px)
 					}
-					overview.setRGB(col * 15 + 13, (row * 50) + p, (int) (col % 5 == 4 ? 0xFF00FF00 : 0xFFFFFF00))
-					overview.setRGB(col * 15 + 14, (row * 50) + p, (int) (col % 5 == 4 ? 0xFF00FF00 : 0xFFFFFF00))
+					overview.setRGB(col * 15 + 14, (row * 50) + p, (int) 0xFFFFFFFF)
 				}
 				graphics.dispose()
 			}
 			
 			// write out
-			response.contentType = 'image/jpeg'
-			ImageIO.write(overview, 'jpeg', response.outputStream)
-			response.outputStream.close()
+			try {
+				response.contentType = 'image/png'
+				ImageIO.write(overview, 'png', response.outputStream)
+				response.outputStream.close()
+			} catch (e) {
+				e.printStackTrace()
+			}
 		}
 	}
 
