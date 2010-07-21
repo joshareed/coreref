@@ -18,6 +18,8 @@ import org.andrill.coretools.geology.ui.*
 import org.andrill.util.image.ImageMagick
 
 class AdminController extends SecureController {
+	static def cacheDir
+
 	def index = {
 		withProject { project ->
 			return [
@@ -50,10 +52,10 @@ class AdminController extends SecureController {
 				sp.indexDictionary([ getWordsIterator: { -> return dictionary.iterator() } ] as Dictionary)
 				sp.close()
 			}
-			render "Updated keyword index of ${params.project} in ${System.currentTimeMillis() - start} ms"	
+			render "Updated keyword index of ${params.project} in ${System.currentTimeMillis() - start} ms"
 		}
 	}
-	
+
 	def updateCoverage = {
 		withProject { project ->
 			def ranges = []
@@ -69,13 +71,27 @@ class AdminController extends SecureController {
 			render ranges
 		}
 	}
-	
+
 	def updateHoleView = {
+		int COLUMN_WIDTH = 15
+		int COLUMN_HEIGHT = 500
+		double SCALING_FACTOR = 500
 		withProject { project ->
+			// make sure we have a cache directory
+			if (!cacheDir || !cacheDir.exists()) {
+				def temp = File.createTempFile("cache", "")
+				cacheDir = temp.parentFile
+				temp.delete()
+			}
+
+			// check the cache
+			def png = new File(cacheDir, "${params.project}-overview.png")
+			if (png.exists()) { return writeFile(png) }
+
 			// query our images and figure out our depth range
 			def images = mongoService[project.id].findAll('class': 'Image', 'type': 'split').sort(top: 1).collect { it }
 			int base = (int) (Math.ceil(images.last().base / 10) * 10)
-			
+
 			// build our models
 			def container = new DefaultContainer()
 			ModelManager models = Platform.getService(ModelManager.class)
@@ -83,48 +99,43 @@ class AdminController extends SecureController {
 				def model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc.url.replace('r0', 'r2')]);
 				if (model) { container.add(model) }
 			}
-			
+
 			// build our scene
 			def scene = new DefaultScene()
 			scene.setRenderHint('borders', 'false')
 			scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
 			scene.models = container
-			scene.scalingFactor = 1000
+			scene.scalingFactor = SCALING_FACTOR
 			scene.validate()
-			
+
 			// our overview image
-			def overview = new BufferedImage((int) (15 * Math.floor(base / 10)), (int) 500, BufferedImage.TYPE_INT_ARGB)
-			
+			def overview = new BufferedImage((int) (COLUMN_WIDTH * Math.floor(base / 10)), COLUMN_HEIGHT, BufferedImage.TYPE_INT_ARGB)
+
 			// render each meter
 			for (int i = 0; i < base; i++) {
 				int row = (int) Math.floor(i % 10)
 				int col = (int) Math.floor(i / 10)
-				RasterGraphics graphics = new RasterGraphics((int) scene.contentSize.width, 1000, true, Color.blue)
-				scene.renderContents(graphics, new Rectangle2D.Double(0, i * 1000, scene.contentSize.width, 1000))
+				RasterGraphics graphics = new RasterGraphics((int) scene.contentSize.width, (int) Math.ceil(SCALING_FACTOR), true, Color.blue)
+				scene.renderContents(graphics, new Rectangle2D.Double(0, i * SCALING_FACTOR, scene.contentSize.width, SCALING_FACTOR))
 				def image = graphics.image
-				int w = image.width / 2
-				for (int p = 0; p < 50; p++) {
-					int px = image.getRGB(w, p*20)
-					for (int j = 0; j < 14; j++) {
-						overview.setRGB(col * 15 + j, (row * 50) + p, px)
+				int steps = COLUMN_HEIGHT / 10
+				int perStep = 10 * SCALING_FACTOR / COLUMN_HEIGHT
+				for (int p = 0; p < steps; p++) {
+					for (int j = 0; j < COLUMN_WIDTH - 1; j++) {
+						int px = image.getRGB((int) (image.width * ((double) j / (double) COLUMN_WIDTH)), p*perStep)
+						overview.setRGB(col * COLUMN_WIDTH + j, (row * steps) + p, px)
 					}
-					overview.setRGB(col * 15 + 14, (row * 50) + p, (int) 0xFFFFFFFF)
+					overview.setRGB(col * COLUMN_WIDTH + COLUMN_WIDTH - 1, (row * steps) + p, (int) 0xFFFFFFFF)
 				}
 				graphics.dispose()
 			}
-			
-			// write 
-			def tmp = File.createTempFile("overviewtmp", ".png")
-			try {
-				ImageIO.write(overview, 'png', tmp)
-			} catch (e) {
-				println "************"
-				e.printStackTrace()
-			}
-			writeFile(tmp)
+
+			// write
+			ImageIO.write(overview, 'png', png)
+			return writeFile(png)
 		}
 	}
-	
+
 	// caches the rendered image for later re-use
 	def writeFile = { file ->
 		// set up our content type
