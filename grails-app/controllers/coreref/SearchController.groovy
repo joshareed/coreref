@@ -14,7 +14,7 @@ class SearchController extends SecureController {
 	 */
 	def type = {
 		withProject {
-			renderQuery(['class': (params.query ?: '')])	
+			renderQuery(['class': (params.query ?: '')])
 		}
 	}
 
@@ -42,7 +42,14 @@ class SearchController extends SecureController {
 	def data = {
 		withProject {
 			def filter = QueryUtils.buildFilter(params, [top: true, base: true])
-			def query = QueryUtils.withDepths(params, ['class': 'Datum', 'type': ['$in': []]])
+			def query = [
+				'class': 'Datum',
+				'type': ['$in': []],
+				'depth': [
+					'$gte': params.top as double,
+					'$lte': params.base as double
+				]
+			]
 
 			def results = [:]
 			def series = (params.query ?: '').split(',') as List
@@ -51,13 +58,18 @@ class SearchController extends SecureController {
 				results[it] = [:]
 			}
 
+			def last = null
 			mongoService[params.project].findAll(query).sort([top: 1]).collect() { SearchUtils.clean(it) }.each { doc ->
-				doc.keySet().findAll{ !(it in ['top', 'base', 'class', 'type', '_id', '_ns'])}.each { k ->
-					if (!results[doc.type][k]) {
-						results[doc.type][k] = [label: k[0].toUpperCase() + k[1..-1], data: [], yaxis: series.indexOf(doc.type) + 1]
-					}
-					results[doc.type][k].data << [doc.top, doc[k] ?: null]
+				def type = doc.type
+				def name = doc.name
+				if (!results.containsKey(type)) { results[type] = [:] }
+				if (!results[type].containsKey(name)) {
+					results[type][name] = [label: "${type}: ${name[0].toUpperCase() + name[1..-1]}", data: [], yaxis: series.indexOf(type) + 1]
 				}
+
+				if (last && (doc.depth - last > 0.05)) { results[type][name].data << [last + 0.0001, null] }
+				results[type][name].data << [doc.depth, doc.value]
+				last = doc.depth
 			}
 
 			results.each { k, v ->
@@ -66,7 +78,6 @@ class SearchController extends SecureController {
 				}
 			}
 			renderResults(results)
-			
 		}
 	}
 
@@ -85,17 +96,17 @@ class SearchController extends SecureController {
 			}
 		}
 	}
-	
+
 	private def asCSV(results) {
 		// get our set of fields
 		def fields = ['top', 'base', 'class'] as LinkedHashSet
 		results.each { doc -> doc.each { k,v -> fields << k } }
-		
+
 		// generate the CSV
 		def buffer = new StringBuilder()
 		fields.eachWithIndex { f, i ->
 			buffer.append('"' + f + '"')
-			if (i < fields.size() - 1)  buffer.append(',')
+			if (i < fields.size() - 1)	buffer.append(',')
 		}
 		buffer.append("\n")
 		results.each { doc ->
@@ -108,7 +119,7 @@ class SearchController extends SecureController {
 						buffer.append('"' + value.replaceAll('"', '""') + '"')
 					}
 				}
-				if (i < fields.size() - 1)  buffer.append(',')
+				if (i < fields.size() - 1)	buffer.append(',')
 			}
 			buffer.append("\n")
 		}
