@@ -3,24 +3,30 @@
 		<title>${project.name} - Overview | CoreRef</title>
 		<meta name="layout" content="main" />
 		<g:javascript library="jquery.min" />
-		<script type="text/javascript">
-		$.ajax({
-			dataType: 'json',
-			url: '${createLink(controller:"recent", action:"searches", params: [project: project.id])}',
-			success: function(data, status) {
-				$.each(data, function(i, val) {
-					$('<li class="recentSearch"></li>').append(
-						$('<a></a>').attr('href', 'search?q=' + val.query).text("'" + val.query + "'")
-					).appendTo($('#recent'));
-				});
+		<style type="text/css" media="screen">
+			#holeOverview img {
+				cursor: pointer;
 			}
+		</style>
+		<script type="text/javascript">
+		$(function() {
+			var overview = new Image();
+			$(overview).load(function() {
+				$('#holeOverview').fadeIn();
+			}).click(function(e) {
+				var root = '${createLink(controller:"project", action:"viewer", params: [project: project.id])}';
+				var offset = $(this).offset();
+				var depth = (e.pageY - offset.top) / 500 * 10 + Math.floor((e.pageX - offset.left) / 15) * 10;
+				window.location = root + '/' + depth;
+			}).appendTo($('#holeOverview'));
+			overview.src = '${createLink(controller:'admin', action:'updateHoleView', params: [project: project.id])}';
 		});
 		</script>
 	</head>
 	<body>
 		<div id="leftSidebar">
-			<h3>Links</h3>
-			<ul>
+			<h3>Tools</h3>
+			<ul style="margin-bottom: 1em">
 				<li class="active">
 					<g:link controller="project" action="overview" params="[project: project.id]">Overview</g:link>
 				</li>
@@ -30,12 +36,22 @@
 				<li>
 					<g:link controller="project" action="search" params="[project: project.id]">Search</g:link>
 				</li>
-				<g:if test="${project?.homepage}">
-					<li>
-						<a href="${project?.homepage}">Project Homepage</a>
-					</li>
-				</g:if>
 			</ul>
+			<g:if test="${project?.links || project?.homepage}">
+				<h3>Related Links</h3>
+				<ul style="margin-bottom: 1em">
+					<g:if test="${project?.homepage}">
+						<li>
+							<a href="${project?.homepage}">Project Homepage</a>
+						</li>
+					</g:if>
+					<g:each in="${project.links}" var="link">
+						<li>
+							<a href="${link.value}" target="_blank">${link.key}</a>
+						</li>
+					</g:each>
+				</ul>
+			</g:if>
 		</div>
 		<div id="main">
 			<div id="rightNote">
@@ -62,10 +78,22 @@
 						<td>${project.latitude}&deg;, ${project.longitude}&deg;</td>
 					</tr>
 					</g:if>
+					<g:if test="${project?.waterdepth}">
+					<tr>
+						<td><strong>Water Depth</strong></td>
+						<td>${project.waterdepth} m</td>
+					</tr>
+					</g:if>
 					<g:if test="${project?.base}">
 					<tr>
 						<td><strong>Total Depth</strong></td>
 						<td>${project.base} m</td>
+					</tr>
+					</g:if>
+					<g:if test="${project?.corerecovered}">
+					<tr>
+						<td><strong>Core Recovered</strong></td>
+						<td>${project.corerecovered} m</td>
 					</tr>
 					</g:if>
 					<g:if test="${project?.age}">
@@ -90,12 +118,12 @@
 					</g:each>
 				</ul>
 			</g:if>
-			<div style="margin: 2em">
-				<form action="${createLink(controller:'project', action:'search', params: [project: project.id])}" method="get" target="_blank">
-					<input type="text" name="q" value="${q}" id="q"/><input type="submit" value="Search" />
-				</form>
-				<h3 style="margin-top: 1em">Recent Searches</h3>
-				<ul id="recent"></ul>
+			<div style="margin-top: 2em; display: none" id="holeOverview">
+				<h3>Hole Overview</h3>
+				<p>
+					Below is a graphical representation of all core recovered from this hole.  Each column represents 10 meters of core.  Bright blue areas denote sections of no core recovery.  
+					Clicking on the image will allow you to quickly jump to that specific depth in the hole.
+				</p>
 			</div>
 		</div>
 	</body>
