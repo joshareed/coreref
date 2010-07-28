@@ -67,7 +67,7 @@ class SearchController extends SecureController {
 					results[type][name] = [label: "${type}: ${name[0].toUpperCase() + name[1..-1]}", data: [], yaxis: series.indexOf(type) + 1]
 				}
 
-				if (last && (doc.depth - last > 0.05)) { results[type][name].data << [last + 0.0001, null] }
+				if (last && (doc.depth - last > 0.10)) { results[type][name].data << [last + 0.0001, null] }
 				results[type][name].data << [doc.depth, doc.value]
 				last = doc.depth
 			}
