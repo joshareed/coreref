@@ -5,13 +5,9 @@ class CollectionController {
 
     def index = {
 		def collections = mongoService['_collections']
-		if (!collections) {
-			response.sendError(500, "_collections not initialized")
-			return false
-		}
-		
+
 		def matching
-		def collection = collections.find('_id': params.collection)
+		def collection = (collections ? collections.find('_id': params.collection) : null)
 		if (collection) {
 			def query = [:]
 			transform(collection.query, query)
@@ -21,13 +17,17 @@ class CollectionController {
 				matching = mongoService['_projects'].findAll([:]).sort(program: 1, expedition: 1, site: 1, hole: 1).collect { SearchUtils.clean(it) }
 				collection = [name: 'All Projects', description: 'This collection contains all project available at CoreRef']
 			} else {
-				matching = mongoService['_projects'].findAll(program: params.collection).sort(program: 1, expedition: 1, site: 1, hole: 1).collect { SearchUtils.clean(it) }
-				collection = [name: "${params.project} Expeditions", description: "All ${params.project} Expeditions"]
+				matching = mongoService['_projects'].findAll(program: params.collection.toLowerCase()).sort(program: 1, expedition: 1, site: 1, hole: 1).collect { SearchUtils.clean(it) }
+				collection = [name: "${params.collection.toUpperCase()} Expeditions", description: "This collection contains all projects from the ${params.collection.toUpperCase()} program"]
 			}
 		}
 
 		if (!matching) {
-			response.sendError(404, "Invalid collection: '${params.collection}'")
+			if (!collections) {
+				response.sendError(500, "_collections not initialized")
+			} else {
+				response.sendError(404, "Invalid collection: '${params.collection}'")
+			}
 			return false
 		}
 
