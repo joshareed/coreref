@@ -95,8 +95,9 @@
 			</ul>
 			<h3 style="margin-top: 0.5em">Programs</h3>
 			<ul>
-				<li><g:link controller="collection" action="index" params="[collection: 'andrill']">ANDRILL</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'and']">ANDRILL</g:link></li>
 				<li><g:link controller="collection" action="index" params="[collection: 'icdp']">ICDP</g:link></li>
+				<li><g:link controller="collection" action="index" params="[collection: 'iodp']">IODP</g:link></li>
 				<li><g:link controller="collection" action="index" params="[collection: 'odp']">ODP</g:link></li>
 				<li><g:link controller="collection" action="index" params="[collection: 'all']">All</g:link></li>
 			</ul>
