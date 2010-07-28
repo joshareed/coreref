@@ -92,7 +92,7 @@ grails.mail.props = [
 	"mail.smtp.socketFactory.fallback":"false"
 ]
 
-mongo = {
+mongo {
 	host = 'localhost'
 	db = 'coreref'
 }
