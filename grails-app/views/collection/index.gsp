@@ -17,7 +17,7 @@
 			<ul>
 				<g:each in="${collection.projects}" var="program">
 				<li>
-					<a href="#${program.key}">${program.key}</a>
+					<a href="#${program.key}">${program.key.toUpperCase()}</a>
 					<ul>
 						<g:each in="${program.value}" var="leg">
 						<li>
