@@ -21,7 +21,7 @@ class ConfigController extends SecureController {
 				render(contentType: 'application/json', text: (config as JSON))
 			}
 		} else {
-			sendError(500, "Invalid configuration: '${params.project}'")
+			response.sendError(500, "Invalid configuration: '${params.project}'")
 		}
 	}
 	

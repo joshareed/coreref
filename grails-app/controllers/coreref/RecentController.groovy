@@ -8,7 +8,7 @@ class RecentController {
 	def searches = {
 		def searches = mongoService['_searches']
 		if (!searches) {
-			sendError(500, '_searches not initialized')
+			response.sendError(500, '_searches not initialized')
 			return false
 		}
 
