@@ -97,4 +97,9 @@ mongo {
 	db = 'coreref'
 }
 
-
+coreref {
+	local {
+		url = 'http://hosted1.coreref.org/'
+		path = 'file:/home/coreref/'
+	}
+}

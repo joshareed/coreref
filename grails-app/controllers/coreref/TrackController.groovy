@@ -12,6 +12,8 @@ import org.andrill.coretools.scene.DefaultScene
 import org.andrill.coretools.geology.ui.*
 import org.andrill.util.image.ImageMagick
 
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+
 /**
  * A controller for rendering the various viewer tracks as images.
  */
@@ -65,6 +67,9 @@ class TrackController extends SecureController {
 
 	// does the heavy lifting for rendering a scene
 	def renderScene = { scene, query, usejpeg, foreground, background ->
+		def rewriteFrom = ApplicationHolder.application.config?.coreref?.local?.url
+		def rewriteTo = ApplicationHolder.application.config?.coreref?.local?.path
+		
 		withProject { project ->
 			// get our depth range
 			def top = params.top as double
@@ -99,8 +104,16 @@ class TrackController extends SecureController {
 			collection.findAll(query).each { doc ->
 				def model
 				switch(doc['class']) {
-					case 'Image':		model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: doc['_local'] ?: doc.url]); break
-					case 'Interval':	model = models.build("Interval", [top: doc.top, base: doc.base, lithology: "org.psicat.resources.lithologies:${doc.lithology}"]); break
+					case 'Image':
+						def url = doc.url
+						if (rewriteFrom && rewriteTo) {
+							url = url.replace(rewriteFrom, rewriteTo)
+						}
+						model = models.build("Image", [top: doc.top, base: doc.base, group: doc.type, path: url]) 
+						break
+					case 'Interval':
+						model = models.build("Interval", [top: doc.top, base: doc.base, lithology: "org.psicat.resources.lithologies:${doc.lithology}"])
+						break
 				}
 				if (model) { container.add(model) }
 			}
