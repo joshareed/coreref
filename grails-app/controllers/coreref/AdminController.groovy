@@ -22,9 +22,11 @@ class AdminController extends SecureController {
 
 	def index = {
 		withProject { project ->
+			def issues = mongoService['_issues']
+			
 			return [
 				project: project,
-				issues: mongoService['_issues'].findAll(pending: true, project: params.project)
+				issues: (issues ? issues.findAll(pending: true, project: params.project) : null)
 			]
 		}
 	}
