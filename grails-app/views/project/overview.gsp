@@ -12,6 +12,7 @@
 		$(function() {
 			var overview = new Image();
 			$(overview).load(function() {
+				$('#holeOverviewSpinner').hide();
 				$('#holeOverview').fadeIn();
 			}).click(function(e) {
 				var root = '${createLink(controller:"project", action:"viewer", params: [project: project.id])}';
@@ -49,6 +50,16 @@
 						<li>
 							<a href="${link.value}" target="_blank">${link.key}</a>
 						</li>
+					</g:each>
+				</ul>
+			</g:if>
+			<g:if test="${related}">
+				<h3>Related Projects</h3>
+				<ul style="margin-bottom: 1em">
+					<g:each in="${related}" var="project">
+					<li>
+						<g:link controller="project" action="overview" params="[project: project.id]">${project.site}${project.hole}</g:link>
+					</li>
 					</g:each>
 				</ul>
 			</g:if>
@@ -108,16 +119,9 @@
 			<g:if test="${project?.description}">
 				<p>${project?.description}</p>
 			</g:if>
-			<g:if test="${related}">
-				<strong>Related:</strong>
-				<ul class="horiz">
-					<g:each in="${related}" var="project">
-					<li>
-						<g:link controller="project" action="overview" params="[project: project.id]">${project.site}${project.hole}</g:link>
-					</li>
-					</g:each>
-				</ul>
-			</g:if>
+			<div style="margin-top: 2em" id="holeOverviewSpinner">
+				<img src="${resource(dir:'images',file:'spinner.gif')}" style="vertical-align: text-top"/> <em>Loading hole overview</em>
+			</div>
 			<div style="margin-top: 2em; display: none" id="holeOverview">
 				<h3>Hole Overview</h3>
 				<p>
