@@ -19,9 +19,9 @@
 				<li>
 					<a href="#${program.key}">${program.key.toUpperCase()}</a>
 					<ul>
-						<g:each in="${program.value}" var="leg">
+						<g:each in="${program.value}" var="expedition">
 						<li>
-							<a href="#${program.key}-${leg.key}">${leg.key}</a>
+							<a href="#${program.key}-${expedition.key}">${expedition.key}</a>
 						</li>
 						</g:each>
 					</ul>
@@ -33,17 +33,17 @@
 			<h1>${collection.name}</h1>
 			<g:each in="${collection.projects}" var="program">
 				<a name="${program.key}"></a>
-				<g:each in="${program.value}" var="leg">
-					<a name="${program.key}-${leg.key}"></a>
-					<g:if test="${leg.value.size() > 0}">
+				<g:each in="${program.value}" var="expedition">
+					<a name="${program.key}-${expedition.key}"></a>
+					<g:if test="${expedition.value.size() > 0}">
 						<div class="entry">
-							<h2>${program.key.toUpperCase()} - ${leg.key}</h2>
+							<h2>${program.key.toUpperCase()} - ${expedition.key}</h2>
 							<p>
-								${leg.value[0].description}
+								${expedition.value[0].description}
 							</p>
 							Holes:
 							<ul class="horiz">
-								<g:each in="${leg.value}" var="project">
+								<g:each in="${expedition.value}" var="project">
 								<li>
 									<g:link controller="project" action="overview" params="[project: project.id]">${project.site}${project.hole}</g:link>
 								</li>
