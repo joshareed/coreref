@@ -25,8 +25,8 @@ class ProjectController extends SecureController {
 	def overview = {
 		withProject { project ->
 			def related
-			if (project.program && project.leg) {
-				related = mongoService['_projects'].findAll(program: project.program, leg: project.leg, id: ['$ne': project.id]).sort(program: 1, leg: 1, site: 1, hole: 1).collect { SearchUtils.clean(it) }
+			if (project.program && project.expedition) {
+				related = mongoService['_projects'].findAll(program: project.program, expedition: project.expedition, id: ['$ne': project.id]).sort(program: 1, expedition: 1, site: 1, hole: 1).collect { SearchUtils.clean(it) }
 			}
 			return [ project: project, related: related ] 
 		}

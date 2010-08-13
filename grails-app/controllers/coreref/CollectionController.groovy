@@ -34,7 +34,7 @@ class CollectionController {
 		// render our projects
 		def projects = [:]
 		matching.groupBy { it.program }.each { program, list ->
-			projects[program] = list.groupBy { it.expedition ?: it.leg }
+			projects[program] = list.groupBy { it.expedition }
 		} 
 		collection.projects = projects
 		return [collection: collection]
