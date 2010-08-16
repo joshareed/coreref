@@ -44,6 +44,17 @@ class TrackController extends SecureController {
 	}
 
 	/**
+	 * Renders the xrd core image track.
+	 * Note: SECURE
+	 */
+	def whole = {
+		def scene = new DefaultScene()
+		scene.setRenderHint('borders', 'false')
+		scene.addTrack(Platform.getService(org.andrill.coretools.geology.ui.ImageTrack), null)
+		renderScene(scene, ['class': 'Image', type: 'xrd'], true, Color.black, Color.black)
+	}
+
+	/**
 	 * Renders the lithology track.
 	 * Note: SECURE
 	 */
