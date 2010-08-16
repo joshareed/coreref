@@ -168,6 +168,7 @@
 				</td>
 				<td class="center" style="padding-left: 35px; padding-right: 35px">
 					<div class="animated track" id="whole"></div>
+					<div class="track" id="xrd"></div>
 					<div class="track" id="split"></div>
 					<div class="track" id="ruler"></div>
 					<div class="track" id="lith"></div>
