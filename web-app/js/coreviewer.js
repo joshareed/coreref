@@ -291,6 +291,11 @@ coreref.CoreViewer = function(selector) {
 								yaxis.min = stats.min;
 							}
 						}
+						if (series.length == 0) {
+							$(track).hide();
+						} else {
+							$(track).show();
+						}
 
 						// build the plot
 						var plot = $.plot($('#' + track), series, options);
