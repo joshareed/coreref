@@ -33,7 +33,7 @@ class ConfigController extends SecureController {
 				name: project.name,
 				images: [items:[]],
 				intervals: [
-					scheme: (config.scheme ?: createLinkTo(dir:'schemes/lith', file: 'andrill.json')),
+					scheme: (config.scheme ?: createLinkTo(dir:'schemes/lith', file: project.id.startsWith('icdp') ? 'lakee.json' : 'andrill.json')),
 					items:[]
 				]
 			]

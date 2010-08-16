@@ -1,0 +1,187 @@
+{
+	"name": "Lake El'gygytgyn Lithologies",
+	"type": "lithology",
+	"items": {
+		"sandy clay": {
+			"name": "Sandy Clay",
+			"color": "rgb(204,204,204)",
+			"pattern": "patterns/619.png"
+		},
+		"air": {
+			"name": "Air"
+		},
+		"clay": {
+			"name": "Clay",
+			"color": "rgb(204,204,204)",
+			"pattern": "patterns/620.png"
+		},
+		"clay to sand": {
+			"name": "Clay to Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/654.png"
+		},
+		"clayey": {
+			"name": "Clayey",
+			"color": "rgb(204,204,204)",
+			"pattern": "patterns/620.png"
+		},
+		"clayet silt": {
+			"name": "Clayey Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"coarse gravel": {
+			"name": "Coarse Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"coarse sand": {
+			"name": "Coarse Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/601.png"
+		},
+		"coarse silt": {
+			"name": "Coarse Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"cobble": {
+			"name": "Cobble",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"core loss": {
+			"name": "Core Loss"
+		},
+		"cryptocrystalls": {
+			"name": "Cryptocrystalls"
+		},
+		"fine gravel": {
+			"name": "Fine Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"fine sand": {
+			"name": "Fine Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/607.png"
+		},
+		"fine silt": {
+			"name": "Fine Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"gravel": {
+			"name": "Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"gravely": {
+			"name": "Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"macrocrystalls": {
+			"name": "Macrocrystalls"
+		},
+		"medium gravel": {
+			"name": "Medium Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"medium sand": {
+			"name": "Medium Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/607.png"
+		},
+		"medium silt": {
+			"name": "Medium Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"mesocrystalls": {
+			"name": "Mesocrystalls"
+		},
+		"microcrystalls": {
+			"name": "Microcrystalls"
+		},
+		"not sized components": {
+			"name": "Not Sized Components"
+		},
+		"organic material": {
+			"name": "Organic Material",
+			"color": "rgb(51,51,51)",
+			"pattern": "patterns/621.png"
+		},
+		"sand": {
+			"name": "Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/607.png"
+		},
+		"sandy": {
+			"name": "Sandy",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/607.png"
+		},
+		"sandy silt": {
+			"name": "Sandy Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"silt": {
+			"name": "Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"silty": {
+			"name": "Silty",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"silty clay": {
+			"name": "Silty Clay",
+			"color": "rgb(204,204,204)",
+			"pattern": "patterns/620.png"
+		},
+		"silty snad": {
+			"name": "Silty Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/654.png"
+		},
+		"tephra": {
+			"name": "Tephra",
+			"color": "rgb(255,102,0)",
+			"pattern": "patterns/722.png"
+		},
+		"very coarse gravel": {
+			"name": "Very Coarse Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"very coarse sand": {
+			"name": "Very Coarse Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/607.png"
+		},
+		"very coarse silt": {
+			"name": "Very Coarse Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		},
+		"very fine gravel": {
+			"name": "Very Coarse Gravel",
+			"color": "rgb(51,102,0)",
+			"pattern": "patterns/602.png"
+		},
+		"very fine sand": {
+			"name": "Very Coarse Sand",
+			"color": "rgb(255,255,0)",
+			"pattern": "patterns/607.png"
+		},
+		"very fine silt": {
+			"name": "Very Coarse Silt",
+			"color": "rgb(51,255,0)",
+			"pattern": "patterns/619.png"
+		}
+	}
+}
