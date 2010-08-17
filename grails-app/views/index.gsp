@@ -3,7 +3,6 @@
 		<title>Home | CoreRef</title>
 		<meta name="layout" content="splash" />
 		<g:javascript library="jquery.min" />
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 		<script type="text/javascript">
 		$(function() {
 			$.ajax({
@@ -14,59 +13,6 @@
 						$('<li class="recentSearch"></li>').append(
 							$('<a></a>').attr('href', 'projects/' + val.project + '/search?q=' + val.query).text("'" + val.query + "' in " + val.project)
 						).appendTo($('#recent'));
-					});
-				}
-			});
-
-			// create a map
-			var map = new google.maps.Map(document.getElementById("map"), {
-				zoom: 1,
-				center: new google.maps.LatLng(0, 0),
-				mapTypeId: google.maps.MapTypeId.HYBRID
-			});
-			
-			var PROGRAMS = {
-				andrill: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|FF0000|000000',
-				odp: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=O|0000FF|000000',
-				icdp: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=C|00FF00|000000'
-			};
-			
-			// add our markers
-			$.ajax({
-				dataType: 'json',
-				url: '${createLink(controller:"project", action:"list")}',
-				success: function(data, status) {
-					var currentlyOpen;
-					var root = "${createLinkTo(dir: 'projects', absolute: true)}/";
-					$.each(data, function(i, val) {
-						if (!isNaN(val.latitude - 0) && !isNaN(val.longitude)) {
-							var lat = parseFloat(val.latitude);
-							var lng = parseFloat(val.longitude);
-							var desc = '<div><h3>' + val.name + '</h3><div class="desc">' + val.description + '</div><div>' +
-								'<a href="' + root + val.id + '/overview">Overview</a> | ' + 
-								'<a href="' + root + val.id + '/viewer">Core Viewer</a> | ' + 
-								'<a href="' + root + val.id +'/search">Search</a>' +
-								'</div></div>';
-							var info = new google.maps.InfoWindow({ content: desc });
-							var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|FFFF00|000000';
-							var marker = new google.maps.Marker({
-								position: new google.maps.LatLng(lat, lng),
-								map: map,
-								title: val.name,
-								icon: PROGRAMS[val.program]
-							});
-							google.maps.event.addListener(marker, 'click', function() {
-								if (currentlyOpen) {
-									currentlyOpen.close();
-								}
-								info.open(map, marker);
-								currentlyOpen = info;
-							});
-							google.maps.event.addListener(info, 'closeclick', function() {
-								info.close();
-								currentlyOpen = null;
-							});
-						}
 					});
 				}
 			});
@@ -90,7 +36,7 @@
 					<g:link controller="project" action="viewer" params="[project: 'and2-2a', depth: 430.4]">ANDRILL SMS - Pectin Shells</g:link>
 				</li>
 				<li>
-					<g:link controller="project" action="viewer" params="[project: 'odp-1049B', depth: 110.97]">ODP 1049 - K/T Boundary</g:link>
+					<g:link controller="project" action="viewer" params="[project: 'odp171-1049b', depth: 110.97]">ODP 1049 - K/T Boundary</g:link>
 				</li>
 			</ul>
 			<h3 style="margin-top: 0.5em">Programs</h3>
@@ -105,7 +51,21 @@
 			<ul id="recent"></ul>
 		</div>
 		<div id="main">
-			<div id="map" style="width: 100%; height: 600px;"></div>
+			<h1>About CoreRef</h1>
+			<p style="font-size: 1.5em; line-height: 1.3em">
+				CoreRef provides web-based access to core imagery and data for over 1600 marine, antarctic, and continental drill holes.  
+				You can browse projects by 
+				<g:link controller="collection" action="index" params="[collection: 'all']">drilling program</g:link>
+				or via a <a href="${resource(file:'map.gsp')}">map</a>.  Each project has an 
+				<g:link controller="project" action="overview" params="[project: 'and1-1b']">overview page</g:link>, which provides a 
+				description and related resources, and a 
+				<g:link controller="project" action="viewer" params="[project: 'odp171-1049b', depth: 110.97]">core viewer page</g:link>, 
+				which brings the core imagery and data directly into your web browser.
+			</p>
+			<div style="border: 1px solid #AAA; margin: 1em; padding: 10px; background-color: #EEE">
+				Do you have images or data you'd like to make available?  <a href="${resource(file:'data.gsp')}">Let us know!</a> 
+				We're always looking to partner with individuals or groups to improve existing projects or bring new projects online.
+			</div>
 		</div>
 	</body>
 </html>
