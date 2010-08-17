@@ -15,6 +15,19 @@ Message: ${params.message}
 			"""
 		}
 	}
+	
+	def data = {
+		sendMail {
+			to 'info@coreref.org'
+			subject 'Data Submission'
+			body """
+Name: ${params.name}
+Email: ${params.email}
+Project: ${params.project == 'new' ? 'New' : 'Existing (' + params.existing + ')' }
+Message: ${params.message}
+			"""
+		}
+	}
 
 	def issue = {
 		def doc = new LinkedHashMap(params)
